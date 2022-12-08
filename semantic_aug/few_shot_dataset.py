@@ -8,7 +8,7 @@ import torch
 import abc
 
 
-UNLABELLED_ERROR = "unlabelled image datasets are not \
+UNLABELLED_ERROR_MESSAGE = "unlabelled image datasets are not \
 currently supported, please specify the class key"
 
 
@@ -43,6 +43,6 @@ class FewShotDataset(Dataset):
         metadata = self.get_metadata_by_idx(idx)
 
         image, metadata = self.transform(image, metadata)
-        assert "class" in metadata, UNLABELLED_ERROR
+        assert "class" in metadata, UNLABELLED_ERROR_MESSAGE
 
         return image, metadata["class"]
