@@ -39,6 +39,12 @@ class SpurgeDataset(FewShotDataset):
         absent_ids = {"train": absent_ids_train, "val": absent_ids_val, "test": absent_ids_test}[split]
         apparent_ids = {"train": apparent_ids_train, "val": apparent_ids_val, "test": apparent_ids_test}[split]
 
+        self.absent = [absent[i] for i in absent_ids[:examples_per_class]]
+        self.apparent = [apparent[i] for i in apparent_ids[:examples_per_class]]
+
+        self.all_images = self.absent + self.apparent
+        self.all_classes = [0] * examples_per_class + [1] * examples_per_class
+
         train_transform = transforms.Compose([
             transforms.Resize([256, 256]),
             transforms.RandomHorizontalFlip(p=0.5),
@@ -62,12 +68,6 @@ class SpurgeDataset(FewShotDataset):
             "test": val_test_transform
         }[split]
 
-        self.absent = [absent[i] for i in absent_ids[:examples_per_class]]
-        self.apparent = [apparent[i] for i in apparent_ids[:examples_per_class]]
-
-        self.all_images = self.absent + self.apparent
-        self.all_classes = [0] * examples_per_class + [1] * examples_per_class
-
     def __len__(self):
 
         return 2 * self.examples_per_class
@@ -80,7 +80,7 @@ class SpurgeDataset(FewShotDataset):
     
     def get_image_by_idx(self, idx: int) -> torch.Tensor:
         
-        return self.transform(Image.open(self.all_images[idx]))
+        return Image.open(self.all_images[idx])
     
     def get_metadata_by_idx(self, idx: int) -> Any:
 

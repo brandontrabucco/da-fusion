@@ -19,6 +19,7 @@ class FewShotDataset(Dataset):
 
         self.examples_per_class = examples_per_class
         self.aug = aug
+        self.transform = lambda x: x
 
     @abc.abstractmethod
     def filter_by_class(self, class_idx: int) -> torch.Tensor:
@@ -43,4 +44,4 @@ class FewShotDataset(Dataset):
         image, metadata = self.aug(image, metadata)
         assert "label" in metadata, UNLABELLED_ERROR_MESSAGE
 
-        return image, metadata["label"]
+        return self.transform(image), metadata["label"]
