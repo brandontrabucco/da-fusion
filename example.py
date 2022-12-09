@@ -68,6 +68,7 @@ def run_experiment(model, examples_per_class, num_synthetic=100,
 
         epoch_loss = 0.0
         epoch_accuracy = 0.0
+        epoch_size = 0.0
 
         for image, label in train_dataloader:
             image, label = image.cuda(), label.cuda()
@@ -82,14 +83,16 @@ def run_experiment(model, examples_per_class, num_synthetic=100,
 
             epoch_loss += loss.detach().cpu().numpy() * logits.shape[0]
             epoch_accuracy += (prediction == label).float().sum().cpu().numpy()
+            epoch_size += float(image.shape[0])
 
-        training_loss = epoch_loss / len(train_dataloader.dataset)
-        training_accuracy = epoch_accuracy / len(train_dataloader.dataset)
+        training_loss = epoch_loss / epoch_size
+        training_accuracy = epoch_accuracy / epoch_size
 
         model.eval()
 
         epoch_loss = 0.0
         epoch_accuracy = 0.0
+        epoch_size = 0.0
 
         for image, label in val_dataloader:
             image, label = image.cuda(), label.cuda()
@@ -100,9 +103,10 @@ def run_experiment(model, examples_per_class, num_synthetic=100,
 
             epoch_loss += loss.detach().cpu().numpy() * logits.shape[0]
             epoch_accuracy += (prediction == label).float().sum().cpu().numpy()
+            epoch_size += float(image.shape[0])
 
-        validation_loss = epoch_loss / len(val_dataloader.dataset)
-        validation_accuracy = epoch_accuracy / len(val_dataloader.dataset)
+        validation_loss = epoch_loss / epoch_size
+        validation_accuracy = epoch_accuracy / epoch_size
 
         records.append(dict(
             epoch=epoch, 
@@ -174,7 +178,7 @@ if __name__ == "__main__":
     parser.add_argument("--checkpoint", type=str, default="CompVis/stable-diffusion-v1-4")
     parser.add_argument("--prompt", type=str, default="a woodland seen from a drone")
 
-    parser.add_argument("--strength", type=float, default=0.2)
+    parser.add_argument("--strength", type=float, default=0.5)
     parser.add_argument("--guidance-scale", type=float, default=7.5)
     parser.add_argument("--synthetic-probability", type=float, default=0.5)
 
