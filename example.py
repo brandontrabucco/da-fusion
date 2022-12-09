@@ -14,34 +14,37 @@ import pandas as pd
 import numpy as np
 import random
 import os
+from tqdm import trange
 
 
-def run_experiment(model, examples_per_class, 
-                   seed=0, iterations_per_epoch=100, 
-                   num_epochs=100, batch_size=32,
+def run_experiment(model, examples_per_class, num_synthetic=100, 
+                   seed=0, iterations_per_epoch=200, 
+                   num_epochs=50, batch_size=32,
                    strength: float = 0.5, 
                    guidance_scale: float = 7.5, 
-                   augment_probability: float = 0.5, 
+                   synthetic_probability: float = 0.5, 
                    model_path: str = "CompVis/stable-diffusion-v1-4",
                    prompt: str = "a drone image of a brown field"):
 
     aug = RealGuidance(
         strength=strength,
         guidance_scale=guidance_scale,
-        augment_probability=augment_probability,
         model_path=model_path,
         prompt=prompt,
     ).cuda()
 
     train_dataset = SpurgeDataset(
-        "train", examples_per_class, aug=aug, seed=seed)
+        "train", examples_per_class, 
+        synthetic_probability=synthetic_probability, 
+        synthetic_aug=aug, seed=seed)
 
-    val_dataset = SpurgeDataset(
-        "val", examples_per_class, aug=aug, seed=seed)
+    train_dataset.bake_synthetic_data(num_synthetic)
 
     train_sampler = torch.utils.data.RandomSampler(
         train_dataset, replacement=True, 
         num_samples=batch_size * iterations_per_epoch)
+
+    val_dataset = SpurgeDataset("val", 50, seed=seed)
 
     val_sampler = torch.utils.data.RandomSampler(
         val_dataset, replacement=True, 
@@ -55,11 +58,11 @@ def run_experiment(model, examples_per_class,
         val_dataset, batch_size=batch_size, 
         sampler=val_sampler, num_workers=4)
 
-    optim = torch.optim.Adam(model.parameters(), lr=0.001)
+    optim = torch.optim.Adam(model.parameters(), lr=0.0001)
 
     records = []
 
-    for epoch in range(num_epochs):
+    for epoch in trange(num_epochs, desc="Training Classifier"):
 
         model.train()
 
@@ -165,19 +168,24 @@ class ClassificationModel(nn.Module):
 
 if __name__ == "__main__":
 
-    torch.multiprocessing.set_start_method('spawn')
-
     parser = argparse.ArgumentParser("Few-Shot Baseline")
 
     parser.add_argument("--logdir", type=str, default="few_shot_combined")
     parser.add_argument("--checkpoint", type=str, default="CompVis/stable-diffusion-v1-4")
     parser.add_argument("--prompt", type=str, default="a woodland seen from a drone")
+
     parser.add_argument("--strength", type=float, default=0.2)
     parser.add_argument("--guidance-scale", type=float, default=7.5)
-    parser.add_argument("--augment-probability", type=float, default=0.5)
-    parser.add_argument("--iterations-per-epoch", type=int, default=1000)
-    parser.add_argument("--num-epochs", type=int, default=10)
+    parser.add_argument("--synthetic-probability", type=float, default=0.5)
 
+    parser.add_argument("--iterations-per-epoch", type=int, default=200)
+    parser.add_argument("--num-epochs", type=int, default=50)
+    parser.add_argument("--batch-size", type=int, default=32)
+
+    parser.add_argument("--num-trials", type=int, default=5)
+    parser.add_argument("--examples-per-class", nargs='+', default=[1, 5, 10, 15, 20, 25])
+    parser.add_argument("--num-synthetic", type=int, default=100)
+    
     args = parser.parse_args()
 
     try:
@@ -200,20 +208,22 @@ if __name__ == "__main__":
 
     all_trials = []
 
-    options = list(product([1, 5, 10, 15, 20, 25], range(5)))
-    options = np.array_split(np.array(options), world_size)[rank].tolist()
+    options = product(args.examples_per_class, range(args.num_trials))
+    options = np.array_split(np.array(list(options)), world_size)[rank].tolist()
 
     for examples_per_class, seed in options:
 
         model = ClassificationModel().cuda()
 
         records = run_experiment(
-            model, examples_per_class, seed=seed, 
+            model, examples_per_class, 
+            num_synthetic=args.num_synthetic, seed=seed, 
             iterations_per_epoch=args.iterations_per_epoch,
             num_epochs=args.num_epochs,
+            batch_size=args.batch_size,
             strength=args.strength, 
             guidance_scale=args.guidance_scale, 
-            augment_probability=args.augment_probability, 
+            synthetic_probability=args.synthetic_probability, 
             model_path=args.checkpoint,
             prompt=args.prompt
         )
@@ -224,7 +234,5 @@ if __name__ == "__main__":
 
         print(f"[rank {rank}] n={examples_per_class} finished")
 
-        all_trials_final = [x for x in all_trials if x["epoch"] > 75]
-        
-        df = pd.DataFrame.from_records(all_trials_final)
+        df = pd.DataFrame.from_records(all_trials)
         df.to_csv(os.path.join(args.logdir, f"results-{rank}.csv"))
