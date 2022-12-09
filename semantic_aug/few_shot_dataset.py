@@ -9,18 +9,16 @@ import abc
 
 
 UNLABELLED_ERROR_MESSAGE = "unlabelled image datasets are not \
-currently supported, please specify the class key"
+currently supported, please specify the 'label' key"
 
 
 class FewShotDataset(Dataset):
 
     def __init__(self, examples_per_class: int, 
-                 transform: SemanticAugmentation = Identity, *args, **kwargs):
-
-        super(FewShotDataset, self).__init__(*args, **kwargs)
+                 aug: SemanticAugmentation = Identity(), *args, **kwargs):
 
         self.examples_per_class = examples_per_class
-        self.transform = transform
+        self.aug = aug
 
     @abc.abstractmethod
     def filter_by_class(self, class_idx: int) -> torch.Tensor:
@@ -42,7 +40,7 @@ class FewShotDataset(Dataset):
         image = self.get_image_by_idx(idx)
         metadata = self.get_metadata_by_idx(idx)
 
-        image, metadata = self.transform(image, metadata)
-        assert "class" in metadata, UNLABELLED_ERROR_MESSAGE
+        image, metadata = self.aug(image, metadata)
+        assert "label" in metadata, UNLABELLED_ERROR_MESSAGE
 
-        return image, metadata["class"]
+        return image, metadata["label"]
