@@ -30,4 +30,4 @@ setup(name='semantic-aug', version='1.0', license='MIT',
       long_description=LONG_DESCRIPTION,
       long_description_content_type='text/markdown',
       url=URL, keywords=['Computer Vision', 'Data Augmentation'],
-      install_requires=['torch', 'torchvision', 'numpy'])
+      install_requires=['torch', 'torchvision', 'pandas'])
