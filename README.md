@@ -8,5 +8,5 @@ conda activate semantic-aug
 pip install diffusers["torch"] transformers
 
 git clone https://github.com/brandontrabucco/semantic-aug
-pip install semantic-aug
+pip install -e semantic-aug
 ```
