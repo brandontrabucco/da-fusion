@@ -54,7 +54,7 @@ class FewShotDataset(Dataset):
 
         options = product(range(len(self)), range(num_repeats))
 
-        for idx, num in tqdm(list(options),desc="Baking Synthetic Data"):
+        for idx, num in tqdm(list(options), desc="Baking Synthetic Data"):
 
             image = self.get_image_by_idx(idx)
             metadata = self.get_metadata_by_idx(idx)

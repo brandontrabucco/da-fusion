@@ -114,6 +114,8 @@ def run_experiment(examples_per_class, num_synthetic=100,
         validation_accuracy = epoch_accuracy / epoch_size
 
         records.append(dict(
+            seed=seed, 
+            examples_per_class=examples_per_class,
             epoch=epoch, 
             value=training_loss, 
             metric="Loss", 
@@ -121,6 +123,8 @@ def run_experiment(examples_per_class, num_synthetic=100,
         ))
 
         records.append(dict(
+            seed=seed, 
+            examples_per_class=examples_per_class,
             epoch=epoch, 
             value=validation_loss, 
             metric="Loss", 
@@ -128,6 +132,8 @@ def run_experiment(examples_per_class, num_synthetic=100,
         ))
 
         records.append(dict(
+            seed=seed, 
+            examples_per_class=examples_per_class,
             epoch=epoch, 
             value=training_accuracy, 
             metric="Accuracy", 
@@ -135,6 +141,8 @@ def run_experiment(examples_per_class, num_synthetic=100,
         ))
 
         records.append(dict(
+            seed=seed, 
+            examples_per_class=examples_per_class,
             epoch=epoch, 
             value=validation_accuracy, 
             metric="Accuracy", 
@@ -151,7 +159,7 @@ class ClassificationModel(nn.Module):
         super(ClassificationModel, self).__init__()
         
         self.base_model = resnet50(weights=ResNet50_Weights.DEFAULT)
-        self.out = nn.Linear(2048, 3)
+        self.out = nn.Linear(2048, 2)
         
     def forward(self, image):
         
@@ -192,7 +200,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, default=32)
 
     parser.add_argument("--num-synthetic", type=int, default=20)
-    parser.add_argument("--num-trials", type=int, default=5)
+    parser.add_argument("--num-trials", type=int, default=4)
     parser.add_argument("--examples-per-class", nargs='+', default=[1, 5, 10, 15, 20, 25])
     
     args = parser.parse_args()
@@ -219,23 +227,17 @@ if __name__ == "__main__":
 
     for seed, examples_per_class in options.tolist():
 
-        records = run_experiment(
+        all_trials.extend(run_experiment(
             examples_per_class, seed=seed, 
             num_synthetic=args.num_synthetic, 
             iterations_per_epoch=args.iterations_per_epoch,
             num_epochs=args.num_epochs,
             batch_size=args.batch_size,
+            model_path=args.checkpoint,
+            prompt=args.prompt,
             strength=args.strength, 
             guidance_scale=args.guidance_scale, 
-            synthetic_probability=args.synthetic_probability, 
-            model_path=args.checkpoint,
-            prompt=args.prompt
-        )
-
-        all_trials.extend([dict(
-            **x, seed=seed, 
-            examples_per_class=examples_per_class
-        ) for x in records])
+            synthetic_probability=args.synthetic_probability))
 
         path = f"results_{seed}_{examples_per_class}.csv"
         path = os.path.join(args.logdir, path)
