@@ -8,10 +8,10 @@ import torch
 
 class RealGuidance(SemanticAugmentation):
 
-    def __init__(self, strength: float = 0.5, 
-                 guidance_scale: float = 7.5, 
-                 model_path: str = "CompVis/stable-diffusion-v1-4",
-                 prompt: str = "a drone image of a brown field"):
+    def __init__(self, model_path: str = "CompVis/stable-diffusion-v1-4",
+                 prompt: str = "a drone image of a brown field",
+                 strength: float = 0.5, 
+                 guidance_scale: float = 7.5):
 
         super(RealGuidance, self).__init__()
 

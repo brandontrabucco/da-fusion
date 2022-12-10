@@ -20,8 +20,8 @@ currently supported, please specify the 'label' key"
 
 class FewShotDataset(Dataset):
 
-    def __init__(self, examples_per_class: int, 
-                 synthetic_aug: SemanticAugmentation = Identity(), 
+    def __init__(self, examples_per_class: int = None, 
+                 synthetic_aug: SemanticAugmentation = None, 
                  synthetic_probability: float = 0.5,
                  *args, **kwargs):
 
@@ -32,15 +32,11 @@ class FewShotDataset(Dataset):
         self.transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
-            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                  std=[0.5, 0.5, 0.5]),
         ])
 
         self.baked_examples = defaultdict(list)
-
-    @abc.abstractmethod
-    def filter_by_class(self, class_idx: int) -> torch.Tensor:
-
-        return NotImplemented
     
     @abc.abstractmethod
     def get_image_by_idx(self, idx: int) -> torch.Tensor:
@@ -62,9 +58,9 @@ class FewShotDataset(Dataset):
 
             image = self.get_image_by_idx(idx)
             metadata = self.get_metadata_by_idx(idx)
-            image, metadata = self.synthetic_aug(image, metadata)
 
-            self.baked_examples[idx].append((image, metadata))
+            self.baked_examples[idx].append(
+                self.synthetic_aug(image, metadata))
 
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, int]:
 

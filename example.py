@@ -17,7 +17,7 @@ import os
 from tqdm import trange
 
 
-def run_experiment(model, examples_per_class, num_synthetic=100, 
+def run_experiment(examples_per_class, num_synthetic=100, 
                    seed=0, iterations_per_epoch=200, 
                    num_epochs=50, batch_size=32,
                    strength: float = 0.5, 
@@ -26,15 +26,19 @@ def run_experiment(model, examples_per_class, num_synthetic=100,
                    model_path: str = "CompVis/stable-diffusion-v1-4",
                    prompt: str = "a drone image of a brown field"):
 
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+
     aug = RealGuidance(
-        strength=strength,
-        guidance_scale=guidance_scale,
-        model_path=model_path,
+        model_path=model_path, 
         prompt=prompt,
-    ).cuda()
+        strength=strength, 
+        guidance_scale=guidance_scale
+    )
 
     train_dataset = SpurgeDataset(
-        "train", examples_per_class, 
+        split="train", examples_per_class=examples_per_class, 
         synthetic_probability=synthetic_probability, 
         synthetic_aug=aug, seed=seed)
 
@@ -44,20 +48,21 @@ def run_experiment(model, examples_per_class, num_synthetic=100,
         train_dataset, replacement=True, 
         num_samples=batch_size * iterations_per_epoch)
 
-    val_dataset = SpurgeDataset("val", 50, seed=seed)
+    train_dataloader = DataLoader(
+        train_dataset, batch_size=batch_size, 
+        sampler=train_sampler, num_workers=4)
+
+    val_dataset = SpurgeDataset(split="val", seed=seed)
 
     val_sampler = torch.utils.data.RandomSampler(
         val_dataset, replacement=True, 
         num_samples=batch_size * iterations_per_epoch)
 
-    train_dataloader = DataLoader(
-        train_dataset, batch_size=batch_size, 
-        sampler=train_sampler, num_workers=4)
-
     val_dataloader = DataLoader(
         val_dataset, batch_size=batch_size, 
         sampler=val_sampler, num_workers=4)
 
+    model = ClassificationModel().cuda()
     optim = torch.optim.Adam(model.parameters(), lr=0.0001)
 
     records = []
@@ -186,9 +191,9 @@ if __name__ == "__main__":
     parser.add_argument("--num-epochs", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=32)
 
+    parser.add_argument("--num-synthetic", type=int, default=20)
     parser.add_argument("--num-trials", type=int, default=5)
     parser.add_argument("--examples-per-class", nargs='+', default=[1, 5, 10, 15, 20, 25])
-    parser.add_argument("--num-synthetic", type=int, default=100)
     
     args = parser.parse_args()
 
@@ -204,24 +209,19 @@ if __name__ == "__main__":
     device_id = rank % torch.cuda.device_count()
     print(f'Initialized process {rank} / {world_size}')
 
-    torch.manual_seed(0)
-    np.random.seed(0)
-    random.seed(0)
-
     os.makedirs(args.logdir, exist_ok=True)
 
     all_trials = []
 
-    options = product(args.examples_per_class, range(args.num_trials))
-    options = np.array_split(np.array(list(options)), world_size)[rank].tolist()
+    options = product(range(args.num_trials), args.examples_per_class)
+    options = np.array(list(options))
+    options = np.array_split(options, world_size)[rank]
 
-    for examples_per_class, seed in options:
-
-        model = ClassificationModel().cuda()
+    for seed, examples_per_class in options.tolist():
 
         records = run_experiment(
-            model, examples_per_class, 
-            num_synthetic=args.num_synthetic, seed=seed, 
+            examples_per_class, seed=seed, 
+            num_synthetic=args.num_synthetic, 
             iterations_per_epoch=args.iterations_per_epoch,
             num_epochs=args.num_epochs,
             batch_size=args.batch_size,
@@ -233,10 +233,12 @@ if __name__ == "__main__":
         )
 
         all_trials.extend([dict(
-            **x, examples_per_class=examples_per_class,
+            **x, seed=seed, 
+            examples_per_class=examples_per_class
         ) for x in records])
 
-        print(f"[rank {rank}] n={examples_per_class} finished")
+        path = f"results_{seed}_{examples_per_class}.csv"
+        path = os.path.join(args.logdir, path)
 
-        df = pd.DataFrame.from_records(all_trials)
-        df.to_csv(os.path.join(args.logdir, f"results-{rank}.csv"))
+        pd.DataFrame.from_records(all_trials).to_csv(path)
+        print(f"[rank {rank}] n={examples_per_class} saved to: {path}")
