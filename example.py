@@ -42,7 +42,8 @@ def run_experiment(examples_per_class, num_synthetic=100,
         synthetic_probability=synthetic_probability, 
         synthetic_aug=aug, seed=seed)
 
-    train_dataset.bake_synthetic_data(num_synthetic)
+    if num_synthetic > 0:
+        train_dataset.bake_synthetic_data(num_synthetic)
 
     train_sampler = torch.utils.data.RandomSampler(
         train_dataset, replacement=True, 
