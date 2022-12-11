@@ -1,4 +1,4 @@
-from semantic_aug.semantic_augmentation import SemanticAugmentation
+from semantic_aug.generative_augmentation import GenerativeAugmentation
 from diffusers import StableDiffusionImg2ImgPipeline
 from diffusers.utils import logging
 from PIL import Image
@@ -6,7 +6,7 @@ from typing import Any, Tuple
 import torch
 
 
-class RealGuidance(SemanticAugmentation):
+class RealGuidance(GenerativeAugmentation):
 
     def __init__(self, model_path: str = "CompVis/stable-diffusion-v1-4",
                  prompt: str = "a drone image of a brown field",
@@ -29,7 +29,8 @@ class RealGuidance(SemanticAugmentation):
         self.guidance_scale = guidance_scale
 
     def forward(self, image: torch.Tensor, 
-                metadata: Any) -> Tuple[torch.Tensor, Any]:
+                label: torch.Tensor,
+                metadata: Any) -> Tuple[torch.Tensor, torch.Tensor]:
 
         canvas = image.resize((512, 512), Image.BILINEAR)
 
@@ -42,4 +43,4 @@ class RealGuidance(SemanticAugmentation):
 
         image = canvas.resize(image.size, Image.BILINEAR)
 
-        return image, metadata
+        return image, label

@@ -1,8 +1,5 @@
 from semantic_aug.few_shot_dataset import FewShotDataset
-from semantic_aug.semantic_augmentation import (
-    SemanticAugmentation,
-    Identity
-)
+from semantic_aug.generative_augmentation import GenerativeAugmentation
 from typing import Any, Tuple
 from torch.utils.data import Dataset
 import torchvision.transforms as transforms
@@ -17,13 +14,13 @@ class SpurgeDataset(FewShotDataset):
 
     def __init__(self, split: str = "train", seed: int = 0, 
                  examples_per_class: int = None, 
-                 synthetic_aug: SemanticAugmentation = None, 
+                 generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5,
                  *args, **kwargs):
 
         super(SpurgeDataset, self).__init__(
             examples_per_class=examples_per_class,
-            synthetic_aug=synthetic_aug,
+            generative_aug=generative_aug,
             synthetic_probability=synthetic_probability, 
             *args, **kwargs)
 
@@ -84,9 +81,13 @@ class SpurgeDataset(FewShotDataset):
     def get_image_by_idx(self, idx: int) -> torch.Tensor:
         
         return Image.open(self.all_images[idx])
+
+    def get_label_by_idx(self, idx: int) -> torch.Tensor:
+        
+        return self.all_labels[idx]
     
     def get_metadata_by_idx(self, idx: int) -> Any:
 
-        return dict(label=self.all_labels[idx], token=(
+        return dict(token=(
             "<leafy_spurge>" if self.all_labels[idx] == 1 else "<no_spurge>"
         ))

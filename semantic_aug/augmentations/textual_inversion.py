@@ -1,4 +1,4 @@
-from semantic_aug.semantic_augmentation import SemanticAugmentation
+from semantic_aug.generative_augmentation import GenerativeAugmentation
 from diffusers import StableDiffusionImg2ImgPipeline
 from transformers import (
     CLIPFeatureExtractor, 
@@ -55,7 +55,7 @@ Please pass a different `token` that is not already in the tokenizer.")
     return tokenizer, text_encoder.to('cuda')
 
 
-class TextualInversion(SemanticAugmentation):
+class TextualInversion(GenerativeAugmentation):
 
     def __init__(self, *fine_tuned_embeddings: str, 
                  model_path: str = "CompVis/stable-diffusion-v1-4",
@@ -84,11 +84,12 @@ class TextualInversion(SemanticAugmentation):
         self.guidance_scale = guidance_scale
 
     def forward(self, image: torch.Tensor, 
-                metadata: Any) -> Tuple[torch.Tensor, Any]:
+                label: torch.Tensor,
+                metadata: Any) -> Tuple[torch.Tensor, torch.Tensor]:
 
         canvas = image.resize((512, 512), Image.BILINEAR)
 
-        tokenizer, text_encoder = self.embeddings[metadata["label"]]
+        tokenizer, text_encoder = self.embeddings[label]
         self.pipe.tokenizer = tokenizer
         self.pipe.text_encoder = text_encoder
 
@@ -103,4 +104,4 @@ class TextualInversion(SemanticAugmentation):
 
         image = canvas.resize(image.size, Image.BILINEAR)
 
-        return image, metadata
+        return image, label

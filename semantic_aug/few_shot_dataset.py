@@ -1,7 +1,4 @@
-from semantic_aug.semantic_augmentation import (
-    SemanticAugmentation,
-    Identity
-)
+from semantic_aug.generative_augmentation import GenerativeAugmentation
 from typing import Any, Tuple
 from torch.utils.data import Dataset
 from collections import defaultdict
@@ -14,19 +11,15 @@ from itertools import product
 from tqdm import tqdm
 
 
-UNLABELLED_ERROR_MESSAGE = "unlabelled image datasets are not \
-currently supported, please specify the 'label' key"
-
-
 class FewShotDataset(Dataset):
 
     def __init__(self, examples_per_class: int = None, 
-                 synthetic_aug: SemanticAugmentation = None, 
+                 generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5,
                  *args, **kwargs):
 
         self.examples_per_class = examples_per_class
-        self.synthetic_aug = synthetic_aug
+        self.generative_aug = generative_aug
         self.synthetic_probability = synthetic_probability
 
         self.transform = transforms.Compose([
@@ -44,35 +37,41 @@ class FewShotDataset(Dataset):
         return NotImplemented
     
     @abc.abstractmethod
+    def get_label_by_idx(self, idx: int) -> Any:
+
+        return NotImplemented
+    
+    @abc.abstractmethod
     def get_metadata_by_idx(self, idx: int) -> Any:
 
         return NotImplemented
 
-    def bake_synthetic_data(self, num_repeats):
+    def generate_augmentations(self, num_repeats: int):
 
         self.baked_examples.clear()
-
         options = product(range(len(self)), range(num_repeats))
 
-        for idx, num in tqdm(list(options), desc="Baking Synthetic Data"):
+        for idx, num in tqdm(list(
+                options), desc="Generating Augmentations"):
 
             image = self.get_image_by_idx(idx)
+            label = self.get_label_by_idx(idx)
+
             metadata = self.get_metadata_by_idx(idx)
 
             self.baked_examples[idx].append(
-                self.synthetic_aug(image, metadata))
+                self.generative_aug(image, label, metadata))
 
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, int]:
 
         if len(self.baked_examples[idx]) > 0 and \
                 np.random.uniform() < self.synthetic_probability:
 
-            image, metadata = random.choice(self.baked_examples[idx])
+            image, label = random.choice(self.baked_examples[idx])
 
         else:
 
             image = self.get_image_by_idx(idx)
-            metadata = self.get_metadata_by_idx(idx)
+            label = self.get_label_by_idx(idx)
 
-        assert "label" in metadata, UNLABELLED_ERROR_MESSAGE
-        return self.transform(image), metadata["label"]
+        return self.transform(image), label

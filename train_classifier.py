@@ -37,8 +37,7 @@ def run_experiment(examples_per_class, aug="real-guidance", seed=0,
             model_path=model_path, 
             prompt=prompt,
             strength=strength, 
-            guidance_scale=guidance_scale
-        )
+            guidance_scale=guidance_scale)
 
     elif aug == "textual-inversion":
 
@@ -48,22 +47,21 @@ def run_experiment(examples_per_class, aug="real-guidance", seed=0,
             model_path=model_path, 
             prompt=prompt,
             strength=strength, 
-            guidance_scale=guidance_scale
-        )
+            guidance_scale=guidance_scale)
 
-    else:
+    elif aug == "none":
 
-        aug = None
         synthetic_probability = 0.0
         num_synthetic = 0
+        aug = None
 
     train_dataset = SpurgeDataset(
         split="train", examples_per_class=examples_per_class, 
         synthetic_probability=synthetic_probability, 
-        synthetic_aug=aug, seed=seed)
+        generative_aug=aug, seed=seed)
 
     if num_synthetic > 0 and aug is not None:
-        train_dataset.bake_synthetic_data(num_synthetic)
+        train_dataset.generate_augmentations(num_synthetic)
 
     train_sampler = torch.utils.data.RandomSampler(
         train_dataset, replacement=True, 
