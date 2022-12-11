@@ -59,7 +59,7 @@ class TextualInversion(SemanticAugmentation):
 
     def __init__(self, *fine_tuned_embeddings: str, 
                  model_path: str = "CompVis/stable-diffusion-v1-4",
-                 prompt: str = "a drone image of {}",
+                 prompt: str = "a drone image of {token}",
                  strength: float = 0.5, 
                  guidance_scale: float = 7.5):
 
@@ -96,7 +96,7 @@ class TextualInversion(SemanticAugmentation):
 
             canvas = self.pipe(
                 image=canvas,
-                prompt=[self.prompt.format(metadata["token"])], 
+                prompt=[self.prompt.format(token=metadata["token"])], 
                 strength=self.strength, 
                 guidance_scale=self.guidance_scale
             ).images[0]
