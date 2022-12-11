@@ -9,12 +9,14 @@ from diffusers.utils import logging
 from PIL import Image
 from typing import Any, Tuple
 
+from torch import autocast
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-def load_embeddings(path, token=None):
+def load_embeddings(embed_path: str,
+                    model_path: str = "CompVis/stable-diffusion-v1-4"):
 
     tokenizer = CLIPTokenizer.from_pretrained(
         model_path,
@@ -27,18 +29,17 @@ def load_embeddings(path, token=None):
         use_auth_token=True
     )
 
-    loaded_learned_embeds = torch.load(path, map_location="cpu")
+    loaded_learned_embeds = torch.load(embed_path, map_location="cpu")
   
     # separate token and the embeds
-    trained_token = list(loaded_learned_embeds.keys())[0]
-    embeds = loaded_learned_embeds[trained_token]
+    token = list(loaded_learned_embeds.keys())[0]
+    embeds = loaded_learned_embeds[token]
 
     # cast to dtype of text_encoder
     dtype = text_encoder.get_input_embeddings().weight.dtype
     embeds.to(dtype)
 
     # add the token in tokenizer
-    token = token if token is not None else trained_token
     num_added_tokens = tokenizer.add_tokens(token)
     if num_added_tokens == 0:
         raise ValueError(f"The tokenizer already contains the token {token}. \
@@ -51,12 +52,12 @@ Please pass a different `token` that is not already in the tokenizer.")
     token_id = tokenizer.convert_tokens_to_ids(token)
     text_encoder.get_input_embeddings().weight.data[token_id] = embeds
 
-    return tokenizer, text_encoder
+    return tokenizer, text_encoder.to('cuda')
 
 
 class TextualInversion(SemanticAugmentation):
 
-    def __init__(self, fine_tuned_embeddings: list, 
+    def __init__(self, *fine_tuned_embeddings: str, 
                  model_path: str = "CompVis/stable-diffusion-v1-4",
                  prompt: str = "a drone image of {}",
                  strength: float = 0.5, 
@@ -65,9 +66,9 @@ class TextualInversion(SemanticAugmentation):
         super(TextualInversion, self).__init__()
 
         self.embeddings = [
-            load_embeddings(path)
-            for path in fine_tuned_embeddings
-        ]  
+            load_embeddings(embed_path, model_path=model_path)
+            for embed_path in fine_tuned_embeddings
+        ]
 
         self.pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
             model_path, use_auth_token=True,
@@ -91,12 +92,14 @@ class TextualInversion(SemanticAugmentation):
         self.pipe.tokenizer = tokenizer
         self.pipe.text_encoder = text_encoder
 
-        canvas = self.pipe(
-            image=canvas,
-            prompt=[self.prompt.format(metadata["token"])], 
-            strength=self.strength, 
-            guidance_scale=self.guidance_scale
-        ).images[0]
+        with autocast('cuda'):
+
+            canvas = self.pipe(
+                image=canvas,
+                prompt=[self.prompt.format(metadata["token"])], 
+                strength=self.strength, 
+                guidance_scale=self.guidance_scale
+            ).images[0]
 
         image = canvas.resize(image.size, Image.BILINEAR)
 

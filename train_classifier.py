@@ -1,5 +1,6 @@
 from semantic_aug.datasets.spurge import SpurgeDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
+from semantic_aug.augmentations.textual_inversion import TextualInversion
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
 from itertools import product
@@ -17,8 +18,8 @@ import os
 from tqdm import trange
 
 
-def run_experiment(examples_per_class, num_synthetic=100, 
-                   seed=0, iterations_per_epoch=200, 
+def run_experiment(examples_per_class, aug="real-guidance", seed=0, 
+                   num_synthetic=100, iterations_per_epoch=200, 
                    num_epochs=50, batch_size=32,
                    strength: float = 0.5, 
                    guidance_scale: float = 7.5, 
@@ -30,19 +31,38 @@ def run_experiment(examples_per_class, num_synthetic=100,
     np.random.seed(seed)
     random.seed(seed)
 
-    aug = RealGuidance(
-        model_path=model_path, 
-        prompt=prompt,
-        strength=strength, 
-        guidance_scale=guidance_scale
-    )
+    if aug == "real-guidance":
+
+        aug = RealGuidance(
+            model_path=model_path, 
+            prompt=prompt,
+            strength=strength, 
+            guidance_scale=guidance_scale
+        )
+
+    elif aug == "textual-inversion":
+
+        aug = TextualInversion(
+            "embeddings/absent_101022.bin", 
+            "embeddings/apparent_101022.bin",
+            model_path=model_path, 
+            prompt=prompt,
+            strength=strength, 
+            guidance_scale=guidance_scale
+        )
+
+    else:
+
+        aug = None
+        synthetic_probability = 0.0
+        num_synthetic = 0
 
     train_dataset = SpurgeDataset(
         split="train", examples_per_class=examples_per_class, 
         synthetic_probability=synthetic_probability, 
         synthetic_aug=aug, seed=seed)
 
-    if num_synthetic > 0:
+    if num_synthetic > 0 and aug is not None:
         train_dataset.bake_synthetic_data(num_synthetic)
 
     train_sampler = torch.utils.data.RandomSampler(
@@ -204,6 +224,9 @@ if __name__ == "__main__":
     parser.add_argument("--num-trials", type=int, default=4)
     parser.add_argument("--examples-per-class", nargs='+', default=[1, 5, 10, 15, 20, 25])
     
+    parser.add_argument("--aug", type=str, default="real-guidance", 
+                        choices=["real-guidance", "textual-inversion", "none"])
+    
     args = parser.parse_args()
 
     try:
@@ -229,7 +252,7 @@ if __name__ == "__main__":
     for seed, examples_per_class in options.tolist():
 
         all_trials.extend(run_experiment(
-            examples_per_class, seed=seed, 
+            examples_per_class, seed=seed, aug=args.aug,
             num_synthetic=args.num_synthetic, 
             iterations_per_epoch=args.iterations_per_epoch,
             num_epochs=args.num_epochs,

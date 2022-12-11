@@ -13,5 +13,6 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 torchrun --standalone --nnodes 1 --nproc_per_node 4 \
-example.py --logdir ~/spurge/semantic-aug/baselines/baseline \
---strength 0.0 --num-synthetic 0 --synthetic-probability 0.0 --num-trials 8
+train_classifier.py --logdir ./baselines/baseline \
+--strength 0.0 --num-synthetic 0 \
+--synthetic-probability 0.0 --num-trials 8
