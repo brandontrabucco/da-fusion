@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=spurge
-#SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-16
+#SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-16,matrix-1-4,matrix-2-13
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=russ_reserved
@@ -13,6 +13,6 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 torchrun --standalone --nnodes 1 --nproc_per_node 4 \
-train_classifier.py --logdir ./baselines/real-guidance-0.2 \
---strength 0.2 --num-synthetic 20 \
---synthetic-probability 0.5 --num-trials 8
+train_classifier.py --logdir ./baselines/baseline --aug none \
+--strength 0.0 --num-synthetic 0 \
+--synthetic-probability 0.0 --num-trials 8
