@@ -19,6 +19,8 @@ DEFAULT_IMAGE_DIR = os.path.join(
 
 class ImageNetDataset(FewShotDataset):
 
+    num_classes: int = 1000
+
     def __init__(self, *args, image_dir: str = DEFAULT_IMAGE_DIR, 
                  image_set: str = DEFAULT_IMAGE_SET, 
                  split: str = "train", seed: int = 0, 

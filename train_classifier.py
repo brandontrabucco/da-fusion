@@ -86,7 +86,7 @@ def run_experiment(examples_per_class, seed=0,
         val_dataset, batch_size=batch_size, 
         sampler=val_sampler, num_workers=4)
 
-    model = ClassificationModel(2 if dataset == "spurge" else 1000).cuda()
+    model = ClassificationModel(train_dataset.num_classes).cuda()
     optim = torch.optim.Adam(model.parameters(), lr=0.0001)
 
     records = []

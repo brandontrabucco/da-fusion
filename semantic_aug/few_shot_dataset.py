@@ -13,6 +13,8 @@ from tqdm import tqdm
 
 class FewShotDataset(Dataset):
 
+    num_classes: int = None
+
     def __init__(self, examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5,

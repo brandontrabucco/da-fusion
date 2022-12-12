@@ -12,6 +12,8 @@ import numpy as np
 
 class SpurgeDataset(FewShotDataset):
 
+    num_classes: int = 2
+
     def __init__(self, split: str = "train", seed: int = 0, 
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
