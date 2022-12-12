@@ -23,6 +23,10 @@ if __name__ == "__main__":
             continue
 
         files = list(glob.glob(os.path.join(bpath, "*.csv")))
+
+        if len(files) == 0:
+            continue
+
         data = pd.concat([pd.read_csv(x, index_col=0) 
                           for x in files], ignore_index=True)
 
