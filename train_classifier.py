@@ -1,4 +1,5 @@
 from semantic_aug.datasets.spurge import SpurgeDataset
+from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
 from torch.utils.data import DataLoader
@@ -18,7 +19,11 @@ import os
 from tqdm import trange
 
 
-def run_experiment(examples_per_class, aug="real-guidance", seed=0, 
+datasets = {"spurge": SpurgeDataset, "imagenet": ImageNetDataset}
+
+
+def run_experiment(examples_per_class, seed=0, 
+                   dataset="spurge", aug="real-guidance", 
                    num_synthetic=100, iterations_per_epoch=200, 
                    num_epochs=50, batch_size=32,
                    strength: float = 0.5, 
@@ -55,7 +60,7 @@ def run_experiment(examples_per_class, aug="real-guidance", seed=0,
         num_synthetic = 0
         aug = None
 
-    train_dataset = SpurgeDataset(
+    train_dataset = datasets[dataset](
         split="train", examples_per_class=examples_per_class, 
         synthetic_probability=synthetic_probability, 
         generative_aug=aug, seed=seed)
@@ -71,7 +76,7 @@ def run_experiment(examples_per_class, aug="real-guidance", seed=0,
         train_dataset, batch_size=batch_size, 
         sampler=train_sampler, num_workers=4)
 
-    val_dataset = SpurgeDataset(split="val", seed=seed)
+    val_dataset = datasets[dataset](split="val", seed=seed)
 
     val_sampler = torch.utils.data.RandomSampler(
         val_dataset, replacement=True, 
@@ -225,6 +230,9 @@ if __name__ == "__main__":
     parser.add_argument("--aug", type=str, default="real-guidance", 
                         choices=["real-guidance", "textual-inversion", "none"])
     
+    parser.add_argument("--dataset", type=str, default="spurge", 
+                        choices=["spurge", "imagenet"])
+    
     args = parser.parse_args()
 
     try:
@@ -250,7 +258,8 @@ if __name__ == "__main__":
     for seed, examples_per_class in options.tolist():
 
         all_trials.extend(run_experiment(
-            examples_per_class, seed=seed, aug=args.aug,
+            examples_per_class, seed=seed, 
+            dataset=args.dataset, aug=args.aug,
             num_synthetic=args.num_synthetic, 
             iterations_per_epoch=args.iterations_per_epoch,
             num_epochs=args.num_epochs,
