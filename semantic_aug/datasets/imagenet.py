@@ -80,6 +80,7 @@ class ImageNetDataset(FewShotDataset):
             transforms.RandomVerticalFlip(p=0.5),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
+            transforms.Lambda(lambda x: x.expand(3, 256, 256)),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], 
                                   std=[0.229, 0.224, 0.225])
         ])
@@ -88,6 +89,7 @@ class ImageNetDataset(FewShotDataset):
             transforms.Resize([256, 256]),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
+            transforms.Lambda(lambda x: x.expand(3, 256, 256)),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], 
                                   std=[0.229, 0.224, 0.225])
         ])
@@ -100,7 +102,7 @@ class ImageNetDataset(FewShotDataset):
 
     def get_image_by_idx(self, idx: int) -> torch.Tensor:
 
-        return Image.open(self.all_images[idx])
+        return Image.open(self.all_images[idx]).convert('RGB')
 
     def get_label_by_idx(self, idx: int) -> torch.Tensor:
 

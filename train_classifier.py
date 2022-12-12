@@ -86,7 +86,7 @@ def run_experiment(examples_per_class, seed=0,
         val_dataset, batch_size=batch_size, 
         sampler=val_sampler, num_workers=4)
 
-    model = ClassificationModel().cuda()
+    model = ClassificationModel(2 if dataset == "spurge" else 1000).cuda()
     optim = torch.optim.Adam(model.parameters(), lr=0.0001)
 
     records = []
@@ -178,12 +178,12 @@ def run_experiment(examples_per_class, seed=0,
 
 class ClassificationModel(nn.Module):
     
-    def __init__(self):
+    def __init__(self, num_classes: int):
         
         super(ClassificationModel, self).__init__()
         
         self.base_model = resnet50(weights=ResNet50_Weights.DEFAULT)
-        self.out = nn.Linear(2048, 2)
+        self.out = nn.Linear(2048, num_classes)
         
     def forward(self, image):
         
