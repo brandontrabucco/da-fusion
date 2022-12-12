@@ -13,8 +13,8 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-torchrun --standalone --nnodes 48 --node_rank $SLURM_ARRAY_TASK_ID --nproc_per_node 1 \
-train_classifier.py --logdir ./imagenet-baselines/baseline \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
+--logdir ./imagenet-baselines/baseline \
 --dataset imagenet --aug none \
 --strength 0.0 --num-synthetic 0 \
 --synthetic-probability 0.0 --num-trials 8

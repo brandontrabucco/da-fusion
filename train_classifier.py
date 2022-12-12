@@ -236,17 +236,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     try:
-        rank = int(os.environ["LOCAL_RANK"])
+        rank = int(os.environ["RANK"])
         world_size = int(os.environ["WORLD_SIZE"])
     except KeyError:
         rank, world_size = 0, 1
-    else:
-        distributed.init_process_group(backend="nccl")
-        torch.cuda.set_device(rank % torch.cuda.device_count())
 
     device_id = rank % torch.cuda.device_count()
-    print(f'Initialized process {rank} / {world_size}')
+    torch.cuda.set_device(rank % torch.cuda.device_count())
 
+    print(f'Initialized process {rank} / {world_size}')
     os.makedirs(args.logdir, exist_ok=True)
 
     all_trials = []
