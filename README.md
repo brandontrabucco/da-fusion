@@ -1,6 +1,6 @@
 # Prompt-Based Data Augmentation
 
-Existing data augmentations like rotations and re-colorizations provide diversity but perserve semantics. We explore how prompt-based generative models complement existing data augmentations by controlling image semantics via prompts. Our generative data augmentations build on Stable Diffusion and improve visual few-shot learning.
+Existing data augmentations like rotations and re-colorizations provide diversity but preserve semantics. We explore how prompt-based generative models complement existing data augmentations by controlling image semantics via prompts. Our generative data augmentations build on Stable Diffusion and improve visual few-shot learning.
 
 ## Installation
 
