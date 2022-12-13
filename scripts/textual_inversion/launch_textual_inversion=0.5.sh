@@ -4,16 +4,17 @@
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=russ_reserved
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-gpu=8
-#SBATCH --mem=128g
+#SBATCH --mem=32g
+#SBATCH --array=0-47
  
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-torchrun --standalone --nnodes 1 --nproc_per_node 4 \
-train_classifier.py --logdir ./baselines/textual-inversion-0.4 \
---aug textual-inversion \
---strength 0.4 --num-synthetic 20 \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 train_classifier.py \
+--logdir ./baselines/textual-inversion-0.5 \
+--aug textual-inversion --prompt "a drone image of {name}" \
+--strength 0.5 --num-synthetic 20 \
 --synthetic-probability 0.5 --num-trials 8

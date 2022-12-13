@@ -4,16 +4,16 @@
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=russ_reserved
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-gpu=8
-#SBATCH --mem=128g
+#SBATCH --mem=32g
+#SBATCH --array=0-47
  
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-torchrun --standalone --nnodes 1 --nproc_per_node 4 \
-train_classifier.py --logdir ./baselines/real-guidance-0.8 \
---aug real-guidance \
---strength 0.8 --num-synthetic 20 \
---synthetic-probability 0.5 --num-trials 8
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
+--logdir ./baselines/baseline --aug none \
+--strength 0.0 --num-synthetic 0 \
+--synthetic-probability 0.0 --num-trials 8

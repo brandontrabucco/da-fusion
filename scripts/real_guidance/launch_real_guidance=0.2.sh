@@ -13,8 +13,8 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
---logdir ./imagenet-baselines/real-guidance-0.5 \
---dataset imagenet --aug real-guidance \
---strength 0.5 --num-synthetic 20 \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 train_classifier.py \
+--logdir ./baselines/real-guidance-0.2 \
+--aug real-guidance --prompt "a woodland seen from a drone" \
+--strength 0.2 --num-synthetic 20 \
 --synthetic-probability 0.5 --num-trials 8
