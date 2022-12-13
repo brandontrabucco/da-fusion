@@ -26,7 +26,8 @@ We assume a default location for the spurge dataset at `data/spurge/absent/*.png
 You may evaluate the baseline on our spurge dataset with the following script.
 
 ```bash
-python train_classifier.py --logdir ./baselines/baseline --aug none \
+python train_classifier.py \
+--logdir ./baselines/baseline --aug none \
 --strength 0.0 --num-synthetic 0 \
 --synthetic-probability 0.0 --num-trials 8
 ```
@@ -34,8 +35,9 @@ python train_classifier.py --logdir ./baselines/baseline --aug none \
 Real Guidance may be evaluated on our spurge dataset using the following arguments.
 
 ```bash
-python train_classifier.py --logdir ./baselines/real-guidance-0.5 \
---aug real-guidance \
+python train_classifier.py \
+--logdir ./baselines/real-guidance-0.5 \
+--aug real-guidance --prompt "a woodland seen from a drone" \
 --strength 0.5 --num-synthetic 20 \
 --synthetic-probability 0.5 --num-trials 8
 ```
@@ -57,7 +59,7 @@ Real Guidance may be evaluated on ImageNet using the following arguments.
 ```bash
 python train_classifier.py \
 --logdir ./imagenet-baselines/real-guidance-0.5 \
---dataset imagenet --aug real-guidance \
+--dataset imagenet --aug real-guidance --prompt "a photo" \
 --strength 0.5 --num-synthetic 1 \
 --synthetic-probability 0.5 --num-trials 8
 ```
