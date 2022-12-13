@@ -1,3 +1,4 @@
+from semantic_aug.datasets.coco import COCODataset
 from semantic_aug.datasets.spurge import SpurgeDataset
 from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
@@ -19,7 +20,7 @@ import os
 from tqdm import trange
 
 
-datasets = {"spurge": SpurgeDataset, "imagenet": ImageNetDataset}
+datasets = {"spurge": SpurgeDataset, "imagenet": ImageNetDataset, "coco": COCODataset}
 
 
 def run_experiment(examples_per_class, seed=0, 
@@ -231,7 +232,7 @@ if __name__ == "__main__":
                         choices=["real-guidance", "textual-inversion", "none"])
     
     parser.add_argument("--dataset", type=str, default="spurge", 
-                        choices=["spurge", "imagenet"])
+                        choices=["spurge", "imagenet", "coco"])
     
     args = parser.parse_args()
 
