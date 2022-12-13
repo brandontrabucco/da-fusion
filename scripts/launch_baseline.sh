@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=spurge
-#SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-16,matrix-1-4,matrix-2-13,matrix-1-8
+#SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-4,matrix-2-13,matrix-1-8
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=russ_reserved

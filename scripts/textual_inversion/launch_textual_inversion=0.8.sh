@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=spurge
-#SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-16,matrix-1-4,matrix-2-13,matrix-1-8
+#SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-4,matrix-2-13,matrix-1-8
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=russ_reserved
@@ -13,7 +13,7 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 train_classifier.py \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
 --logdir ./baselines/textual-inversion-0.8 \
 --aug textual-inversion --prompt "a drone image of {name}" \
 --strength 0.8 --num-synthetic 20 \
