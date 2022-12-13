@@ -91,6 +91,6 @@ class SpurgeDataset(FewShotDataset):
     
     def get_metadata_by_idx(self, idx: int) -> Any:
 
-        return dict(token=(
+        return dict(name=(
             "<leafy_spurge>" if self.all_labels[idx] == 1 else "<no_spurge>"
         ))

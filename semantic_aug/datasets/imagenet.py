@@ -111,4 +111,4 @@ class ImageNetDataset(FewShotDataset):
     
     def get_metadata_by_idx(self, idx: int) -> Dict:
 
-        return dict(class_name=self.class_names[self.all_labels[idx]])
+        return dict(name=self.class_names[self.all_labels[idx]])

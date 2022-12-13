@@ -214,7 +214,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--logdir", type=str, default="few_shot_combined")
     parser.add_argument("--checkpoint", type=str, default="CompVis/stable-diffusion-v1-4")
-    parser.add_argument("--prompt", type=str, default="a woodland seen from a drone")
+    parser.add_argument("--prompt", type=str, default="a photo of a {name}")
 
     parser.add_argument("--strength", type=float, default=0.5)
     parser.add_argument("--guidance-scale", type=float, default=7.5)

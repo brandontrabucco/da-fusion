@@ -9,7 +9,7 @@ import torch
 class RealGuidance(GenerativeAugmentation):
 
     def __init__(self, model_path: str = "CompVis/stable-diffusion-v1-4",
-                 prompt: str = "a drone image of a brown field",
+                 prompt: str = "a photo of a {name}",
                  strength: float = 0.5, 
                  guidance_scale: float = 7.5):
 
@@ -36,7 +36,7 @@ class RealGuidance(GenerativeAugmentation):
 
         canvas = self.pipe(
             image=canvas,
-            prompt=[self.prompt], 
+            prompt=[self.prompt.format(name=metadata.get("name", ""))], 
             strength=self.strength, 
             guidance_scale=self.guidance_scale
         ).images[0]
