@@ -78,6 +78,7 @@ class TextualInversion(GenerativeAugmentation):
 
         logging.disable_progress_bar()
         self.pipe.set_progress_bar_config(disable=True)
+        self.pipe.safety_checker = None
 
         self.prompt = prompt
         self.strength = strength
