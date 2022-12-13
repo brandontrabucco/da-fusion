@@ -2,37 +2,38 @@ from semantic_aug.few_shot_dataset import FewShotDataset
 from semantic_aug.generative_augmentation import GenerativeAugmentation
 from typing import Any, Tuple
 from torch.utils.data import Dataset
-import torchvision.transforms as transforms
-import torch
-import os
 from PIL import Image
+
+import os
 import glob
 import numpy as np
+import torchvision.transforms as transforms
+import torch
+
+
+DEFAULT_DATA_DIR = os.path.join(
+    os.path.abspath(os.path.dirname(
+    os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))))), 'data/spurge')
 
 
 class SpurgeDataset(FewShotDataset):
 
     num_classes: int = 2
 
-    def __init__(self, split: str = "train", seed: int = 0, 
+    def __init__(self, *args, data_dir: str = DEFAULT_DATA_DIR, 
+                 split: str = "train", seed: int = 0, 
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
-                 synthetic_probability: float = 0.5,
-                 *args, **kwargs):
+                 synthetic_probability: float = 0.5, **kwargs):
 
         super(SpurgeDataset, self).__init__(
-            examples_per_class=examples_per_class,
-            generative_aug=generative_aug,
-            synthetic_probability=synthetic_probability, 
-            *args, **kwargs)
+            *args, examples_per_class=examples_per_class,
+            synthetic_probability=synthetic_probability,
+            generative_aug=generative_aug, **kwargs)
 
-        data_dir = os.path.join(
-            os.path.abspath(os.path.dirname(
-            os.path.dirname(os.path.dirname(
-                os.path.abspath(__file__))))), 'data')
-
-        absent = list(glob.glob(os.path.join(data_dir, "spurge/absent/*.png")))
-        apparent = list(glob.glob(os.path.join(data_dir, "spurge/apparent/*.png")))
+        absent = list(glob.glob(os.path.join(data_dir, "absent/*.png")))
+        apparent = list(glob.glob(os.path.join(data_dir, "apparent/*.png")))
 
         rng = np.random.default_rng(seed)
 

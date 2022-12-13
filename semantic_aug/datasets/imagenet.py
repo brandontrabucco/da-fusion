@@ -30,10 +30,9 @@ class ImageNetDataset(FewShotDataset):
                  val_fraction: float = 0.1, **kwargs):
 
         super(ImageNetDataset, self).__init__(
-            examples_per_class=examples_per_class,
-            generative_aug=generative_aug,
+            *args, examples_per_class=examples_per_class,
             synthetic_probability=synthetic_probability, 
-            *args, **kwargs)
+            generative_aug=generative_aug, **kwargs)
 
         self.class_names = []
         class_to_images = defaultdict(list)

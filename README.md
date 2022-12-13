@@ -21,6 +21,8 @@ pip install -e semantic-aug
 
 ## Spurge Experiments
 
+We assume a default location for the spurge dataset at `data/spurge/absent/*.png` for images of the absent class and `data/spurge/apparent/*.png` for images of the apparent class. This default may be changed via the `data_dir` argument to the `semantic_aug.datasets.spurge.SpurgeDataset` class `__init__` method.
+
 You may evaluate the baseline on our spurge dataset with the following script.
 
 ```bash
