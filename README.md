@@ -27,7 +27,8 @@ You may evaluate the baseline on our spurge dataset with the following script.
 
 ```bash
 python train_classifier.py \
---logdir ./baselines/baseline --aug none \
+--logdir ./baselines/baseline \
+--dataset spurge --aug none \
 --strength 0.0 --num-synthetic 0 \
 --synthetic-probability 0.0 --num-trials 8
 ```
@@ -37,7 +38,8 @@ Real Guidance may be evaluated on our spurge dataset using the following argumen
 ```bash
 python train_classifier.py \
 --logdir ./baselines/real-guidance-0.5 \
---aug real-guidance --prompt "a woodland seen from a drone" \
+--dataset spurge --aug real-guidance \
+--prompt "a woodland seen from a drone" \
 --strength 0.5 --num-synthetic 20 \
 --synthetic-probability 0.5 --num-trials 8
 ```
@@ -47,7 +49,8 @@ Textual inversion may be evaluated on our spurge dataset using the following arg
 ```bash
 python train_classifier.py \
 --logdir ./baselines/textual-inversion-0.5 \
---aug textual-inversion --prompt "a drone image of {name}" \
+--dataset spurge --aug textual-inversion \
+--prompt "a drone image of {name}" \
 --strength 0.5 --num-synthetic 20 \
 --synthetic-probability 0.5 --num-trials 8
 ```
@@ -69,7 +72,8 @@ Real Guidance may be evaluated on ImageNet using the following arguments.
 ```bash
 python train_classifier.py \
 --logdir ./imagenet-baselines/real-guidance-0.5 \
---dataset imagenet --aug real-guidance --prompt "a photo" \
+--dataset imagenet --aug real-guidance \
+--prompt "a photo" \
 --strength 0.5 --num-synthetic 1 \
 --synthetic-probability 0.5 --num-trials 8
 ```
