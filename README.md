@@ -64,4 +64,4 @@ python train_classifier.py \
 --synthetic-probability 0.5 --num-trials 8
 ```
 
-See `experiments/launch_baseline_imagenet.sh` for a parallelized version for slurm.
+See `scripts/launch_baseline_imagenet.sh` for a parallelized version for slurm.
