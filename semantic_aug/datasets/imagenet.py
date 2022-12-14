@@ -9,32 +9,58 @@ from collections import defaultdict
 import numpy as np
 
 
-ILSVRC_DIR = "/projects/rsalakhugroup/datasets/imagenet/ILSVRC"
+ILSVRC_DIR = "/projects/rsalakhugroup/datasets/imagenet"
 
-DEFAULT_IMAGE_SET = os.path.join(
-    ILSVRC_DIR, "ImageSets/CLS-LOC/train_cls.txt")
-DEFAULT_IMAGE_DIR = os.path.join(
-    ILSVRC_DIR, "Data/CLS-LOC/train")
+LABEL_SYNSET = os.path.join(
+    ILSVRC_DIR, "LOC_synset_mapping.txt")
+
+TRAIN_IMAGE_SET = os.path.join(
+    ILSVRC_DIR, "ILSVRC/ImageSets/CLS-LOC/train_cls.txt")
+TRAIN_IMAGE_DIR = os.path.join(
+    ILSVRC_DIR, "ILSVRC/Data/CLS-LOC/train")
+
+VAL_IMAGE_SET = os.path.join(
+    ILSVRC_DIR, "ILSVRC/ImageSets/CLS-LOC/val_cls.txt")
+VAL_IMAGE_DIR = os.path.join(
+    ILSVRC_DIR, "ILSVRC/Data/CLS-LOC/val")
 
 
 class ImageNetDataset(FewShotDataset):
 
     num_classes: int = 1000
 
-    def __init__(self, *args, image_dir: str = DEFAULT_IMAGE_DIR, 
-                 image_set: str = DEFAULT_IMAGE_SET, 
-                 split: str = "train", seed: int = 0, 
+    def __init__(self, *args, split: str = "train", seed: int = 0,
+                 train_image_dir: str = TRAIN_IMAGE_DIR, 
+                 val_image_dir: str = VAL_IMAGE_DIR, 
+                 train_image_set: str = TRAIN_IMAGE_SET, 
+                 val_image_set: str = VAL_IMAGE_SET, 
+                 label_synset: str = LABEL_SYNSET,
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
-                 synthetic_probability: float = 0.5,
-                 val_fraction: float = 0.1, **kwargs):
+                 synthetic_probability: float = 0.5, **kwargs):
 
         super(ImageNetDataset, self).__init__(
             *args, examples_per_class=examples_per_class,
             synthetic_probability=synthetic_probability, 
             generative_aug=generative_aug, **kwargs)
 
+        image_dir = {"train": train_image_dir, "val": val_image_dir}[split]
+        image_set = {"train": train_image_set, "val": val_image_set}[split]
+
+        with open(label_synset, "r") as f:
+            label_synset_lines = f.readlines()
+
         self.class_names = []
+        self.dir_to_class_names = dict()
+
+        for synset in label_synset_lines:
+
+            dir_name, synset = synset.split(" ", maxsplit=1)
+            class_name = synset.split(",")[0].strip()
+
+            self.class_names.append(class_name)
+            self.dir_to_class_names[dir_name] = class_name
+
         class_to_images = defaultdict(list)
 
         with open(image_set, "r") as f:
@@ -43,23 +69,14 @@ class ImageNetDataset(FewShotDataset):
         for training_example in image_set_lines:
 
             path, idx = training_example.split(" ")
-            class_name = path.split("/")[0]
-
-            if class_name not in self.class_names:
-                self.class_names.append(class_name)
+            class_name = self.dir_to_class_names[path.split("/")[0]]
 
             class_to_images[class_name].append(
                 os.path.join(image_dir, path + ".JPEG"))
 
         rng = np.random.default_rng(seed)
-        class_to_permutation = {key: rng.permutation(
+        class_to_ids = {key: rng.permutation(
             len(class_to_images[key])) for key in self.class_names}
-
-        class_to_ids = {key: (
-            {split_key: split_ids for split_key, split_ids in zip(
-                ["train", "val"], np.array_split(
-                    ids, [int(ids.size * (1 - val_fraction))]))}[split]
-        ) for key, ids in class_to_permutation.items()}
 
         if examples_per_class is not None:
             class_to_ids = {key: ids[:examples_per_class] 
