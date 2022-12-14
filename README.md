@@ -42,6 +42,16 @@ python train_classifier.py \
 --synthetic-probability 0.5 --num-trials 8
 ```
 
+Textual inversion may be evaluated on our spurge dataset using the following arguments.
+
+```bash
+python train_classifier.py \
+--logdir ./baselines/textual-inversion-0.5 \
+--aug textual-inversion --prompt "a drone image of {name}" \
+--strength 0.5 --num-synthetic 20 \
+--synthetic-probability 0.5 --num-trials 8
+```
+
 ## ImageNet Experiments
 
 You may evaluate the baseline on ImageNet with the following script.
