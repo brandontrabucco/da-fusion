@@ -226,7 +226,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--num-synthetic", type=int, default=15)
     parser.add_argument("--num-trials", type=int, default=8)
-    parser.add_argument("--examples-per-class", nargs='+', default=[1, 2, 4, 8, 16])
+    parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
                         choices=["real-guidance", "textual-inversion", "none"])
