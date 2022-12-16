@@ -17,4 +17,5 @@ RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
 --logdir ./imagenet-baselines/baseline \
 --dataset imagenet --aug none \
 --strength 0.0 --num-synthetic 0 \
---synthetic-probability 0.0 --num-trials 8
+--synthetic-probability 0.0 --num-trials 8 \
+--examples-per-class 1 5 10 15 20 25

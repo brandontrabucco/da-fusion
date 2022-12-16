@@ -19,8 +19,7 @@ TRAIN_IMAGE_SET = os.path.join(
 TRAIN_IMAGE_DIR = os.path.join(
     ILSVRC_DIR, "ILSVRC/Data/CLS-LOC/train")
 
-VAL_IMAGE_SET = os.path.join(
-    ILSVRC_DIR, "ILSVRC/ImageSets/CLS-LOC/val_cls.txt")
+VAL_IMAGE_SET = "/projects/rsalakhugroup/spurge/val_cls.txt"
 VAL_IMAGE_DIR = os.path.join(
     ILSVRC_DIR, "ILSVRC/Data/CLS-LOC/val")
 

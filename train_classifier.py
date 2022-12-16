@@ -224,14 +224,14 @@ if __name__ == "__main__":
     parser.add_argument("--num-epochs", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=32)
 
-    parser.add_argument("--num-synthetic", type=int, default=20)
-    parser.add_argument("--num-trials", type=int, default=4)
-    parser.add_argument("--examples-per-class", nargs='+', default=[1, 5, 10, 15, 20, 25])
+    parser.add_argument("--num-synthetic", type=int, default=15)
+    parser.add_argument("--num-trials", type=int, default=8)
+    parser.add_argument("--examples-per-class", nargs='+', default=[1, 2, 4, 8, 16])
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
                         choices=["real-guidance", "textual-inversion", "none"])
     
-    parser.add_argument("--dataset", type=str, default="spurge", 
+    parser.add_argument("--dataset", type=str, default="coco", 
                         choices=["spurge", "imagenet", "coco"])
     
     args = parser.parse_args()

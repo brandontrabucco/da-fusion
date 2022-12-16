@@ -17,4 +17,5 @@ RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
 --logdir ./imagenet-baselines/real-guidance-0.5 \
 --dataset imagenet --aug real-guidance --prompt "a photo of a {name}" \
 --strength 0.5 --num-synthetic 1 \
---synthetic-probability 0.5 --num-trials 8
+--synthetic-probability 0.5 --num-trials 8 \
+--examples-per-class 1 5 10 15 20 25

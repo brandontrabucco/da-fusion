@@ -17,4 +17,5 @@ RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
 --logdir ./baselines/real-guidance-0.5 \
 --aug real-guidance --prompt "a woodland seen from a drone" \
 --strength 0.5 --num-synthetic 20 \
---synthetic-probability 0.5 --num-trials 8
+--synthetic-probability 0.5 --num-trials 8 \
+--examples-per-class 1 5 10 15 20 25
