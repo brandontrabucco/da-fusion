@@ -7,15 +7,15 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-gpu=8
 #SBATCH --mem=32g
-#SBATCH --array=0-47
+#SBATCH --array=0-39
  
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=48 python train_classifier.py \
---logdir ./baselines/textual-inversion-0.8 \
---aug textual-inversion --prompt "a drone image of {name}" \
---strength 0.8 --num-synthetic 20 \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=40 python train_classifier.py \
+--logdir ./spurge-baselines/textual-inversion-0.5 \
+--dataset spurge --aug textual-inversion --prompt "a drone image of {name}" \
+--strength 0.5 --num-synthetic 50 \
 --synthetic-probability 0.5 --num-trials 8 \
---examples-per-class 1 5 10 15 20 25
+--examples-per-class 1 2 4 8 16
