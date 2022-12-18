@@ -145,7 +145,7 @@ if __name__ == "__main__":
         legend_object.set_color(color_palette[i])
 
     plt.tight_layout(pad=1.0)
-    fig.subplots_adjust(bottom=0.25)
+    fig.subplots_adjust(bottom=0.3)
 
     plt.savefig("visualization.pdf")
     plt.savefig("visualization.png")
