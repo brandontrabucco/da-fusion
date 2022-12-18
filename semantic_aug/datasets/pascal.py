@@ -25,7 +25,7 @@ DEFAULT_LABEL_DIR = os.path.join(PASCAL_DIR, "SegmentationClass")
 DEFAULT_INSTANCE_DIR = os.path.join(PASCAL_DIR, "SegmentationObject")
 
 
-class PascalDataset(FewShotDataset):
+class PASCALDataset(FewShotDataset):
 
     def __init__(self, *args, split: str = "train", seed: int = 0, 
                  train_image_set: str = TRAIN_IMAGE_SET, 
@@ -38,7 +38,7 @@ class PascalDataset(FewShotDataset):
                  generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5, **kwargs):
 
-        super(PascalDataset, self).__init__(
+        super(PASCALDataset, self).__init__(
             *args, examples_per_class=examples_per_class,
             synthetic_probability=synthetic_probability, 
             generative_aug=generative_aug, **kwargs)

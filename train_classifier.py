@@ -1,7 +1,7 @@
 from semantic_aug.datasets.coco import COCODataset
 from semantic_aug.datasets.spurge import SpurgeDataset
 from semantic_aug.datasets.imagenet import ImageNetDataset
-from semantic_aug.datasets.pascal import PascalDataset
+from semantic_aug.datasets.pascal import PASCALDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
 from torch.utils.data import DataLoader
@@ -29,7 +29,7 @@ btrabucc/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
 
 DATASETS = {"spurge": SpurgeDataset, 
             "coco": COCODataset, 
-            "pascal": PascalDataset,
+            "pascal": PASCALDataset,
             "imagenet": ImageNetDataset}
 
 
