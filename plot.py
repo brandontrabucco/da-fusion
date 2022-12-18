@@ -37,10 +37,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Few-Shot Baseline")
 
     parser.add_argument("--logdirs", nargs="+", type=str, default=[
-        "./spurge-baselines", "./coco-baselines", "./imagenet-baselines"])
+        "./spurge-baselines", "./coco-baselines", "./imagenet-baselines", "./pascal-baselines"])
     
     parser.add_argument("--datasets", nargs="+", type=str, 
-                        default=["Spurge", "COCO", "ImageNet"])
+                        default=["Spurge", "COCO", "ImageNet", "Pascal"])
     
     parser.add_argument("--method-names", nargs="+", type=str, 
                         default=["baseline", "real-guidance-0.5", "textual-inversion-0.5"])
@@ -60,8 +60,12 @@ if __name__ == "__main__":
                 continue
 
             files = list(glob.glob(os.path.join(bpath, "*.csv")))
+
+            if len(files) == 0:
+                continue
+
             data = pd.concat([pd.read_csv(x, index_col=0) 
-                            for x in files], ignore_index=True)
+                              for x in files], ignore_index=True)
 
             data = data[(data["metric"] == "Accuracy") & 
                         (data[ "split"] == "Validation")]
