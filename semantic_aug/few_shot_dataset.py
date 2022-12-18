@@ -41,7 +41,7 @@ class FewShotDataset(Dataset):
             os.makedirs(synthetic_dir, exist_ok=True)
     
     @abc.abstractmethod
-    def get_image_by_idx(self, idx: int) -> Image:
+    def get_image_by_idx(self, idx: int) -> Image.Image:
 
         return NotImplemented
     
