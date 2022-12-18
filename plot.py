@@ -127,7 +127,7 @@ if __name__ == "__main__":
         axis.set_ylabel("Accuracy (Val)", fontsize=24,
                         fontweight='bold', labelpad=12)
 
-        axis.set_title(f"dataset = {dataset}",
+        axis.set_title(f"Dataset = {dataset}",
                        fontsize=24, fontweight='bold', pad=12)
 
         axis.grid(color='grey', linestyle='dotted', linewidth=2)

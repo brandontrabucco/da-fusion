@@ -29,9 +29,8 @@ class RealGuidance(GenerativeAugmentation):
         self.strength = strength
         self.guidance_scale = guidance_scale
 
-    def forward(self, image: torch.Tensor, 
-                label: torch.Tensor,
-                metadata: Any) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(self, image: Image.Image, label: int, 
+                metadata: dict) -> Tuple[Image.Image, int]:
 
         canvas = image.resize((512, 512), Image.BILINEAR)
 

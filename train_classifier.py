@@ -6,32 +6,41 @@ from semantic_aug.augmentations.textual_inversion import TextualInversion
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
 from itertools import product
-import argparse
+from tqdm import trange
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.distributed as distributed
 
+import argparse
 import pandas as pd
 import numpy as np
 import random
 import os
-from tqdm import trange
 
 
-datasets = {"spurge": SpurgeDataset, "imagenet": ImageNetDataset, "coco": COCODataset}
+DEFAULT_MODEL_PATH = "CompVis/stable-diffusion-v1-4"
+DEFAULT_PROMPT = "a drone image of a brown field"
+
+DEFAULT_SYNTHETIC_DIR = "/projects/rsalakhugroup/\
+btrabucc/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
+
+DATASETS = {"spurge": SpurgeDataset, 
+            "coco": COCODataset, 
+            "imagenet": ImageNetDataset}
 
 
-def run_experiment(examples_per_class, seed=0, 
+def run_experiment(examples_per_class=0, seed=0, 
                    dataset="spurge", aug="real-guidance", 
                    num_synthetic=100, iterations_per_epoch=200, 
                    num_epochs=50, batch_size=32,
                    strength: float = 0.5, 
                    guidance_scale: float = 7.5, 
                    synthetic_probability: float = 0.5, 
-                   model_path: str = "CompVis/stable-diffusion-v1-4",
-                   prompt: str = "a drone image of a brown field"):
+                   synthetic_dir: str = DEFAULT_SYNTHETIC_DIR, 
+                   model_path: str = DEFAULT_MODEL_PATH,
+                   prompt: str = DEFAULT_PROMPT):
 
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -61,9 +70,10 @@ def run_experiment(examples_per_class, seed=0,
         num_synthetic = 0
         aug = None
 
-    train_dataset = datasets[dataset](
+    train_dataset = DATASETS[dataset](
         split="train", examples_per_class=examples_per_class, 
         synthetic_probability=synthetic_probability, 
+        synthetic_dir=synthetic_dir,
         generative_aug=aug, seed=seed)
 
     if num_synthetic > 0 and aug is not None:
@@ -77,7 +87,7 @@ def run_experiment(examples_per_class, seed=0,
         train_dataset, batch_size=batch_size, 
         sampler=train_sampler, num_workers=4)
 
-    val_dataset = datasets[dataset](split="val", seed=seed)
+    val_dataset = DATASETS[dataset](split="val", seed=seed)
 
     val_sampler = torch.utils.data.RandomSampler(
         val_dataset, replacement=True, 
@@ -219,6 +229,7 @@ if __name__ == "__main__":
     parser.add_argument("--strength", type=float, default=0.5)
     parser.add_argument("--guidance-scale", type=float, default=7.5)
     parser.add_argument("--synthetic-probability", type=float, default=0.5)
+    parser.add_argument("--synthetic-dir", type=str, default=DEFAULT_SYNTHETIC_DIR)
 
     parser.add_argument("--iterations-per-epoch", type=int, default=200)
     parser.add_argument("--num-epochs", type=int, default=50)
@@ -256,18 +267,23 @@ if __name__ == "__main__":
 
     for seed, examples_per_class in options.tolist():
 
-        all_trials.extend(run_experiment(
-            examples_per_class, seed=seed, 
+        hyperparameters = dict(
+            seed=seed, examples_per_class=examples_per_class,
             dataset=args.dataset, aug=args.aug,
-            num_synthetic=args.num_synthetic, 
-            iterations_per_epoch=args.iterations_per_epoch,
             num_epochs=args.num_epochs,
+            iterations_per_epoch=args.iterations_per_epoch, 
             batch_size=args.batch_size,
             model_path=args.checkpoint,
+            synthetic_probability=args.synthetic_probability, 
+            num_synthetic=args.num_synthetic, 
             prompt=args.prompt,
             strength=args.strength, 
-            guidance_scale=args.guidance_scale, 
-            synthetic_probability=args.synthetic_probability))
+            guidance_scale=args.guidance_scale)
+
+        synthetic_dir = args.synthetic_dir.format(**hyperparameters)
+
+        all_trials.extend(run_experiment(
+            synthetic_dir=synthetic_dir, **hyperparameters))
 
         path = f"results_{seed}_{examples_per_class}.csv"
         path = os.path.join(args.logdir, path)
