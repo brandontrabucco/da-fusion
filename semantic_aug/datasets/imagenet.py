@@ -26,8 +26,6 @@ VAL_IMAGE_DIR = os.path.join(
 
 class ImageNetDataset(FewShotDataset):
 
-    num_classes: int = 1000
-
     def __init__(self, *args, split: str = "train", seed: int = 0,
                  train_image_dir: str = TRAIN_IMAGE_DIR, 
                  val_image_dir: str = VAL_IMAGE_DIR, 
@@ -36,7 +34,8 @@ class ImageNetDataset(FewShotDataset):
                  label_synset: str = LABEL_SYNSET,
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
-                 synthetic_probability: float = 0.5, **kwargs):
+                 synthetic_probability: float = 0.5,
+                 max_classes: int = 100, **kwargs):
 
         super(ImageNetDataset, self).__init__(
             *args, examples_per_class=examples_per_class,
@@ -74,6 +73,10 @@ class ImageNetDataset(FewShotDataset):
                 os.path.join(image_dir, path + ".JPEG"))
 
         rng = np.random.default_rng(seed)
+        self.class_names = [self.class_names[i] for i in (
+            rng.permutation(len(self.class_names))[:max_classes])]
+
+        self.num_classes = len(self.class_names)
         class_to_ids = {key: rng.permutation(
             len(class_to_images[key])) for key in self.class_names}
 
@@ -94,7 +97,7 @@ class ImageNetDataset(FewShotDataset):
         train_transform = transforms.Compose([
             transforms.Resize([256, 256]),
             transforms.RandomHorizontalFlip(p=0.5),
-            transforms.RandomVerticalFlip(p=0.5),
+            transforms.RandomRotation(degrees=15),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
             transforms.Lambda(lambda x: x.expand(3, 256, 256)),
