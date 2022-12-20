@@ -38,7 +38,7 @@ DEFAULT_PROMPT_TEMPLATES = [
 
 
 def format_name(name):
-    return f"<{name.replace(' ', '-')}>"
+    return f"<{name.replace(' ', '_')}>"
 
 
 class TextualInversionDataset(Dataset):

@@ -17,6 +17,7 @@ import os
 class FewShotDataset(Dataset):
 
     num_classes: int = None
+    class_names: int = None
 
     def __init__(self, examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 

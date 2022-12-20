@@ -58,7 +58,7 @@ def run_experiment(examples_per_class=0, seed=0,
 
     for name in train_dataset.class_names:
 
-        placeholder_token = f"<{name.replace(' ', '-')}>" 
+        placeholder_token = f"<{name.replace(' ', '_')}>" 
         initializer_token = "object"
 
         added_tokens.append(placeholder_token)

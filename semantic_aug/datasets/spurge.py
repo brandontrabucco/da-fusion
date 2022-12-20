@@ -20,6 +20,7 @@ DEFAULT_DATA_DIR = os.path.join(
 class SpurgeDataset(FewShotDataset):
 
     num_classes: int = 2
+    class_names = ["no spurge", "leafy spurge"]
 
     def __init__(self, *args, data_dir: str = DEFAULT_DATA_DIR, 
                  split: str = "train", seed: int = 0, 
@@ -91,6 +92,4 @@ class SpurgeDataset(FewShotDataset):
     
     def get_metadata_by_idx(self, idx: int) -> Any:
 
-        return dict(name=(
-            "<leafy_spurge>" if self.all_labels[idx] == 1 else "<no_spurge>"
-        ))
+        return dict(name=self.class_names[self.all_labels[idx]])
