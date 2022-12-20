@@ -59,8 +59,7 @@ def run_experiment(examples_per_class=0, seed=0,
     elif aug == "textual-inversion":
 
         aug = TextualInversion(
-            "embeddings/absent_101022.bin", 
-            "embeddings/apparent_101022.bin",
+            f"./{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt", 
             model_path=model_path, 
             prompt=prompt,
             strength=strength, 
