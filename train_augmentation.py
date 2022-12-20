@@ -26,10 +26,6 @@ import itertools
 
 
 DEFAULT_MODEL_PATH = "CompVis/stable-diffusion-v1-4"
-DEFAULT_PROMPT = "a drone image of a brown field"
-
-DEFAULT_SYNTHETIC_DIR = "/projects/rsalakhugroup/\
-btrabucc/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
 
 DATASETS = {"spurge": SpurgeDataset, 
             "coco": COCODataset, 
@@ -38,25 +34,16 @@ DATASETS = {"spurge": SpurgeDataset,
 
 
 def run_experiment(examples_per_class=0, seed=0, 
-                   dataset="spurge", aug="real-guidance", 
-                   num_synthetic=100, iterations_per_epoch=200, 
+                   dataset="spurge", iterations_per_epoch=200, 
                    num_epochs=50, batch_size=32,
-                   strength: float = 0.5, 
-                   guidance_scale: float = 7.5, 
-                   synthetic_probability: float = 0.5, 
-                   synthetic_dir: str = DEFAULT_SYNTHETIC_DIR, 
-                   model_path: str = DEFAULT_MODEL_PATH,
-                   prompt: str = DEFAULT_PROMPT):
+                   model_path: str = DEFAULT_MODEL_PATH):
 
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
 
     train_dataset = DATASETS[dataset](
-        split="train", examples_per_class=examples_per_class, 
-        synthetic_probability=synthetic_probability, 
-        synthetic_dir=synthetic_dir,
-        generative_aug=aug, seed=seed)
+        split="train", examples_per_class=examples_per_class, seed=seed)
 
     pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
         model_path, use_auth_token=True,
@@ -67,19 +54,20 @@ def run_experiment(examples_per_class=0, seed=0,
     pipe.set_progress_bar_config(disable=True)
     pipe.safety_checker = None
 
+    added_tokens = []
+
     for name in train_dataset.class_names:
 
         placeholder_token = f"<{name.replace(' ', '-')}>" 
         initializer_token = "object"
 
+        added_tokens.append(placeholder_token)
+
         # Add the placeholder token in tokenizer
         num_added_tokens = pipe.tokenizer.add_tokens(placeholder_token)
 
-        token_ids = pipe.tokenizer.encode(initializer_token, add_special_tokens=False)
-        
-        # Check if initializer_token is a single token or a sequence of tokens
-        if len(token_ids) > 1:
-            raise ValueError("The initializer token must be a single token.")
+        token_ids = pipe.tokenizer.encode(
+            initializer_token, add_special_tokens=False)
 
         initializer_token_id = token_ids[0]
         placeholder_token_id = pipe.tokenizer.convert_tokens_to_ids(placeholder_token)
@@ -150,15 +138,7 @@ def run_experiment(examples_per_class=0, seed=0,
             # Predict the noise residual
             noise_pred = pipe.unet(noisy_latents, timesteps, encoder_hidden_states.to(torch.float16)).sample
 
-                # Get the target for loss depending on the prediction type
-            if noise_scheduler.config.prediction_type == "epsilon":
-                target = noise
-            elif noise_scheduler.config.prediction_type == "v_prediction":
-                target = noise_scheduler.get_velocity(latents, noise, timesteps)
-            else:
-                raise ValueError(f"Unknown prediction type {noise_scheduler.config.prediction_type}")
-
-            loss = F.mse_loss(noise_pred, target, reduction="none").mean([1, 2, 3]).mean()
+            loss = F.mse_loss(noise_pred, noise, reduction="none").mean([1, 2, 3]).mean()
             loss.backward()
 
             grads = pipe.text_encoder.get_input_embeddings().weight.grad
@@ -166,31 +146,27 @@ def run_experiment(examples_per_class=0, seed=0,
 
             optim.step()
             optim.zero_grad()
+        
+        embeds = pipe.text_encoder.get_input_embeddings()
+        embeds = embeds.weight.detach().cpu()[-num_added_tokens:]
+            
+        return {placeholder_token: embeds[i]
+                for i, placeholder_token in enumerate(added_tokens)}
 
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser("Few-Shot Baseline")
+    parser = argparse.ArgumentParser("Textual Inversion Experiment")
 
-    parser.add_argument("--logdir", type=str, default="few_shot_combined")
+    parser.add_argument("--logdir", type=str, default="coco_tokens")
     parser.add_argument("--checkpoint", type=str, default="CompVis/stable-diffusion-v1-4")
-    parser.add_argument("--prompt", type=str, default="a photo of a {name}")
-
-    parser.add_argument("--strength", type=float, default=0.5)
-    parser.add_argument("--guidance-scale", type=float, default=7.5)
-    parser.add_argument("--synthetic-probability", type=float, default=0.5)
-    parser.add_argument("--synthetic-dir", type=str, default=DEFAULT_SYNTHETIC_DIR)
 
     parser.add_argument("--iterations-per-epoch", type=int, default=200)
     parser.add_argument("--num-epochs", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=1)
 
-    parser.add_argument("--num-synthetic", type=int, default=15)
     parser.add_argument("--num-trials", type=int, default=8)
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
-    
-    parser.add_argument("--aug", type=str, default="real-guidance", 
-                        choices=["real-guidance", "textual-inversion", "none"])
     
     parser.add_argument("--dataset", type=str, default="coco", 
                         choices=["spurge", "imagenet", "coco", "pascal"])
@@ -219,24 +195,14 @@ if __name__ == "__main__":
 
         hyperparameters = dict(
             seed=seed, examples_per_class=examples_per_class,
-            dataset=args.dataset, aug=args.aug,
+            dataset=args.dataset,
             num_epochs=args.num_epochs,
             iterations_per_epoch=args.iterations_per_epoch, 
             batch_size=args.batch_size,
-            model_path=args.checkpoint,
-            synthetic_probability=args.synthetic_probability, 
-            num_synthetic=args.num_synthetic, 
-            prompt=args.prompt,
-            strength=args.strength, 
-            guidance_scale=args.guidance_scale)
+            model_path=args.checkpoint)
 
-        synthetic_dir = args.synthetic_dir.format(**hyperparameters)
+        fine_tuned = run_experiment(**hyperparameters)
 
-        all_trials.extend(run_experiment(
-            synthetic_dir=synthetic_dir, **hyperparameters))
-
-        path = f"results_{seed}_{examples_per_class}.csv"
-        path = os.path.join(args.logdir, path)
-
-        pd.DataFrame.from_records(all_trials).to_csv(path)
+        path = os.path.join(args.logdir, f"{args.dataset}-{seed}-{examples_per_class}.pt")
+        torch.save(fine_tuned, path)
         print(f"[rank {rank}] n={examples_per_class} saved to: {path}")
