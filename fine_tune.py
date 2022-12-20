@@ -147,11 +147,11 @@ def run_experiment(examples_per_class=0, seed=0,
             optim.step()
             optim.zero_grad()
         
-        embeds = pipe.text_encoder.get_input_embeddings()
-        embeds = embeds.weight.detach().cpu()[-num_added_tokens:]
-            
-        return {placeholder_token: embeds[i]
-                for i, placeholder_token in enumerate(added_tokens)}
+    embeds = pipe.text_encoder.get_input_embeddings()
+    embeds = embeds.weight.detach().cpu()[-num_added_tokens:]
+        
+    return {placeholder_token: embeds[i]
+            for i, placeholder_token in enumerate(added_tokens)}
 
 
 if __name__ == "__main__":

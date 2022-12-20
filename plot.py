@@ -99,7 +99,7 @@ if __name__ == "__main__":
     color_palette = sns.color_palette(n_colors=len(args.method_names))
 
     fig, axs = plt.subplots(1, len(args.datasets),
-                            figsize=(8 * len(args.datasets), 7))
+                            figsize=(6 * len(args.datasets), 6))
 
     for i, dataset in enumerate(args.datasets):
 
@@ -145,7 +145,7 @@ if __name__ == "__main__":
         legend_object.set_color(color_palette[i])
 
     plt.tight_layout(pad=1.0)
-    fig.subplots_adjust(bottom=0.3)
+    fig.subplots_adjust(bottom=0.35)
 
     plt.savefig("visualization.pdf")
     plt.savefig("visualization.png")
