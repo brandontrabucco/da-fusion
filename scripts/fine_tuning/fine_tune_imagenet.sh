@@ -14,5 +14,4 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=40 python fine_tune.py \
---logdir ./imagenet-tokens/ --dataset imagenet \
---num-trials 8 --examples-per-class 1 2 4 8 16
+--dataset imagenet --num-trials 8 --examples-per-class 1 2 4 8 16
