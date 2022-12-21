@@ -27,15 +27,18 @@ import itertools
 
 DEFAULT_MODEL_PATH = "CompVis/stable-diffusion-v1-4"
 
+DEFAULT_EMBED_PATH = "{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt"
+
 DATASETS = {"spurge": SpurgeDataset, 
             "coco": COCODataset, 
             "pascal": PASCALDataset,
             "imagenet": ImageNetDataset}
 
 
-def run_experiment(examples_per_class=0, seed=0, 
-                   dataset="spurge", iterations_per_epoch=200, 
-                   num_epochs=50, batch_size=32,
+def run_experiment(dataset: str = "spurge", seed: int = 0, 
+                   examples_per_class: int = 0, 
+                   iterations_per_epoch: int = 200, 
+                   num_epochs: int = 50, batch_size: int = 32,
                    model_path: str = DEFAULT_MODEL_PATH):
 
     torch.manual_seed(seed)
@@ -158,7 +161,6 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("Textual Inversion Experiment")
 
-    parser.add_argument("--logdir", type=str, default="coco_tokens")
     parser.add_argument("--checkpoint", type=str, default="CompVis/stable-diffusion-v1-4")
 
     parser.add_argument("--iterations-per-epoch", type=int, default=200)
@@ -167,6 +169,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--num-trials", type=int, default=8)
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
+
+    parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     
     parser.add_argument("--dataset", type=str, default="coco", 
                         choices=["spurge", "imagenet", "coco", "pascal"])
@@ -183,9 +187,6 @@ if __name__ == "__main__":
     torch.cuda.set_device(rank % torch.cuda.device_count())
 
     print(f'Initialized process {rank} / {world_size}')
-    os.makedirs(args.logdir, exist_ok=True)
-
-    all_trials = []
 
     options = product(range(args.num_trials), args.examples_per_class)
     options = np.array(list(options))
@@ -194,15 +195,17 @@ if __name__ == "__main__":
     for seed, examples_per_class in options.tolist():
 
         hyperparameters = dict(
-            seed=seed, examples_per_class=examples_per_class,
-            dataset=args.dataset,
+            dataset=args.dataset, seed=seed, 
+            examples_per_class=examples_per_class,
             num_epochs=args.num_epochs,
             iterations_per_epoch=args.iterations_per_epoch, 
             batch_size=args.batch_size,
             model_path=args.checkpoint)
 
-        fine_tuned = run_experiment(**hyperparameters)
+        path = args.embed_path.format(**hyperparameters)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
 
-        path = os.path.join(args.logdir, f"{args.dataset}-{seed}-{examples_per_class}.pt")
-        torch.save(fine_tuned, path)
+        fine_tuned_dict = run_experiment(**hyperparameters)
+        torch.save(fine_tuned_dict, path)
+
         print(f"[rank {rank}] n={examples_per_class} saved to: {path}")

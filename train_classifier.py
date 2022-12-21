@@ -22,10 +22,12 @@ import os
 
 
 DEFAULT_MODEL_PATH = "CompVis/stable-diffusion-v1-4"
-DEFAULT_PROMPT = "a drone image of a brown field"
+DEFAULT_PROMPT = "a photo of a {name}"
 
 DEFAULT_SYNTHETIC_DIR = "/projects/rsalakhugroup/\
 btrabucc/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
+
+DEFAULT_EMBED_PATH = "{dataset}-tokens/{dataset}-{aug}-{seed}-{examples_per_class}"
 
 DATASETS = {"spurge": SpurgeDataset, 
             "coco": COCODataset, 
@@ -33,14 +35,17 @@ DATASETS = {"spurge": SpurgeDataset,
             "imagenet": ImageNetDataset}
 
 
-def run_experiment(examples_per_class=0, seed=0, 
-                   dataset="spurge", aug="real-guidance", 
-                   num_synthetic=100, iterations_per_epoch=200, 
-                   num_epochs=50, batch_size=32,
+def run_experiment(examples_per_class: int = 0, seed: int = 0, 
+                   dataset: str = "spurge", aug: str = "real-guidance", 
+                   num_synthetic: int = 100, 
+                   iterations_per_epoch: int = 200, 
+                   num_epochs: int = 50, 
+                   batch_size: int = 32,
                    strength: float = 0.5, 
                    guidance_scale: float = 7.5, 
                    synthetic_probability: float = 0.5, 
                    synthetic_dir: str = DEFAULT_SYNTHETIC_DIR, 
+                   embed_path: str = DEFAULT_EMBED_PATH,
                    model_path: str = DEFAULT_MODEL_PATH,
                    prompt: str = DEFAULT_PROMPT):
 
@@ -52,17 +57,14 @@ def run_experiment(examples_per_class=0, seed=0,
 
         aug = RealGuidance(
             model_path=model_path, 
-            prompt=prompt,
-            strength=strength, 
+            prompt=prompt, strength=strength, 
             guidance_scale=guidance_scale)
 
     elif aug == "textual-inversion":
 
         aug = TextualInversion(
-            f"./{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt", 
-            model_path=model_path, 
-            prompt=prompt,
-            strength=strength, 
+            embed_path, model_path=model_path, 
+            prompt=prompt, strength=strength, 
             guidance_scale=guidance_scale)
 
     elif aug == "none":
@@ -242,6 +244,8 @@ if __name__ == "__main__":
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
                         choices=["real-guidance", "textual-inversion", "none"])
+
+    parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     
     parser.add_argument("--dataset", type=str, default="coco", 
                         choices=["spurge", "imagenet", "coco", "pascal"])
@@ -282,9 +286,11 @@ if __name__ == "__main__":
             guidance_scale=args.guidance_scale)
 
         synthetic_dir = args.synthetic_dir.format(**hyperparameters)
+        embed_path = args.embed_path.format(**hyperparameters)
 
         all_trials.extend(run_experiment(
-            synthetic_dir=synthetic_dir, **hyperparameters))
+            synthetic_dir=synthetic_dir, 
+            embed_path=embed_path, **hyperparameters))
 
         path = f"results_{seed}_{examples_per_class}.csv"
         path = os.path.join(args.logdir, path)

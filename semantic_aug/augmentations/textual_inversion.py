@@ -48,8 +48,6 @@ def load_embeddings(embed_path: str,
         embeddings.weight.data[added_token_id] = \
             token_embedding.to(embeddings.weight.dtype)
 
-        print(token)
-
     return tokenizer, text_encoder.to('cuda')
 
 
