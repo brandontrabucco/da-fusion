@@ -113,42 +113,49 @@ def run_experiment(dataset: str = "spurge", seed: int = 0,
         train_dataset, batch_size=batch_size, 
         sampler=train_sampler, num_workers=4)
 
-    optim = torch.optim.Adam(pipe.text_encoder.get_input_embeddings().parameters(), lr=0.0001)
-    
-    global_step = 0
+    optim = torch.optim.Adam(
+        pipe.text_encoder.get_input_embeddings().parameters(), 
+        lr=0.0001, eps=1e-06)  # we need a higher epsilon to avoid NaN gradients
 
     for epoch in trange(num_epochs):
 
         for step, (image, prompt) in enumerate(train_dataloader):
+            
+            optim.zero_grad()
 
             # Convert images to latent space
-            latents = pipe.vae.encode(image.to('cuda', dtype=torch.float16)).latent_dist.sample().detach()
-            latents = latents * 0.18215
+            latents = 0.18215 * pipe.vae.encode(
+                image.to('cuda', dtype=torch.float16)
+            ).latent_dist.sample().detach()
 
             # Sample noise that we'll add to the latents
             noise = torch.randn_like(latents)
-            bsz = latents.shape[0]
+
             # Sample a random timestep for each image
-            timesteps = torch.randint(0, noise_scheduler.num_train_timesteps, (bsz,), device=latents.device).long()
+            timesteps = torch.randint(
+                0, noise_scheduler.num_train_timesteps, 
+                (latents.shape[0],), device=latents.device).long()
 
             # Add noise to the latents according to the noise magnitude at each timestep
             # (this is the forward diffusion process)
-            noisy_latents = noise_scheduler.add_noise(latents, noise, timesteps)
+            noisy_latents = noise_scheduler\
+                .add_noise(latents, noise, timesteps)
 
             # Get the text embedding for conditioning
             encoder_hidden_states = pipe.text_encoder(prompt.to('cuda'))[0]
 
             # Predict the noise residual
-            noise_pred = pipe.unet(noisy_latents, timesteps, encoder_hidden_states.to(torch.float16)).sample
+            noise_pred = pipe.unet(
+                noisy_latents, timesteps, 
+                encoder_hidden_states).sample
 
-            loss = F.mse_loss(noise_pred, noise, reduction="none").mean([1, 2, 3]).mean()
+            loss = F.mse_loss(noise_pred, noise, reduction="none").mean()
             loss.backward()
 
             grads = pipe.text_encoder.get_input_embeddings().weight.grad
-            grads.data[:-num_added_tokens] = grads.data[:-num_added_tokens].fill_(0)
+            grads.data[:-num_added_tokens] = 0
 
             optim.step()
-            optim.zero_grad()
         
     embeds = pipe.text_encoder.get_input_embeddings()
     embeds = embeds.weight.detach().cpu()[-num_added_tokens:]
@@ -165,7 +172,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--iterations-per-epoch", type=int, default=200)
     parser.add_argument("--num-epochs", type=int, default=50)
-    parser.add_argument("--batch-size", type=int, default=1)
+    parser.add_argument("--batch-size", type=int, default=4)
 
     parser.add_argument("--num-trials", type=int, default=8)
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
