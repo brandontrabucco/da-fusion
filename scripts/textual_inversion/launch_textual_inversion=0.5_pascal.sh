@@ -14,8 +14,8 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=40 python train_classifier.py \
---logdir ./spurge-baselines-new/textual-inversion-0.5 \
---dataset spurge --aug textual-inversion --prompt "a drone image of {name}" \
---strength 0.5 --num-synthetic 50 \
+--logdir ./pascal-baselines/textual-inversion-0.5 \
+--dataset pascal --aug textual-inversion --prompt "a photo of a {name}" \
+--strength 0.5 --num-synthetic 10 \
 --synthetic-probability 0.5 --num-trials 8 \
 --examples-per-class 1 2 4 8 16

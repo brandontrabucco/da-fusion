@@ -27,7 +27,7 @@ DEFAULT_PROMPT = "a photo of a {name}"
 DEFAULT_SYNTHETIC_DIR = "/projects/rsalakhugroup/\
 btrabucc/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
 
-DEFAULT_EMBED_PATH = "{dataset}-tokens/{dataset}-{aug}-{seed}-{examples_per_class}"
+DEFAULT_EMBED_PATH = "{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt"
 
 DATASETS = {"spurge": SpurgeDataset, 
             "coco": COCODataset, 
