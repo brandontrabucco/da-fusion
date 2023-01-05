@@ -15,7 +15,7 @@ pip install diffusers["torch"] transformers
 Then download and install the source code.
 
 ```bash
-git clone https://github.com/brandontrabucco/semantic-aug
+git clone git@github.com:brandontrabucco/semantic-aug.git
 pip install -e semantic-aug
 ```
 
