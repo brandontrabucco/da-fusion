@@ -26,7 +26,8 @@ class SpurgeDataset(FewShotDataset):
                  split: str = "train", seed: int = 0, 
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
-                 synthetic_probability: float = 0.5, **kwargs):
+                 synthetic_probability: float = 0.5,
+                 image_size: Tuple[int] = (256, 256), **kwargs):
 
         super(SpurgeDataset, self).__init__(
             *args, examples_per_class=examples_per_class,
@@ -58,22 +59,22 @@ class SpurgeDataset(FewShotDataset):
         self.all_labels = [0] * len(self.absent) + [1] * len(self.apparent)
 
         train_transform = transforms.Compose([
-            transforms.Resize([256, 256]),
+            transforms.Resize(image_size),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
             transforms.RandomRotation(degrees=45),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], 
-                                  std=[0.229, 0.224, 0.225])
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                  std=[0.5, 0.5, 0.5])
         ])
 
         val_transform = transforms.Compose([
-            transforms.Resize([256, 256]),
+            transforms.Resize(image_size),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], 
-                                  std=[0.229, 0.224, 0.225])
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                  std=[0.5, 0.5, 0.5])
         ])
 
         self.transform = {"train": train_transform, "val": val_transform}[split]

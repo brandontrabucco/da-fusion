@@ -2,6 +2,7 @@ from transformers import CLIPTokenizer
 from semantic_aug.few_shot_dataset import FewShotDataset
 from torch.utils.data import Dataset
 from typing import Tuple, List, Callable
+import torchvision.transforms.functional as F
 
 import torch
 import random
@@ -34,7 +35,8 @@ DEFAULT_PROMPT_TEMPLATES = [
     "a photo of the weird {name}",
     "a photo of the large {name}",
     "a photo of a cool {name}",
-    "a photo of a small {name}"]
+    "a photo of a small {name}"
+]
 
 
 def format_name(name):
@@ -46,12 +48,14 @@ class TextualInversionDataset(Dataset):
     def __init__(self, dataset: FewShotDataset, 
                  tokenizer: CLIPTokenizer, 
                  format_name: Callable = format_name,
-                 prompt_templates: List[str] = DEFAULT_PROMPT_TEMPLATES):
+                 prompt_templates: List[str] = DEFAULT_PROMPT_TEMPLATES,
+                 image_size: Tuple[int] = (512, 512)):
 
         self.dataset = dataset
         self.tokenizer = tokenizer
         self.format_name = format_name
         self.prompt_templates = prompt_templates
+        self.image_size = image_size
 
     def __len__(self):
         return len(self.dataset)
@@ -63,8 +67,11 @@ class TextualInversionDataset(Dataset):
 
         metadata["name"] = self.format_name(metadata["name"])
         prompt = random.choice(self.prompt_templates).format(**metadata)
+
+        image = F.resize(image, self.image_size)
         
         return image, self.tokenizer(
             prompt, padding="max_length",
             truncation=True, return_tensors="pt",
-            max_length=self.tokenizer.model_max_length).input_ids[0]
+            max_length=self.tokenizer.model_max_length
+        ).input_ids[0]

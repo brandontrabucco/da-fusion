@@ -36,7 +36,8 @@ class PASCALDataset(FewShotDataset):
                  class_names: str = CLASS_NAMES, 
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
-                 synthetic_probability: float = 0.5, **kwargs):
+                 synthetic_probability: float = 0.5,
+                 image_size: Tuple[int] = (256, 256), **kwargs):
 
         super(PASCALDataset, self).__init__(
             *args, examples_per_class=examples_per_class,
@@ -106,22 +107,23 @@ class PASCALDataset(FewShotDataset):
             self.class_names) for _ in self.class_to_images[key]]
 
         train_transform = transforms.Compose([
-            transforms.Resize([256, 256]),
+            transforms.Resize(image_size),
             transforms.RandomHorizontalFlip(p=0.5),
+            transforms.RandomRotation(degrees=15.0),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
-            transforms.Lambda(lambda x: x.expand(3, 256, 256)),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], 
-                                  std=[0.229, 0.224, 0.225])
+            transforms.Lambda(lambda x: x.expand(3, *image_size)),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                  std=[0.5, 0.5, 0.5])
         ])
 
         val_transform = transforms.Compose([
-            transforms.Resize([256, 256]),
+            transforms.Resize(image_size),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float),
-            transforms.Lambda(lambda x: x.expand(3, 256, 256)),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], 
-                                  std=[0.229, 0.224, 0.225])
+            transforms.Lambda(lambda x: x.expand(3, *image_size)),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                  std=[0.5, 0.5, 0.5])
         ])
 
         self.transform = {"train": train_transform, "val": val_transform}[split]
