@@ -13,9 +13,12 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=40 python train_classifier.py \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
+python train_classifier.py \
 --logdir ./spurge-baselines-new/textual-inversion-0.5 \
---dataset spurge --aug textual-inversion --prompt "a drone image of {name}" \
+--dataset spurge --aug textual-inversion \
+--prompt "a drone image of {name}" \
+--embed-path "spurge-tokens/spurge-0-1.pt" \
 --strength 0.5 --num-synthetic 50 \
 --synthetic-probability 0.5 --num-trials 8 \
 --examples-per-class 1 2 4 8 16
