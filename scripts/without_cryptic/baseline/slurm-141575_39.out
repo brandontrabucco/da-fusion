@@ -1,0 +1,24 @@
+Initialized process 39 / 40
+Training Classifier:   0%|          | 0/50 [00:00<?, ?it/s]Training Classifier:   0%|          | 0/50 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "train_classifier.py", line 293, in <module>
+    embed_path=embed_path, **hyperparameters))
+  File "train_classifier.py", line 116, in run_experiment
+    for image, label in train_dataloader:
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 435, in __iter__
+    return self._get_iterator()
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 381, in _get_iterator
+    return _MultiProcessingDataLoaderIter(self)
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 1072, in __init__
+    self._reset(loader, first_iter=True)
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 1105, in _reset
+    self._try_put_index()
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 1339, in _try_put_index
+    index = self._next_index()
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 618, in _next_index
+    return next(self._sampler_iter)  # may raise StopIteration
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/sampler.py", line 254, in __iter__
+    for idx in self.sampler:
+  File "/home/kdoherty/anaconda3/envs/semantic-aug/lib/python3.7/site-packages/torch/utils/data/sampler.py", line 128, in __iter__
+    yield from torch.randint(high=n, size=(32,), dtype=torch.int64, generator=generator).tolist()
+RuntimeError: random_ expects 'from' to be less than 'to', but got from=0 >= to=0
