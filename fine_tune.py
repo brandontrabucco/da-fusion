@@ -444,7 +444,8 @@ def main(args):
 
     if args.scale_lr:
         args.learning_rate = (
-            args.learning_rate * args.gradient_accumulation_steps * args.train_batch_size * accelerator.num_processes
+            args.learning_rate * (args.gradient_accumulation_steps / accumulations_per_class) * 
+            args.train_batch_size * accelerator.num_processes
         )
 
     # Initialize the optimizer
