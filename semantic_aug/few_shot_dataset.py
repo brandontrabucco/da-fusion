@@ -66,14 +66,15 @@ class FewShotDataset(Dataset):
 
             image = self.get_image_by_idx(idx)
             label = self.get_label_by_idx(idx)
+            name = self.get_metadata_by_idx(idx)
 
             image, label = self.generative_aug(
-                image, label, self.get_metadata_by_idx(idx))
-
+                image, label, name)
+            
             if self.synthetic_dir is not None:
 
                 pil_image, image = image, os.path.join(
-                    self.synthetic_dir, f"aug-{idx}-{num}.png")
+                    self.synthetic_dir, f"aug-{idx}-{name['name']}-{num}.png")
 
                 pil_image.save(image)
 

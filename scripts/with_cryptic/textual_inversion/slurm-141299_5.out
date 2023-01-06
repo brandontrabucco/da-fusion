@@ -1,0 +1,4 @@
+slurmstepd: error: _prec_extra: Could not find task_cpuacct_cg, this should never happen
+slurmstepd: error: _prec_extra: Could not find task_memory_cg, this should never happen
+slurmstepd: error: *** JOB 141305 ON matrix-1-10 CANCELLED AT 2023-01-05T09:48:30 ***
+slurmstepd: error: *** JOB 141305 STEPD TERMINATED ON matrix-1-10 AT 2023-01-05T09:50:30 DUE TO JOB NOT ENDING WITH SIGNALS ***

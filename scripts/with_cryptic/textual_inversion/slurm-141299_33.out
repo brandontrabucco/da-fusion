@@ -1,0 +1,804 @@
+Initialized process 33 / 40
+Generating Augmentations:   0%|          | 0/800 [00:00<?, ?it/s]Generating Augmentations:   0%|          | 1/800 [00:04<1:04:21,  4.83s/it]Generating Augmentations:   0%|          | 2/800 [00:08<52:57,  3.98s/it]  Generating Augmentations:   0%|          | 3/800 [00:11<49:13,  3.71s/it]Generating Augmentations:   0%|          | 4/800 [00:14<47:30,  3.58s/it]Generating Augmentations:   1%|          | 5/800 [00:18<46:31,  3.51s/it]Generating Augmentations:   1%|          | 6/800 [00:21<45:53,  3.47s/it]Generating Augmentations:   1%|          | 7/800 [00:25<45:26,  3.44s/it]Generating Augmentations:   1%|          | 8/800 [00:28<45:11,  3.42s/it]Generating Augmentations:   1%|          | 9/800 [00:31<45:00,  3.41s/it]Generating Augmentations:   1%|▏         | 10/800 [00:35<45:14,  3.44s/it]Generating Augmentations:   1%|▏         | 11/800 [00:38<45:03,  3.43s/it]Generating Augmentations:   2%|▏         | 12/800 [00:42<44:50,  3.41s/it]Generating Augmentations:   2%|▏         | 13/800 [00:45<44:44,  3.41s/it]Generating Augmentations:   2%|▏         | 14/800 [00:49<44:40,  3.41s/it]Generating Augmentations:   2%|▏         | 15/800 [00:52<44:34,  3.41s/it]Generating Augmentations:   2%|▏         | 16/800 [00:55<44:34,  3.41s/it]Generating Augmentations:   2%|▏         | 17/800 [00:59<44:30,  3.41s/it]Generating Augmentations:   2%|▏         | 18/800 [01:02<44:26,  3.41s/it]Generating Augmentations:   2%|▏         | 19/800 [01:06<44:22,  3.41s/it]Generating Augmentations:   2%|▎         | 20/800 [01:09<44:16,  3.41s/it]Generating Augmentations:   3%|▎         | 21/800 [01:12<44:12,  3.40s/it]Generating Augmentations:   3%|▎         | 22/800 [01:16<44:08,  3.40s/it]Generating Augmentations:   3%|▎         | 23/800 [01:19<44:06,  3.41s/it]Generating Augmentations:   3%|▎         | 24/800 [01:23<43:57,  3.40s/it]Generating Augmentations:   3%|▎         | 25/800 [01:26<43:49,  3.39s/it]Generating Augmentations:   3%|▎         | 26/800 [01:29<43:48,  3.40s/it]Generating Augmentations:   3%|▎         | 27/800 [01:33<43:48,  3.40s/it]Generating Augmentations:   4%|▎         | 28/800 [01:36<43:51,  3.41s/it]Generating Augmentations:   4%|▎         | 29/800 [01:40<43:48,  3.41s/it]Generating Augmentations:   4%|▍         | 30/800 [01:43<43:48,  3.41s/it]Generating Augmentations:   4%|▍         | 31/800 [01:46<43:44,  3.41s/it]Generating Augmentations:   4%|▍         | 32/800 [01:50<43:37,  3.41s/it]Generating Augmentations:   4%|▍         | 33/800 [01:53<43:32,  3.41s/it]Generating Augmentations:   4%|▍         | 34/800 [01:57<43:33,  3.41s/it]Generating Augmentations:   4%|▍         | 35/800 [02:00<43:28,  3.41s/it]Generating Augmentations:   4%|▍         | 36/800 [02:03<43:26,  3.41s/it]Generating Augmentations:   5%|▍         | 37/800 [02:07<43:25,  3.41s/it]Generating Augmentations:   5%|▍         | 38/800 [02:10<43:19,  3.41s/it]Generating Augmentations:   5%|▍         | 39/800 [02:14<43:21,  3.42s/it]Generating Augmentations:   5%|▌         | 40/800 [02:17<43:13,  3.41s/it]Generating Augmentations:   5%|▌         | 41/800 [02:21<43:07,  3.41s/it]Generating Augmentations:   5%|▌         | 42/800 [02:24<42:59,  3.40s/it]Generating Augmentations:   5%|▌         | 43/800 [02:27<43:00,  3.41s/it]Generating Augmentations:   6%|▌         | 44/800 [02:31<42:56,  3.41s/it]Generating Augmentations:   6%|▌         | 45/800 [02:34<42:53,  3.41s/it]Generating Augmentations:   6%|▌         | 46/800 [02:38<42:54,  3.41s/it]Generating Augmentations:   6%|▌         | 47/800 [02:41<42:53,  3.42s/it]Generating Augmentations:   6%|▌         | 48/800 [02:44<42:47,  3.41s/it]Generating Augmentations:   6%|▌         | 49/800 [02:48<42:46,  3.42s/it]Generating Augmentations:   6%|▋         | 50/800 [02:51<42:44,  3.42s/it]Generating Augmentations:   6%|▋         | 51/800 [02:55<42:31,  3.41s/it]Generating Augmentations:   6%|▋         | 52/800 [02:58<42:20,  3.40s/it]Generating Augmentations:   7%|▋         | 53/800 [03:01<42:09,  3.39s/it]Generating Augmentations:   7%|▋         | 54/800 [03:05<41:59,  3.38s/it]Generating Augmentations:   7%|▋         | 55/800 [03:08<41:55,  3.38s/it]Generating Augmentations:   7%|▋         | 56/800 [03:11<41:55,  3.38s/it]Generating Augmentations:   7%|▋         | 57/800 [03:15<41:48,  3.38s/it]Generating Augmentations:   7%|▋         | 58/800 [03:18<41:43,  3.37s/it]Generating Augmentations:   7%|▋         | 59/800 [03:22<41:44,  3.38s/it]Generating Augmentations:   8%|▊         | 60/800 [03:25<41:38,  3.38s/it]Generating Augmentations:   8%|▊         | 61/800 [03:28<41:32,  3.37s/it]Generating Augmentations:   8%|▊         | 62/800 [03:32<41:32,  3.38s/it]Generating Augmentations:   8%|▊         | 63/800 [03:35<41:33,  3.38s/it]Generating Augmentations:   8%|▊         | 64/800 [03:39<41:28,  3.38s/it]Generating Augmentations:   8%|▊         | 65/800 [03:42<41:22,  3.38s/it]Generating Augmentations:   8%|▊         | 66/800 [03:45<41:14,  3.37s/it]Generating Augmentations:   8%|▊         | 67/800 [03:49<41:13,  3.37s/it]Generating Augmentations:   8%|▊         | 68/800 [03:52<41:11,  3.38s/it]Generating Augmentations:   9%|▊         | 69/800 [03:55<41:03,  3.37s/it]Generating Augmentations:   9%|▉         | 70/800 [03:59<41:02,  3.37s/it]Generating Augmentations:   9%|▉         | 71/800 [04:02<41:05,  3.38s/it]Generating Augmentations:   9%|▉         | 72/800 [04:06<41:06,  3.39s/it]Generating Augmentations:   9%|▉         | 73/800 [04:09<41:00,  3.38s/it]Generating Augmentations:   9%|▉         | 74/800 [04:12<40:52,  3.38s/it]Generating Augmentations:   9%|▉         | 75/800 [04:16<40:51,  3.38s/it]Generating Augmentations:  10%|▉         | 76/800 [04:19<40:45,  3.38s/it]Generating Augmentations:  10%|▉         | 77/800 [04:22<40:39,  3.37s/it]Generating Augmentations:  10%|▉         | 78/800 [04:26<40:36,  3.37s/it]Generating Augmentations:  10%|▉         | 79/800 [04:29<40:35,  3.38s/it]Generating Augmentations:  10%|█         | 80/800 [04:33<40:28,  3.37s/it]Generating Augmentations:  10%|█         | 81/800 [04:36<40:25,  3.37s/it]Generating Augmentations:  10%|█         | 82/800 [04:39<40:28,  3.38s/it]Generating Augmentations:  10%|█         | 83/800 [04:43<40:22,  3.38s/it]Generating Augmentations:  10%|█         | 84/800 [04:46<40:19,  3.38s/it]Generating Augmentations:  11%|█         | 85/800 [04:49<40:18,  3.38s/it]Generating Augmentations:  11%|█         | 86/800 [04:53<40:13,  3.38s/it]Generating Augmentations:  11%|█         | 87/800 [04:56<40:07,  3.38s/it]Generating Augmentations:  11%|█         | 88/800 [05:00<40:01,  3.37s/it]Generating Augmentations:  11%|█         | 89/800 [05:03<39:55,  3.37s/it]Generating Augmentations:  11%|█▏        | 90/800 [05:06<39:52,  3.37s/it]Generating Augmentations:  11%|█▏        | 91/800 [05:10<39:50,  3.37s/it]Generating Augmentations:  12%|█▏        | 92/800 [05:13<39:50,  3.38s/it]Generating Augmentations:  12%|█▏        | 93/800 [05:16<39:52,  3.38s/it]Generating Augmentations:  12%|█▏        | 94/800 [05:20<39:44,  3.38s/it]Generating Augmentations:  12%|█▏        | 95/800 [05:23<39:40,  3.38s/it]Generating Augmentations:  12%|█▏        | 96/800 [05:27<39:38,  3.38s/it]Generating Augmentations:  12%|█▏        | 97/800 [05:30<39:36,  3.38s/it]Generating Augmentations:  12%|█▏        | 98/800 [05:33<39:35,  3.38s/it]Generating Augmentations:  12%|█▏        | 99/800 [05:37<39:36,  3.39s/it]Generating Augmentations:  12%|█▎        | 100/800 [05:40<39:33,  3.39s/it]Generating Augmentations:  13%|█▎        | 101/800 [05:44<39:52,  3.42s/it]Generating Augmentations:  13%|█▎        | 102/800 [05:47<40:02,  3.44s/it]Generating Augmentations:  13%|█▎        | 103/800 [05:51<40:05,  3.45s/it]Generating Augmentations:  13%|█▎        | 104/800 [05:54<40:01,  3.45s/it]Generating Augmentations:  13%|█▎        | 105/800 [05:58<40:02,  3.46s/it]Generating Augmentations:  13%|█▎        | 106/800 [06:01<40:04,  3.46s/it]Generating Augmentations:  13%|█▎        | 107/800 [06:04<40:02,  3.47s/it]Generating Augmentations:  14%|█▎        | 108/800 [06:08<40:03,  3.47s/it]Generating Augmentations:  14%|█▎        | 109/800 [06:11<40:00,  3.47s/it]Generating Augmentations:  14%|█▍        | 110/800 [06:15<40:00,  3.48s/it]Generating Augmentations:  14%|█▍        | 111/800 [06:18<39:54,  3.48s/it]Generating Augmentations:  14%|█▍        | 112/800 [06:22<39:51,  3.48s/it]Generating Augmentations:  14%|█▍        | 113/800 [06:25<39:51,  3.48s/it]Generating Augmentations:  14%|█▍        | 114/800 [06:29<39:59,  3.50s/it]Generating Augmentations:  14%|█▍        | 115/800 [06:32<39:46,  3.48s/it]Generating Augmentations:  14%|█▍        | 116/800 [06:36<39:47,  3.49s/it]Generating Augmentations:  15%|█▍        | 117/800 [06:39<39:41,  3.49s/it]Generating Augmentations:  15%|█▍        | 118/800 [06:43<39:37,  3.49s/it]Generating Augmentations:  15%|█▍        | 119/800 [06:46<39:31,  3.48s/it]Generating Augmentations:  15%|█▌        | 120/800 [06:50<39:23,  3.48s/it]Generating Augmentations:  15%|█▌        | 121/800 [06:53<39:19,  3.47s/it]Generating Augmentations:  15%|█▌        | 122/800 [06:57<39:15,  3.47s/it]Generating Augmentations:  15%|█▌        | 123/800 [07:00<39:08,  3.47s/it]Generating Augmentations:  16%|█▌        | 124/800 [07:04<39:16,  3.49s/it]Generating Augmentations:  16%|█▌        | 125/800 [07:07<39:08,  3.48s/it]Generating Augmentations:  16%|█▌        | 126/800 [07:11<39:04,  3.48s/it]Generating Augmentations:  16%|█▌        | 127/800 [07:14<39:00,  3.48s/it]Generating Augmentations:  16%|█▌        | 128/800 [07:18<39:01,  3.48s/it]Generating Augmentations:  16%|█▌        | 129/800 [07:21<38:56,  3.48s/it]Generating Augmentations:  16%|█▋        | 130/800 [07:25<38:41,  3.47s/it]Generating Augmentations:  16%|█▋        | 131/800 [07:28<38:42,  3.47s/it]Generating Augmentations:  16%|█▋        | 132/800 [07:31<38:45,  3.48s/it]Generating Augmentations:  17%|█▋        | 133/800 [07:35<38:47,  3.49s/it]Generating Augmentations:  17%|█▋        | 134/800 [07:38<38:40,  3.48s/it]Generating Augmentations:  17%|█▋        | 135/800 [07:42<38:44,  3.50s/it]Generating Augmentations:  17%|█▋        | 136/800 [07:45<38:41,  3.50s/it]Generating Augmentations:  17%|█▋        | 137/800 [07:49<38:41,  3.50s/it]Generating Augmentations:  17%|█▋        | 138/800 [07:52<38:33,  3.49s/it]Generating Augmentations:  17%|█▋        | 139/800 [07:56<38:26,  3.49s/it]Generating Augmentations:  18%|█▊        | 140/800 [07:59<38:23,  3.49s/it]Generating Augmentations:  18%|█▊        | 141/800 [08:03<38:17,  3.49s/it]Generating Augmentations:  18%|█▊        | 142/800 [08:06<38:17,  3.49s/it]Generating Augmentations:  18%|█▊        | 143/800 [08:10<38:12,  3.49s/it]Generating Augmentations:  18%|█▊        | 144/800 [08:13<38:04,  3.48s/it]Generating Augmentations:  18%|█▊        | 145/800 [08:17<38:01,  3.48s/it]Generating Augmentations:  18%|█▊        | 146/800 [08:20<38:03,  3.49s/it]Generating Augmentations:  18%|█▊        | 147/800 [08:24<38:39,  3.55s/it]Generating Augmentations:  18%|█▊        | 148/800 [08:28<38:25,  3.54s/it]Generating Augmentations:  19%|█▊        | 149/800 [08:31<38:30,  3.55s/it]Generating Augmentations:  19%|█▉        | 150/800 [08:35<38:28,  3.55s/it]Generating Augmentations:  19%|█▉        | 151/800 [08:38<38:07,  3.52s/it]Generating Augmentations:  19%|█▉        | 152/800 [08:42<37:40,  3.49s/it]Generating Augmentations:  19%|█▉        | 153/800 [08:45<37:18,  3.46s/it]Generating Augmentations:  19%|█▉        | 154/800 [08:48<37:11,  3.45s/it]Generating Augmentations:  19%|█▉        | 155/800 [08:52<37:08,  3.46s/it]Generating Augmentations:  20%|█▉        | 156/800 [08:55<36:57,  3.44s/it]Generating Augmentations:  20%|█▉        | 157/800 [08:59<36:47,  3.43s/it]Generating Augmentations:  20%|█▉        | 158/800 [09:02<36:37,  3.42s/it]Generating Augmentations:  20%|█▉        | 159/800 [09:06<36:31,  3.42s/it]Generating Augmentations:  20%|██        | 160/800 [09:09<36:27,  3.42s/it]Generating Augmentations:  20%|██        | 161/800 [09:12<36:19,  3.41s/it]Generating Augmentations:  20%|██        | 162/800 [09:16<36:11,  3.40s/it]Generating Augmentations:  20%|██        | 163/800 [09:19<36:05,  3.40s/it]Generating Augmentations:  20%|██        | 164/800 [09:22<35:56,  3.39s/it]Generating Augmentations:  21%|██        | 165/800 [09:26<35:56,  3.40s/it]Generating Augmentations:  21%|██        | 166/800 [09:29<35:52,  3.40s/it]Generating Augmentations:  21%|██        | 167/800 [09:33<35:50,  3.40s/it]Generating Augmentations:  21%|██        | 168/800 [09:36<35:49,  3.40s/it]Generating Augmentations:  21%|██        | 169/800 [09:39<35:46,  3.40s/it]Generating Augmentations:  21%|██▏       | 170/800 [09:43<35:48,  3.41s/it]Generating Augmentations:  21%|██▏       | 171/800 [09:46<35:45,  3.41s/it]Generating Augmentations:  22%|██▏       | 172/800 [09:50<35:44,  3.41s/it]Generating Augmentations:  22%|██▏       | 173/800 [09:53<35:42,  3.42s/it]Generating Augmentations:  22%|██▏       | 174/800 [09:57<35:38,  3.42s/it]Generating Augmentations:  22%|██▏       | 175/800 [10:00<35:36,  3.42s/it]Generating Augmentations:  22%|██▏       | 176/800 [10:03<35:33,  3.42s/it]Generating Augmentations:  22%|██▏       | 177/800 [10:07<35:26,  3.41s/it]Generating Augmentations:  22%|██▏       | 178/800 [10:10<35:21,  3.41s/it]Generating Augmentations:  22%|██▏       | 179/800 [10:14<35:19,  3.41s/it]Generating Augmentations:  22%|██▎       | 180/800 [10:17<35:15,  3.41s/it]Generating Augmentations:  23%|██▎       | 181/800 [10:20<35:09,  3.41s/it]Generating Augmentations:  23%|██▎       | 182/800 [10:24<35:07,  3.41s/it]Generating Augmentations:  23%|██▎       | 183/800 [10:27<35:06,  3.41s/it]Generating Augmentations:  23%|██▎       | 184/800 [10:31<35:02,  3.41s/it]Generating Augmentations:  23%|██▎       | 185/800 [10:34<35:01,  3.42s/it]Generating Augmentations:  23%|██▎       | 186/800 [10:38<34:59,  3.42s/it]Generating Augmentations:  23%|██▎       | 187/800 [10:41<34:49,  3.41s/it]Generating Augmentations:  24%|██▎       | 188/800 [10:44<34:47,  3.41s/it]Generating Augmentations:  24%|██▎       | 189/800 [10:48<34:47,  3.42s/it]Generating Augmentations:  24%|██▍       | 190/800 [10:51<34:47,  3.42s/it]Generating Augmentations:  24%|██▍       | 191/800 [10:55<34:42,  3.42s/it]Generating Augmentations:  24%|██▍       | 192/800 [10:58<34:39,  3.42s/it]Generating Augmentations:  24%|██▍       | 193/800 [11:01<34:39,  3.43s/it]Generating Augmentations:  24%|██▍       | 194/800 [11:05<34:34,  3.42s/it]Generating Augmentations:  24%|██▍       | 195/800 [11:08<34:26,  3.42s/it]Generating Augmentations:  24%|██▍       | 196/800 [11:12<34:24,  3.42s/it]Generating Augmentations:  25%|██▍       | 197/800 [11:15<34:17,  3.41s/it]Generating Augmentations:  25%|██▍       | 198/800 [11:19<34:12,  3.41s/it]Generating Augmentations:  25%|██▍       | 199/800 [11:22<34:05,  3.40s/it]Generating Augmentations:  25%|██▌       | 200/800 [11:25<34:04,  3.41s/it]Generating Augmentations:  25%|██▌       | 201/800 [11:29<34:15,  3.43s/it]Generating Augmentations:  25%|██▌       | 202/800 [11:32<34:23,  3.45s/it]Generating Augmentations:  25%|██▌       | 203/800 [11:36<34:28,  3.46s/it]Generating Augmentations:  26%|██▌       | 204/800 [11:39<34:28,  3.47s/it]Generating Augmentations:  26%|██▌       | 205/800 [11:43<34:29,  3.48s/it]Generating Augmentations:  26%|██▌       | 206/800 [11:46<34:27,  3.48s/it]Generating Augmentations:  26%|██▌       | 207/800 [11:50<34:28,  3.49s/it]Generating Augmentations:  26%|██▌       | 208/800 [11:53<34:27,  3.49s/it]Generating Augmentations:  26%|██▌       | 209/800 [11:57<34:26,  3.50s/it]Generating Augmentations:  26%|██▋       | 210/800 [12:00<34:22,  3.50s/it]Generating Augmentations:  26%|██▋       | 211/800 [12:04<34:22,  3.50s/it]Generating Augmentations:  26%|██▋       | 212/800 [12:07<34:20,  3.50s/it]Generating Augmentations:  27%|██▋       | 213/800 [12:11<34:21,  3.51s/it]Generating Augmentations:  27%|██▋       | 214/800 [12:14<34:21,  3.52s/it]Generating Augmentations:  27%|██▋       | 215/800 [12:18<34:13,  3.51s/it]Generating Augmentations:  27%|██▋       | 216/800 [12:21<34:08,  3.51s/it]Generating Augmentations:  27%|██▋       | 217/800 [12:25<34:03,  3.51s/it]Generating Augmentations:  27%|██▋       | 218/800 [12:28<33:56,  3.50s/it]Generating Augmentations:  27%|██▋       | 219/800 [12:32<33:54,  3.50s/it]Generating Augmentations:  28%|██▊       | 220/800 [12:35<33:51,  3.50s/it]Generating Augmentations:  28%|██▊       | 221/800 [12:39<33:47,  3.50s/it]Generating Augmentations:  28%|██▊       | 222/800 [12:42<33:44,  3.50s/it]Generating Augmentations:  28%|██▊       | 223/800 [12:46<33:39,  3.50s/it]Generating Augmentations:  28%|██▊       | 224/800 [12:49<33:34,  3.50s/it]Generating Augmentations:  28%|██▊       | 225/800 [12:53<33:29,  3.49s/it]Generating Augmentations:  28%|██▊       | 226/800 [12:56<33:25,  3.49s/it]Generating Augmentations:  28%|██▊       | 227/800 [13:00<33:21,  3.49s/it]Generating Augmentations:  28%|██▊       | 228/800 [13:03<33:15,  3.49s/it]Generating Augmentations:  29%|██▊       | 229/800 [13:07<33:15,  3.49s/it]Generating Augmentations:  29%|██▉       | 230/800 [13:10<33:13,  3.50s/it]Generating Augmentations:  29%|██▉       | 231/800 [13:14<33:10,  3.50s/it]Generating Augmentations:  29%|██▉       | 232/800 [13:17<33:11,  3.51s/it]Generating Augmentations:  29%|██▉       | 233/800 [13:21<33:08,  3.51s/it]Generating Augmentations:  29%|██▉       | 234/800 [13:24<33:01,  3.50s/it]Generating Augmentations:  29%|██▉       | 235/800 [13:28<32:59,  3.50s/it]Generating Augmentations:  30%|██▉       | 236/800 [13:31<32:54,  3.50s/it]Generating Augmentations:  30%|██▉       | 237/800 [13:35<32:50,  3.50s/it]Generating Augmentations:  30%|██▉       | 238/800 [13:38<32:45,  3.50s/it]Generating Augmentations:  30%|██▉       | 239/800 [13:42<32:41,  3.50s/it]Generating Augmentations:  30%|███       | 240/800 [13:45<32:36,  3.49s/it]Generating Augmentations:  30%|███       | 241/800 [13:49<32:35,  3.50s/it]Generating Augmentations:  30%|███       | 242/800 [13:52<32:32,  3.50s/it]Generating Augmentations:  30%|███       | 243/800 [13:56<32:28,  3.50s/it]Generating Augmentations:  30%|███       | 244/800 [13:59<32:23,  3.50s/it]Generating Augmentations:  31%|███       | 245/800 [14:03<32:18,  3.49s/it]Generating Augmentations:  31%|███       | 246/800 [14:06<32:15,  3.49s/it]Generating Augmentations:  31%|███       | 247/800 [14:10<32:12,  3.50s/it]Generating Augmentations:  31%|███       | 248/800 [14:13<32:08,  3.49s/it]Generating Augmentations:  31%|███       | 249/800 [14:17<32:06,  3.50s/it]Generating Augmentations:  31%|███▏      | 250/800 [14:20<32:04,  3.50s/it]Generating Augmentations:  31%|███▏      | 251/800 [14:24<31:44,  3.47s/it]Generating Augmentations:  32%|███▏      | 252/800 [14:27<31:27,  3.45s/it]Generating Augmentations:  32%|███▏      | 253/800 [14:30<31:15,  3.43s/it]Generating Augmentations:  32%|███▏      | 254/800 [14:34<31:06,  3.42s/it]Generating Augmentations:  32%|███▏      | 255/800 [14:37<30:55,  3.40s/it]Generating Augmentations:  32%|███▏      | 256/800 [14:41<30:53,  3.41s/it]Generating Augmentations:  32%|███▏      | 257/800 [14:44<30:47,  3.40s/it]Generating Augmentations:  32%|███▏      | 258/800 [14:47<30:42,  3.40s/it]Generating Augmentations:  32%|███▏      | 259/800 [14:51<30:36,  3.39s/it]Generating Augmentations:  32%|███▎      | 260/800 [14:54<30:34,  3.40s/it]Generating Augmentations:  33%|███▎      | 261/800 [14:58<30:30,  3.40s/it]Generating Augmentations:  33%|███▎      | 262/800 [15:01<30:27,  3.40s/it]Generating Augmentations:  33%|███▎      | 263/800 [15:04<30:26,  3.40s/it]Generating Augmentations:  33%|███▎      | 264/800 [15:08<30:22,  3.40s/it]Generating Augmentations:  33%|███▎      | 265/800 [15:11<30:21,  3.41s/it]Generating Augmentations:  33%|███▎      | 266/800 [15:15<30:18,  3.40s/it]Generating Augmentations:  33%|███▎      | 267/800 [15:18<30:14,  3.41s/it]Generating Augmentations:  34%|███▎      | 268/800 [15:21<30:09,  3.40s/it]Generating Augmentations:  34%|███▎      | 269/800 [15:25<30:05,  3.40s/it]Generating Augmentations:  34%|███▍      | 270/800 [15:28<30:01,  3.40s/it]Generating Augmentations:  34%|███▍      | 271/800 [15:32<29:55,  3.39s/it]Generating Augmentations:  34%|███▍      | 272/800 [15:35<29:51,  3.39s/it]Generating Augmentations:  34%|███▍      | 273/800 [15:38<29:47,  3.39s/it]Generating Augmentations:  34%|███▍      | 274/800 [15:42<29:46,  3.40s/it]Generating Augmentations:  34%|███▍      | 275/800 [15:45<29:40,  3.39s/it]Generating Augmentations:  34%|███▍      | 276/800 [15:49<29:36,  3.39s/it]Generating Augmentations:  35%|███▍      | 277/800 [15:52<29:32,  3.39s/it]Generating Augmentations:  35%|███▍      | 278/800 [15:55<29:31,  3.39s/it]Generating Augmentations:  35%|███▍      | 279/800 [15:59<29:32,  3.40s/it]Generating Augmentations:  35%|███▌      | 280/800 [16:02<29:25,  3.39s/it]Generating Augmentations:  35%|███▌      | 281/800 [16:06<29:21,  3.39s/it]Generating Augmentations:  35%|███▌      | 282/800 [16:09<29:16,  3.39s/it]Generating Augmentations:  35%|███▌      | 283/800 [16:12<29:12,  3.39s/it]Generating Augmentations:  36%|███▌      | 284/800 [16:16<29:07,  3.39s/it]Generating Augmentations:  36%|███▌      | 285/800 [16:19<29:03,  3.39s/it]Generating Augmentations:  36%|███▌      | 286/800 [16:22<29:00,  3.39s/it]Generating Augmentations:  36%|███▌      | 287/800 [16:26<29:04,  3.40s/it]Generating Augmentations:  36%|███▌      | 288/800 [16:29<29:04,  3.41s/it]Generating Augmentations:  36%|███▌      | 289/800 [16:33<29:02,  3.41s/it]Generating Augmentations:  36%|███▋      | 290/800 [16:36<28:56,  3.41s/it]Generating Augmentations:  36%|███▋      | 291/800 [16:40<28:54,  3.41s/it]Generating Augmentations:  36%|███▋      | 292/800 [16:43<28:46,  3.40s/it]Generating Augmentations:  37%|███▋      | 293/800 [16:46<28:46,  3.40s/it]Generating Augmentations:  37%|███▋      | 294/800 [16:50<28:39,  3.40s/it]Generating Augmentations:  37%|███▋      | 295/800 [16:53<28:35,  3.40s/it]Generating Augmentations:  37%|███▋      | 296/800 [16:57<28:34,  3.40s/it]Generating Augmentations:  37%|███▋      | 297/800 [17:00<28:29,  3.40s/it]Generating Augmentations:  37%|███▋      | 298/800 [17:03<28:24,  3.39s/it]Generating Augmentations:  37%|███▋      | 299/800 [17:07<28:19,  3.39s/it]Generating Augmentations:  38%|███▊      | 300/800 [17:10<28:13,  3.39s/it]Generating Augmentations:  38%|███▊      | 301/800 [17:13<28:05,  3.38s/it]Generating Augmentations:  38%|███▊      | 302/800 [17:17<28:00,  3.37s/it]Generating Augmentations:  38%|███▊      | 303/800 [17:20<27:54,  3.37s/it]Generating Augmentations:  38%|███▊      | 304/800 [17:24<27:48,  3.36s/it]Generating Augmentations:  38%|███▊      | 305/800 [17:27<27:43,  3.36s/it]Generating Augmentations:  38%|███▊      | 306/800 [17:30<27:39,  3.36s/it]Generating Augmentations:  38%|███▊      | 307/800 [17:34<27:32,  3.35s/it]Generating Augmentations:  38%|███▊      | 308/800 [17:37<27:29,  3.35s/it]Generating Augmentations:  39%|███▊      | 309/800 [17:40<27:25,  3.35s/it]Generating Augmentations:  39%|███▉      | 310/800 [17:44<27:26,  3.36s/it]Generating Augmentations:  39%|███▉      | 311/800 [17:47<27:23,  3.36s/it]Generating Augmentations:  39%|███▉      | 312/800 [17:50<27:21,  3.36s/it]Generating Augmentations:  39%|███▉      | 313/800 [17:54<27:15,  3.36s/it]Generating Augmentations:  39%|███▉      | 314/800 [17:57<27:09,  3.35s/it]Generating Augmentations:  39%|███▉      | 315/800 [18:00<27:06,  3.35s/it]Generating Augmentations:  40%|███▉      | 316/800 [18:04<27:01,  3.35s/it]Generating Augmentations:  40%|███▉      | 317/800 [18:07<26:58,  3.35s/it]Generating Augmentations:  40%|███▉      | 318/800 [18:10<26:56,  3.35s/it]Generating Augmentations:  40%|███▉      | 319/800 [18:14<26:48,  3.34s/it]Generating Augmentations:  40%|████      | 320/800 [18:17<26:46,  3.35s/it]Generating Augmentations:  40%|████      | 321/800 [18:21<26:43,  3.35s/it]Generating Augmentations:  40%|████      | 322/800 [18:24<26:39,  3.35s/it]Generating Augmentations:  40%|████      | 323/800 [18:27<26:36,  3.35s/it]Generating Augmentations:  40%|████      | 324/800 [18:31<26:33,  3.35s/it]Generating Augmentations:  41%|████      | 325/800 [18:34<26:29,  3.35s/it]Generating Augmentations:  41%|████      | 326/800 [18:37<26:21,  3.34s/it]Generating Augmentations:  41%|████      | 327/800 [18:41<26:16,  3.33s/it]Generating Augmentations:  41%|████      | 328/800 [18:44<26:16,  3.34s/it]Generating Augmentations:  41%|████      | 329/800 [18:47<26:17,  3.35s/it]Generating Augmentations:  41%|████▏     | 330/800 [18:51<26:14,  3.35s/it]Generating Augmentations:  41%|████▏     | 331/800 [18:54<26:10,  3.35s/it]Generating Augmentations:  42%|████▏     | 332/800 [18:57<26:12,  3.36s/it]Generating Augmentations:  42%|████▏     | 333/800 [19:01<26:09,  3.36s/it]Generating Augmentations:  42%|████▏     | 334/800 [19:04<26:05,  3.36s/it]Generating Augmentations:  42%|████▏     | 335/800 [19:07<26:02,  3.36s/it]Generating Augmentations:  42%|████▏     | 336/800 [19:11<25:57,  3.36s/it]Generating Augmentations:  42%|████▏     | 337/800 [19:14<25:51,  3.35s/it]Generating Augmentations:  42%|████▏     | 338/800 [19:17<25:46,  3.35s/it]Generating Augmentations:  42%|████▏     | 339/800 [19:21<25:43,  3.35s/it]Generating Augmentations:  42%|████▎     | 340/800 [19:24<25:39,  3.35s/it]Generating Augmentations:  43%|████▎     | 341/800 [19:27<25:36,  3.35s/it]Generating Augmentations:  43%|████▎     | 342/800 [19:31<25:32,  3.35s/it]Generating Augmentations:  43%|████▎     | 343/800 [19:34<25:27,  3.34s/it]Generating Augmentations:  43%|████▎     | 344/800 [19:38<25:25,  3.35s/it]Generating Augmentations:  43%|████▎     | 345/800 [19:41<25:24,  3.35s/it]Generating Augmentations:  43%|████▎     | 346/800 [19:44<25:18,  3.35s/it]Generating Augmentations:  43%|████▎     | 347/800 [19:48<25:17,  3.35s/it]Generating Augmentations:  44%|████▎     | 348/800 [19:51<25:15,  3.35s/it]Generating Augmentations:  44%|████▎     | 349/800 [19:54<25:09,  3.35s/it]Generating Augmentations:  44%|████▍     | 350/800 [19:58<25:08,  3.35s/it]Generating Augmentations:  44%|████▍     | 351/800 [20:01<25:21,  3.39s/it]Generating Augmentations:  44%|████▍     | 352/800 [20:05<25:28,  3.41s/it]Generating Augmentations:  44%|████▍     | 353/800 [20:08<25:31,  3.43s/it]Generating Augmentations:  44%|████▍     | 354/800 [20:11<25:32,  3.44s/it]Generating Augmentations:  44%|████▍     | 355/800 [20:15<25:30,  3.44s/it]Generating Augmentations:  44%|████▍     | 356/800 [20:18<25:29,  3.44s/it]Generating Augmentations:  45%|████▍     | 357/800 [20:22<25:25,  3.44s/it]Generating Augmentations:  45%|████▍     | 358/800 [20:25<25:20,  3.44s/it]Generating Augmentations:  45%|████▍     | 359/800 [20:29<25:19,  3.45s/it]Generating Augmentations:  45%|████▌     | 360/800 [20:32<25:16,  3.45s/it]Generating Augmentations:  45%|████▌     | 361/800 [20:36<25:14,  3.45s/it]Generating Augmentations:  45%|████▌     | 362/800 [20:39<25:09,  3.45s/it]Generating Augmentations:  45%|████▌     | 363/800 [20:43<25:09,  3.45s/it]Generating Augmentations:  46%|████▌     | 364/800 [20:46<25:06,  3.46s/it]Generating Augmentations:  46%|████▌     | 365/800 [20:49<25:04,  3.46s/it]Generating Augmentations:  46%|████▌     | 366/800 [20:53<25:00,  3.46s/it]Generating Augmentations:  46%|████▌     | 367/800 [20:56<24:57,  3.46s/it]Generating Augmentations:  46%|████▌     | 368/800 [21:00<24:55,  3.46s/it]Generating Augmentations:  46%|████▌     | 369/800 [21:03<24:49,  3.46s/it]Generating Augmentations:  46%|████▋     | 370/800 [21:07<24:45,  3.45s/it]Generating Augmentations:  46%|████▋     | 371/800 [21:10<24:42,  3.46s/it]Generating Augmentations:  46%|████▋     | 372/800 [21:14<24:38,  3.45s/it]Generating Augmentations:  47%|████▋     | 373/800 [21:17<24:34,  3.45s/it]Generating Augmentations:  47%|████▋     | 374/800 [21:21<24:34,  3.46s/it]Generating Augmentations:  47%|████▋     | 375/800 [21:24<24:29,  3.46s/it]Generating Augmentations:  47%|████▋     | 376/800 [21:27<24:26,  3.46s/it]Generating Augmentations:  47%|████▋     | 377/800 [21:31<24:21,  3.46s/it]Generating Augmentations:  47%|████▋     | 378/800 [21:34<24:19,  3.46s/it]Generating Augmentations:  47%|████▋     | 379/800 [21:38<24:14,  3.46s/it]Generating Augmentations:  48%|████▊     | 380/800 [21:41<24:11,  3.46s/it]Generating Augmentations:  48%|████▊     | 381/800 [21:45<24:07,  3.46s/it]Generating Augmentations:  48%|████▊     | 382/800 [21:48<24:04,  3.46s/it]Generating Augmentations:  48%|████▊     | 383/800 [21:52<24:00,  3.45s/it]Generating Augmentations:  48%|████▊     | 384/800 [21:55<23:59,  3.46s/it]Generating Augmentations:  48%|████▊     | 385/800 [21:59<23:55,  3.46s/it]Generating Augmentations:  48%|████▊     | 386/800 [22:02<23:54,  3.46s/it]Generating Augmentations:  48%|████▊     | 387/800 [22:06<23:49,  3.46s/it]Generating Augmentations:  48%|████▊     | 388/800 [22:09<23:46,  3.46s/it]Generating Augmentations:  49%|████▊     | 389/800 [22:12<23:42,  3.46s/it]Generating Augmentations:  49%|████▉     | 390/800 [22:16<23:38,  3.46s/it]Generating Augmentations:  49%|████▉     | 391/800 [22:19<23:35,  3.46s/it]Generating Augmentations:  49%|████▉     | 392/800 [22:23<23:31,  3.46s/it]Generating Augmentations:  49%|████▉     | 393/800 [22:26<23:28,  3.46s/it]Generating Augmentations:  49%|████▉     | 394/800 [22:30<23:23,  3.46s/it]Generating Augmentations:  49%|████▉     | 395/800 [22:33<23:20,  3.46s/it]Generating Augmentations:  50%|████▉     | 396/800 [22:37<23:19,  3.46s/it]Generating Augmentations:  50%|████▉     | 397/800 [22:40<23:14,  3.46s/it]Generating Augmentations:  50%|████▉     | 398/800 [22:44<23:09,  3.46s/it]Generating Augmentations:  50%|████▉     | 399/800 [22:47<23:05,  3.45s/it]Generating Augmentations:  50%|█████     | 400/800 [22:50<23:00,  3.45s/it]Generating Augmentations:  50%|█████     | 401/800 [22:54<22:57,  3.45s/it]Generating Augmentations:  50%|█████     | 402/800 [22:57<22:52,  3.45s/it]Generating Augmentations:  50%|█████     | 403/800 [23:01<22:47,  3.45s/it]Generating Augmentations:  50%|█████     | 404/800 [23:04<22:43,  3.44s/it]Generating Augmentations:  51%|█████     | 405/800 [23:08<22:38,  3.44s/it]Generating Augmentations:  51%|█████     | 406/800 [23:11<22:36,  3.44s/it]Generating Augmentations:  51%|█████     | 407/800 [23:15<22:34,  3.45s/it]Generating Augmentations:  51%|█████     | 408/800 [23:18<22:30,  3.45s/it]Generating Augmentations:  51%|█████     | 409/800 [23:21<22:28,  3.45s/it]Generating Augmentations:  51%|█████▏    | 410/800 [23:25<22:26,  3.45s/it]Generating Augmentations:  51%|█████▏    | 411/800 [23:28<22:22,  3.45s/it]Generating Augmentations:  52%|█████▏    | 412/800 [23:32<22:20,  3.45s/it]Generating Augmentations:  52%|█████▏    | 413/800 [23:35<22:15,  3.45s/it]Generating Augmentations:  52%|█████▏    | 414/800 [23:39<22:10,  3.45s/it]Generating Augmentations:  52%|█████▏    | 415/800 [23:42<22:07,  3.45s/it]Generating Augmentations:  52%|█████▏    | 416/800 [23:46<22:00,  3.44s/it]Generating Augmentations:  52%|█████▏    | 417/800 [23:49<21:57,  3.44s/it]Generating Augmentations:  52%|█████▏    | 418/800 [23:53<21:56,  3.45s/it]Generating Augmentations:  52%|█████▏    | 419/800 [23:56<21:53,  3.45s/it]Generating Augmentations:  52%|█████▎    | 420/800 [23:59<21:51,  3.45s/it]Generating Augmentations:  53%|█████▎    | 421/800 [24:03<21:48,  3.45s/it]Generating Augmentations:  53%|█████▎    | 422/800 [24:06<21:46,  3.46s/it]Generating Augmentations:  53%|█████▎    | 423/800 [24:10<21:43,  3.46s/it]Generating Augmentations:  53%|█████▎    | 424/800 [24:13<21:41,  3.46s/it]Generating Augmentations:  53%|█████▎    | 425/800 [24:17<21:35,  3.45s/it]Generating Augmentations:  53%|█████▎    | 426/800 [24:20<21:33,  3.46s/it]Generating Augmentations:  53%|█████▎    | 427/800 [24:24<21:29,  3.46s/it]Generating Augmentations:  54%|█████▎    | 428/800 [24:27<21:25,  3.46s/it]Generating Augmentations:  54%|█████▎    | 429/800 [24:31<21:21,  3.45s/it]Generating Augmentations:  54%|█████▍    | 430/800 [24:34<21:17,  3.45s/it]Generating Augmentations:  54%|█████▍    | 431/800 [24:37<21:13,  3.45s/it]Generating Augmentations:  54%|█████▍    | 432/800 [24:41<21:11,  3.46s/it]Generating Augmentations:  54%|█████▍    | 433/800 [24:44<21:08,  3.46s/it]Generating Augmentations:  54%|█████▍    | 434/800 [24:48<21:02,  3.45s/it]Generating Augmentations:  54%|█████▍    | 435/800 [24:51<20:56,  3.44s/it]Generating Augmentations:  55%|█████▍    | 436/800 [24:55<20:55,  3.45s/it]Generating Augmentations:  55%|█████▍    | 437/800 [24:58<20:49,  3.44s/it]Generating Augmentations:  55%|█████▍    | 438/800 [25:02<20:47,  3.45s/it]Generating Augmentations:  55%|█████▍    | 439/800 [25:05<20:42,  3.44s/it]Generating Augmentations:  55%|█████▌    | 440/800 [25:08<20:40,  3.45s/it]Generating Augmentations:  55%|█████▌    | 441/800 [25:12<20:36,  3.44s/it]Generating Augmentations:  55%|█████▌    | 442/800 [25:15<20:32,  3.44s/it]Generating Augmentations:  55%|█████▌    | 443/800 [25:19<20:29,  3.45s/it]Generating Augmentations:  56%|█████▌    | 444/800 [25:22<20:24,  3.44s/it]Generating Augmentations:  56%|█████▌    | 445/800 [25:26<20:21,  3.44s/it]Generating Augmentations:  56%|█████▌    | 446/800 [25:29<20:17,  3.44s/it]Generating Augmentations:  56%|█████▌    | 447/800 [25:33<20:16,  3.44s/it]Generating Augmentations:  56%|█████▌    | 448/800 [25:36<20:17,  3.46s/it]Generating Augmentations:  56%|█████▌    | 449/800 [25:39<20:12,  3.45s/it]Generating Augmentations:  56%|█████▋    | 450/800 [25:43<20:09,  3.46s/it]Generating Augmentations:  56%|█████▋    | 451/800 [25:46<20:02,  3.45s/it]Generating Augmentations:  56%|█████▋    | 452/800 [25:50<19:55,  3.43s/it]Generating Augmentations:  57%|█████▋    | 453/800 [25:53<19:47,  3.42s/it]Generating Augmentations:  57%|█████▋    | 454/800 [25:57<19:42,  3.42s/it]Generating Augmentations:  57%|█████▋    | 455/800 [26:00<19:36,  3.41s/it]Generating Augmentations:  57%|█████▋    | 456/800 [26:03<19:27,  3.39s/it]Generating Augmentations:  57%|█████▋    | 457/800 [26:07<19:22,  3.39s/it]Generating Augmentations:  57%|█████▋    | 458/800 [26:10<19:21,  3.40s/it]Generating Augmentations:  57%|█████▋    | 459/800 [26:14<19:18,  3.40s/it]Generating Augmentations:  57%|█████▊    | 460/800 [26:17<19:18,  3.41s/it]Generating Augmentations:  58%|█████▊    | 461/800 [26:20<19:15,  3.41s/it]Generating Augmentations:  58%|█████▊    | 462/800 [26:24<19:08,  3.40s/it]Generating Augmentations:  58%|█████▊    | 463/800 [26:27<19:05,  3.40s/it]Generating Augmentations:  58%|█████▊    | 464/800 [26:31<19:01,  3.40s/it]Generating Augmentations:  58%|█████▊    | 465/800 [26:34<18:57,  3.40s/it]Generating Augmentations:  58%|█████▊    | 466/800 [26:37<18:53,  3.39s/it]Generating Augmentations:  58%|█████▊    | 467/800 [26:41<18:51,  3.40s/it]Generating Augmentations:  58%|█████▊    | 468/800 [26:44<18:48,  3.40s/it]Generating Augmentations:  59%|█████▊    | 469/800 [26:47<18:43,  3.39s/it]Generating Augmentations:  59%|█████▉    | 470/800 [26:51<18:44,  3.41s/it]Generating Augmentations:  59%|█████▉    | 471/800 [26:54<18:43,  3.41s/it]Generating Augmentations:  59%|█████▉    | 472/800 [26:58<18:39,  3.41s/it]Generating Augmentations:  59%|█████▉    | 473/800 [27:01<18:31,  3.40s/it]Generating Augmentations:  59%|█████▉    | 474/800 [27:04<18:23,  3.39s/it]Generating Augmentations:  59%|█████▉    | 475/800 [27:08<18:20,  3.39s/it]Generating Augmentations:  60%|█████▉    | 476/800 [27:11<18:18,  3.39s/it]Generating Augmentations:  60%|█████▉    | 477/800 [27:15<18:15,  3.39s/it]Generating Augmentations:  60%|█████▉    | 478/800 [27:18<18:10,  3.39s/it]Generating Augmentations:  60%|█████▉    | 479/800 [27:21<18:07,  3.39s/it]Generating Augmentations:  60%|██████    | 480/800 [27:25<18:03,  3.38s/it]Generating Augmentations:  60%|██████    | 481/800 [27:28<17:59,  3.38s/it]Generating Augmentations:  60%|██████    | 482/800 [27:32<17:53,  3.38s/it]Generating Augmentations:  60%|██████    | 483/800 [27:35<17:52,  3.38s/it]Generating Augmentations:  60%|██████    | 484/800 [27:38<17:48,  3.38s/it]Generating Augmentations:  61%|██████    | 485/800 [27:42<17:45,  3.38s/it]Generating Augmentations:  61%|██████    | 486/800 [27:45<17:44,  3.39s/it]Generating Augmentations:  61%|██████    | 487/800 [27:49<17:41,  3.39s/it]Generating Augmentations:  61%|██████    | 488/800 [27:52<17:34,  3.38s/it]Generating Augmentations:  61%|██████    | 489/800 [27:55<17:30,  3.38s/it]Generating Augmentations:  61%|██████▏   | 490/800 [27:59<17:28,  3.38s/it]Generating Augmentations:  61%|██████▏   | 491/800 [28:02<17:25,  3.38s/it]Generating Augmentations:  62%|██████▏   | 492/800 [28:05<17:26,  3.40s/it]Generating Augmentations:  62%|██████▏   | 493/800 [28:09<17:25,  3.40s/it]Generating Augmentations:  62%|██████▏   | 494/800 [28:12<17:21,  3.40s/it]Generating Augmentations:  62%|██████▏   | 495/800 [28:16<17:18,  3.40s/it]Generating Augmentations:  62%|██████▏   | 496/800 [28:19<17:13,  3.40s/it]Generating Augmentations:  62%|██████▏   | 497/800 [28:22<17:11,  3.40s/it]Generating Augmentations:  62%|██████▏   | 498/800 [28:26<17:05,  3.40s/it]Generating Augmentations:  62%|██████▏   | 499/800 [28:29<16:59,  3.39s/it]Generating Augmentations:  62%|██████▎   | 500/800 [28:33<16:57,  3.39s/it]Generating Augmentations:  63%|██████▎   | 501/800 [28:36<16:54,  3.39s/it]Generating Augmentations:  63%|██████▎   | 502/800 [28:39<16:51,  3.39s/it]Generating Augmentations:  63%|██████▎   | 503/800 [28:43<16:47,  3.39s/it]Generating Augmentations:  63%|██████▎   | 504/800 [28:46<16:46,  3.40s/it]Generating Augmentations:  63%|██████▎   | 505/800 [28:50<16:42,  3.40s/it]Generating Augmentations:  63%|██████▎   | 506/800 [28:53<16:39,  3.40s/it]Generating Augmentations:  63%|██████▎   | 507/800 [28:56<16:37,  3.40s/it]Generating Augmentations:  64%|██████▎   | 508/800 [29:00<16:35,  3.41s/it]Generating Augmentations:  64%|██████▎   | 509/800 [29:03<16:31,  3.41s/it]Generating Augmentations:  64%|██████▍   | 510/800 [29:07<16:26,  3.40s/it]Generating Augmentations:  64%|██████▍   | 511/800 [29:10<16:23,  3.40s/it]Generating Augmentations:  64%|██████▍   | 512/800 [29:13<16:19,  3.40s/it]Generating Augmentations:  64%|██████▍   | 513/800 [29:17<16:15,  3.40s/it]Generating Augmentations:  64%|██████▍   | 514/800 [29:20<16:12,  3.40s/it]Generating Augmentations:  64%|██████▍   | 515/800 [29:24<16:08,  3.40s/it]Generating Augmentations:  64%|██████▍   | 516/800 [29:27<16:05,  3.40s/it]Generating Augmentations:  65%|██████▍   | 517/800 [29:30<16:01,  3.40s/it]Generating Augmentations:  65%|██████▍   | 518/800 [29:34<15:58,  3.40s/it]Generating Augmentations:  65%|██████▍   | 519/800 [29:37<15:53,  3.39s/it]Generating Augmentations:  65%|██████▌   | 520/800 [29:41<15:49,  3.39s/it]Generating Augmentations:  65%|██████▌   | 521/800 [29:44<15:45,  3.39s/it]Generating Augmentations:  65%|██████▌   | 522/800 [29:47<15:42,  3.39s/it]Generating Augmentations:  65%|██████▌   | 523/800 [29:51<15:40,  3.40s/it]Generating Augmentations:  66%|██████▌   | 524/800 [29:54<15:38,  3.40s/it]Generating Augmentations:  66%|██████▌   | 525/800 [29:58<15:34,  3.40s/it]Generating Augmentations:  66%|██████▌   | 526/800 [30:01<15:31,  3.40s/it]Generating Augmentations:  66%|██████▌   | 527/800 [30:04<15:28,  3.40s/it]Generating Augmentations:  66%|██████▌   | 528/800 [30:08<15:25,  3.40s/it]Generating Augmentations:  66%|██████▌   | 529/800 [30:11<15:22,  3.40s/it]Generating Augmentations:  66%|██████▋   | 530/800 [30:15<15:17,  3.40s/it]Generating Augmentations:  66%|██████▋   | 531/800 [30:18<15:14,  3.40s/it]Generating Augmentations:  66%|██████▋   | 532/800 [30:21<15:09,  3.39s/it]Generating Augmentations:  67%|██████▋   | 533/800 [30:25<15:05,  3.39s/it]Generating Augmentations:  67%|██████▋   | 534/800 [30:28<15:01,  3.39s/it]Generating Augmentations:  67%|██████▋   | 535/800 [30:32<14:57,  3.39s/it]Generating Augmentations:  67%|██████▋   | 536/800 [30:35<14:54,  3.39s/it]Generating Augmentations:  67%|██████▋   | 537/800 [30:38<14:51,  3.39s/it]Generating Augmentations:  67%|██████▋   | 538/800 [30:42<14:48,  3.39s/it]Generating Augmentations:  67%|██████▋   | 539/800 [30:45<14:45,  3.39s/it]Generating Augmentations:  68%|██████▊   | 540/800 [30:49<14:42,  3.39s/it]Generating Augmentations:  68%|██████▊   | 541/800 [30:52<14:39,  3.40s/it]Generating Augmentations:  68%|██████▊   | 542/800 [30:55<14:35,  3.40s/it]Generating Augmentations:  68%|██████▊   | 543/800 [30:59<14:33,  3.40s/it]Generating Augmentations:  68%|██████▊   | 544/800 [31:02<14:31,  3.40s/it]Generating Augmentations:  68%|██████▊   | 545/800 [31:06<14:27,  3.40s/it]Generating Augmentations:  68%|██████▊   | 546/800 [31:09<14:24,  3.40s/it]Generating Augmentations:  68%|██████▊   | 547/800 [31:12<14:21,  3.40s/it]Generating Augmentations:  68%|██████▊   | 548/800 [31:16<14:18,  3.41s/it]Generating Augmentations:  69%|██████▊   | 549/800 [31:19<14:13,  3.40s/it]Generating Augmentations:  69%|██████▉   | 550/800 [31:23<14:09,  3.40s/it]Generating Augmentations:  69%|██████▉   | 551/800 [31:26<14:09,  3.41s/it]Generating Augmentations:  69%|██████▉   | 552/800 [31:29<14:06,  3.41s/it]Generating Augmentations:  69%|██████▉   | 553/800 [31:33<14:05,  3.42s/it]Generating Augmentations:  69%|██████▉   | 554/800 [31:36<14:01,  3.42s/it]Generating Augmentations:  69%|██████▉   | 555/800 [31:40<13:57,  3.42s/it]Generating Augmentations:  70%|██████▉   | 556/800 [31:43<13:54,  3.42s/it]Generating Augmentations:  70%|██████▉   | 557/800 [31:47<13:50,  3.42s/it]Generating Augmentations:  70%|██████▉   | 558/800 [31:50<13:47,  3.42s/it]Generating Augmentations:  70%|██████▉   | 559/800 [31:53<13:44,  3.42s/it]Generating Augmentations:  70%|███████   | 560/800 [31:57<13:42,  3.43s/it]Generating Augmentations:  70%|███████   | 561/800 [32:00<13:38,  3.42s/it]Generating Augmentations:  70%|███████   | 562/800 [32:04<13:35,  3.43s/it]Generating Augmentations:  70%|███████   | 563/800 [32:07<13:32,  3.43s/it]Generating Augmentations:  70%|███████   | 564/800 [32:10<13:29,  3.43s/it]Generating Augmentations:  71%|███████   | 565/800 [32:14<13:26,  3.43s/it]Generating Augmentations:  71%|███████   | 566/800 [32:17<13:23,  3.43s/it]Generating Augmentations:  71%|███████   | 567/800 [32:21<13:19,  3.43s/it]Generating Augmentations:  71%|███████   | 568/800 [32:24<13:17,  3.44s/it]Generating Augmentations:  71%|███████   | 569/800 [32:28<13:13,  3.44s/it]Generating Augmentations:  71%|███████▏  | 570/800 [32:31<13:10,  3.44s/it]Generating Augmentations:  71%|███████▏  | 571/800 [32:35<13:07,  3.44s/it]Generating Augmentations:  72%|███████▏  | 572/800 [32:38<13:02,  3.43s/it]Generating Augmentations:  72%|███████▏  | 573/800 [32:41<12:58,  3.43s/it]Generating Augmentations:  72%|███████▏  | 574/800 [32:45<12:54,  3.43s/it]Generating Augmentations:  72%|███████▏  | 575/800 [32:48<12:51,  3.43s/it]Generating Augmentations:  72%|███████▏  | 576/800 [32:52<12:49,  3.43s/it]Generating Augmentations:  72%|███████▏  | 577/800 [32:55<12:44,  3.43s/it]Generating Augmentations:  72%|███████▏  | 578/800 [32:59<12:39,  3.42s/it]Generating Augmentations:  72%|███████▏  | 579/800 [33:02<12:36,  3.42s/it]Generating Augmentations:  72%|███████▎  | 580/800 [33:05<12:32,  3.42s/it]Generating Augmentations:  73%|███████▎  | 581/800 [33:09<12:30,  3.42s/it]Generating Augmentations:  73%|███████▎  | 582/800 [33:12<12:27,  3.43s/it]Generating Augmentations:  73%|███████▎  | 583/800 [33:16<12:24,  3.43s/it]Generating Augmentations:  73%|███████▎  | 584/800 [33:19<12:22,  3.44s/it]Generating Augmentations:  73%|███████▎  | 585/800 [33:23<12:17,  3.43s/it]Generating Augmentations:  73%|███████▎  | 586/800 [33:26<12:13,  3.43s/it]Generating Augmentations:  73%|███████▎  | 587/800 [33:29<12:09,  3.43s/it]Generating Augmentations:  74%|███████▎  | 588/800 [33:33<12:07,  3.43s/it]Generating Augmentations:  74%|███████▎  | 589/800 [33:36<12:06,  3.44s/it]Generating Augmentations:  74%|███████▍  | 590/800 [33:40<12:03,  3.44s/it]Generating Augmentations:  74%|███████▍  | 591/800 [33:43<11:59,  3.44s/it]Generating Augmentations:  74%|███████▍  | 592/800 [33:47<11:54,  3.43s/it]Generating Augmentations:  74%|███████▍  | 593/800 [33:50<11:50,  3.43s/it]Generating Augmentations:  74%|███████▍  | 594/800 [33:53<11:46,  3.43s/it]Generating Augmentations:  74%|███████▍  | 595/800 [33:57<11:42,  3.43s/it]Generating Augmentations:  74%|███████▍  | 596/800 [34:00<11:38,  3.42s/it]Generating Augmentations:  75%|███████▍  | 597/800 [34:04<11:34,  3.42s/it]Generating Augmentations:  75%|███████▍  | 598/800 [34:07<11:32,  3.43s/it]Generating Augmentations:  75%|███████▍  | 599/800 [34:11<11:29,  3.43s/it]Generating Augmentations:  75%|███████▌  | 600/800 [34:14<11:25,  3.43s/it]Generating Augmentations:  75%|███████▌  | 601/800 [34:17<11:19,  3.41s/it]Generating Augmentations:  75%|███████▌  | 602/800 [34:21<11:12,  3.40s/it]Generating Augmentations:  75%|███████▌  | 603/800 [34:24<11:12,  3.41s/it]Generating Augmentations:  76%|███████▌  | 604/800 [34:28<11:09,  3.42s/it]Generating Augmentations:  76%|███████▌  | 605/800 [34:31<11:05,  3.41s/it]Generating Augmentations:  76%|███████▌  | 606/800 [34:34<11:02,  3.41s/it]Generating Augmentations:  76%|███████▌  | 607/800 [34:38<10:59,  3.41s/it]Generating Augmentations:  76%|███████▌  | 608/800 [34:41<10:56,  3.42s/it]Generating Augmentations:  76%|███████▌  | 609/800 [34:45<10:50,  3.41s/it]Generating Augmentations:  76%|███████▋  | 610/800 [34:48<10:46,  3.40s/it]Generating Augmentations:  76%|███████▋  | 611/800 [34:51<10:43,  3.40s/it]Generating Augmentations:  76%|███████▋  | 612/800 [34:55<10:40,  3.41s/it]Generating Augmentations:  77%|███████▋  | 613/800 [34:58<10:36,  3.40s/it]Generating Augmentations:  77%|███████▋  | 614/800 [35:02<10:33,  3.40s/it]Generating Augmentations:  77%|███████▋  | 615/800 [35:05<10:30,  3.41s/it]Generating Augmentations:  77%|███████▋  | 616/800 [35:08<10:25,  3.40s/it]Generating Augmentations:  77%|███████▋  | 617/800 [35:12<10:23,  3.41s/it]Generating Augmentations:  77%|███████▋  | 618/800 [35:15<10:20,  3.41s/it]Generating Augmentations:  77%|███████▋  | 619/800 [35:19<10:16,  3.41s/it]Generating Augmentations:  78%|███████▊  | 620/800 [35:22<10:13,  3.41s/it]Generating Augmentations:  78%|███████▊  | 621/800 [35:26<10:09,  3.40s/it]Generating Augmentations:  78%|███████▊  | 622/800 [35:29<10:05,  3.40s/it]Generating Augmentations:  78%|███████▊  | 623/800 [35:32<10:01,  3.40s/it]Generating Augmentations:  78%|███████▊  | 624/800 [35:36<09:59,  3.41s/it]Generating Augmentations:  78%|███████▊  | 625/800 [35:39<09:56,  3.41s/it]Generating Augmentations:  78%|███████▊  | 626/800 [35:43<09:53,  3.41s/it]Generating Augmentations:  78%|███████▊  | 627/800 [35:46<09:50,  3.42s/it]Generating Augmentations:  78%|███████▊  | 628/800 [35:49<09:46,  3.41s/it]Generating Augmentations:  79%|███████▊  | 629/800 [35:53<09:40,  3.40s/it]Generating Augmentations:  79%|███████▉  | 630/800 [35:56<09:37,  3.40s/it]Generating Augmentations:  79%|███████▉  | 631/800 [36:00<09:34,  3.40s/it]Generating Augmentations:  79%|███████▉  | 632/800 [36:03<09:31,  3.40s/it]Generating Augmentations:  79%|███████▉  | 633/800 [36:06<09:26,  3.39s/it]Generating Augmentations:  79%|███████▉  | 634/800 [36:10<09:24,  3.40s/it]Generating Augmentations:  79%|███████▉  | 635/800 [36:13<09:21,  3.40s/it]Generating Augmentations:  80%|███████▉  | 636/800 [36:17<09:18,  3.40s/it]Generating Augmentations:  80%|███████▉  | 637/800 [36:20<09:14,  3.40s/it]Generating Augmentations:  80%|███████▉  | 638/800 [36:23<09:10,  3.40s/it]Generating Augmentations:  80%|███████▉  | 639/800 [36:27<09:07,  3.40s/it]Generating Augmentations:  80%|████████  | 640/800 [36:30<09:05,  3.41s/it]Generating Augmentations:  80%|████████  | 641/800 [36:34<09:00,  3.40s/it]Generating Augmentations:  80%|████████  | 642/800 [36:37<08:58,  3.41s/it]Generating Augmentations:  80%|████████  | 643/800 [36:40<08:55,  3.41s/it]Generating Augmentations:  80%|████████  | 644/800 [36:44<08:51,  3.41s/it]Generating Augmentations:  81%|████████  | 645/800 [36:47<08:49,  3.42s/it]Generating Augmentations:  81%|████████  | 646/800 [36:51<08:45,  3.41s/it]Generating Augmentations:  81%|████████  | 647/800 [36:54<08:42,  3.42s/it]Generating Augmentations:  81%|████████  | 648/800 [36:57<08:39,  3.42s/it]Generating Augmentations:  81%|████████  | 649/800 [37:01<08:35,  3.42s/it]Generating Augmentations:  81%|████████▏ | 650/800 [37:04<08:30,  3.41s/it]Generating Augmentations:  81%|████████▏ | 651/800 [37:08<08:28,  3.41s/it]Generating Augmentations:  82%|████████▏ | 652/800 [37:11<08:25,  3.41s/it]Generating Augmentations:  82%|████████▏ | 653/800 [37:15<08:21,  3.41s/it]Generating Augmentations:  82%|████████▏ | 654/800 [37:18<08:17,  3.41s/it]Generating Augmentations:  82%|████████▏ | 655/800 [37:21<08:13,  3.41s/it]Generating Augmentations:  82%|████████▏ | 656/800 [37:25<08:09,  3.40s/it]Generating Augmentations:  82%|████████▏ | 657/800 [37:28<08:06,  3.40s/it]Generating Augmentations:  82%|████████▏ | 658/800 [37:32<08:03,  3.41s/it]Generating Augmentations:  82%|████████▏ | 659/800 [37:35<07:59,  3.40s/it]Generating Augmentations:  82%|████████▎ | 660/800 [37:38<07:56,  3.40s/it]Generating Augmentations:  83%|████████▎ | 661/800 [37:42<07:54,  3.41s/it]Generating Augmentations:  83%|████████▎ | 662/800 [37:45<07:50,  3.41s/it]Generating Augmentations:  83%|████████▎ | 663/800 [37:49<07:46,  3.40s/it]Generating Augmentations:  83%|████████▎ | 664/800 [37:52<07:43,  3.41s/it]Generating Augmentations:  83%|████████▎ | 665/800 [37:55<07:39,  3.40s/it]Generating Augmentations:  83%|████████▎ | 666/800 [37:59<07:37,  3.42s/it]Generating Augmentations:  83%|████████▎ | 667/800 [38:02<07:34,  3.42s/it]Generating Augmentations:  84%|████████▎ | 668/800 [38:06<07:32,  3.43s/it]Generating Augmentations:  84%|████████▎ | 669/800 [38:09<07:28,  3.42s/it]Generating Augmentations:  84%|████████▍ | 670/800 [38:13<07:25,  3.43s/it]Generating Augmentations:  84%|████████▍ | 671/800 [38:16<07:21,  3.42s/it]Generating Augmentations:  84%|████████▍ | 672/800 [38:19<07:14,  3.40s/it]Generating Augmentations:  84%|████████▍ | 673/800 [38:23<07:11,  3.40s/it]Generating Augmentations:  84%|████████▍ | 674/800 [38:26<07:07,  3.39s/it]Generating Augmentations:  84%|████████▍ | 675/800 [38:29<07:04,  3.40s/it]Generating Augmentations:  84%|████████▍ | 676/800 [38:33<07:00,  3.39s/it]Generating Augmentations:  85%|████████▍ | 677/800 [38:36<06:58,  3.40s/it]Generating Augmentations:  85%|████████▍ | 678/800 [38:40<06:55,  3.40s/it]Generating Augmentations:  85%|████████▍ | 679/800 [38:43<06:51,  3.40s/it]Generating Augmentations:  85%|████████▌ | 680/800 [38:46<06:47,  3.39s/it]Generating Augmentations:  85%|████████▌ | 681/800 [38:50<06:43,  3.39s/it]Generating Augmentations:  85%|████████▌ | 682/800 [38:53<06:41,  3.40s/it]Generating Augmentations:  85%|████████▌ | 683/800 [38:57<06:38,  3.41s/it]Generating Augmentations:  86%|████████▌ | 684/800 [39:00<06:35,  3.41s/it]Generating Augmentations:  86%|████████▌ | 685/800 [39:04<06:31,  3.40s/it]Generating Augmentations:  86%|████████▌ | 686/800 [39:07<06:27,  3.40s/it]Generating Augmentations:  86%|████████▌ | 687/800 [39:10<06:24,  3.40s/it]Generating Augmentations:  86%|████████▌ | 688/800 [39:14<06:20,  3.40s/it]Generating Augmentations:  86%|████████▌ | 689/800 [39:17<06:18,  3.41s/it]Generating Augmentations:  86%|████████▋ | 690/800 [39:21<06:14,  3.40s/it]Generating Augmentations:  86%|████████▋ | 691/800 [39:24<06:10,  3.40s/it]Generating Augmentations:  86%|████████▋ | 692/800 [39:27<06:07,  3.40s/it]Generating Augmentations:  87%|████████▋ | 693/800 [39:31<06:05,  3.41s/it]Generating Augmentations:  87%|████████▋ | 694/800 [39:34<06:01,  3.41s/it]Generating Augmentations:  87%|████████▋ | 695/800 [39:38<05:58,  3.41s/it]Generating Augmentations:  87%|████████▋ | 696/800 [39:41<05:54,  3.40s/it]Generating Augmentations:  87%|████████▋ | 697/800 [39:44<05:50,  3.40s/it]Generating Augmentations:  87%|████████▋ | 698/800 [39:48<05:47,  3.40s/it]Generating Augmentations:  87%|████████▋ | 699/800 [39:51<05:44,  3.41s/it]Generating Augmentations:  88%|████████▊ | 700/800 [39:55<05:41,  3.41s/it]Generating Augmentations:  88%|████████▊ | 701/800 [39:58<05:41,  3.45s/it]Generating Augmentations:  88%|████████▊ | 702/800 [40:02<05:40,  3.47s/it]Generating Augmentations:  88%|████████▊ | 703/800 [40:05<05:38,  3.49s/it]Generating Augmentations:  88%|████████▊ | 704/800 [40:09<05:35,  3.50s/it]Generating Augmentations:  88%|████████▊ | 705/800 [40:12<05:33,  3.51s/it]Generating Augmentations:  88%|████████▊ | 706/800 [40:16<05:30,  3.52s/it]Generating Augmentations:  88%|████████▊ | 707/800 [40:19<05:27,  3.52s/it]Generating Augmentations:  88%|████████▊ | 708/800 [40:23<05:23,  3.52s/it]Generating Augmentations:  89%|████████▊ | 709/800 [40:26<05:20,  3.53s/it]Generating Augmentations:  89%|████████▉ | 710/800 [40:30<05:17,  3.53s/it]Generating Augmentations:  89%|████████▉ | 711/800 [40:33<05:13,  3.53s/it]Generating Augmentations:  89%|████████▉ | 712/800 [40:37<05:10,  3.53s/it]Generating Augmentations:  89%|████████▉ | 713/800 [40:40<05:06,  3.53s/it]Generating Augmentations:  89%|████████▉ | 714/800 [40:44<05:03,  3.53s/it]Generating Augmentations:  89%|████████▉ | 715/800 [40:48<04:59,  3.52s/it]Generating Augmentations:  90%|████████▉ | 716/800 [40:51<04:55,  3.52s/it]Generating Augmentations:  90%|████████▉ | 717/800 [40:55<04:52,  3.52s/it]Generating Augmentations:  90%|████████▉ | 718/800 [40:58<04:48,  3.52s/it]Generating Augmentations:  90%|████████▉ | 719/800 [41:02<04:45,  3.53s/it]Generating Augmentations:  90%|█████████ | 720/800 [41:05<04:41,  3.52s/it]Generating Augmentations:  90%|█████████ | 721/800 [41:09<04:38,  3.52s/it]Generating Augmentations:  90%|█████████ | 722/800 [41:12<04:34,  3.52s/it]Generating Augmentations:  90%|█████████ | 723/800 [41:16<04:31,  3.52s/it]Generating Augmentations:  90%|█████████ | 724/800 [41:19<04:27,  3.52s/it]Generating Augmentations:  91%|█████████ | 725/800 [41:23<04:23,  3.51s/it]Generating Augmentations:  91%|█████████ | 726/800 [41:26<04:20,  3.52s/it]Generating Augmentations:  91%|█████████ | 727/800 [41:30<04:16,  3.52s/it]Generating Augmentations:  91%|█████████ | 728/800 [41:33<04:13,  3.52s/it]Generating Augmentations:  91%|█████████ | 729/800 [41:37<04:09,  3.51s/it]Generating Augmentations:  91%|█████████▏| 730/800 [41:40<04:06,  3.52s/it]Generating Augmentations:  91%|█████████▏| 731/800 [41:44<04:02,  3.51s/it]Generating Augmentations:  92%|█████████▏| 732/800 [41:47<03:58,  3.51s/it]Generating Augmentations:  92%|█████████▏| 733/800 [41:51<03:55,  3.51s/it]Generating Augmentations:  92%|█████████▏| 734/800 [41:54<03:51,  3.51s/it]Generating Augmentations:  92%|█████████▏| 735/800 [41:58<03:48,  3.51s/it]Generating Augmentations:  92%|█████████▏| 736/800 [42:01<03:45,  3.52s/it]Generating Augmentations:  92%|█████████▏| 737/800 [42:05<03:42,  3.53s/it]Generating Augmentations:  92%|█████████▏| 738/800 [42:08<03:38,  3.52s/it]Generating Augmentations:  92%|█████████▏| 739/800 [42:12<03:34,  3.52s/it]Generating Augmentations:  92%|█████████▎| 740/800 [42:15<03:31,  3.52s/it]Generating Augmentations:  93%|█████████▎| 741/800 [42:19<03:27,  3.53s/it]Generating Augmentations:  93%|█████████▎| 742/800 [42:23<03:24,  3.52s/it]Generating Augmentations:  93%|█████████▎| 743/800 [42:26<03:20,  3.52s/it]Generating Augmentations:  93%|█████████▎| 744/800 [42:30<03:17,  3.52s/it]Generating Augmentations:  93%|█████████▎| 745/800 [42:33<03:13,  3.52s/it]Generating Augmentations:  93%|█████████▎| 746/800 [42:37<03:10,  3.52s/it]Generating Augmentations:  93%|█████████▎| 747/800 [42:40<03:06,  3.52s/it]Generating Augmentations:  94%|█████████▎| 748/800 [42:44<03:02,  3.52s/it]Generating Augmentations:  94%|█████████▎| 749/800 [42:47<02:59,  3.52s/it]Generating Augmentations:  94%|█████████▍| 750/800 [42:51<02:56,  3.52s/it]Generating Augmentations:  94%|█████████▍| 751/800 [42:54<02:51,  3.50s/it]Generating Augmentations:  94%|█████████▍| 752/800 [42:58<02:46,  3.47s/it]Generating Augmentations:  94%|█████████▍| 753/800 [43:01<02:42,  3.45s/it]Generating Augmentations:  94%|█████████▍| 754/800 [43:04<02:38,  3.44s/it]Generating Augmentations:  94%|█████████▍| 755/800 [43:08<02:34,  3.43s/it]Generating Augmentations:  94%|█████████▍| 756/800 [43:11<02:31,  3.43s/it]Generating Augmentations:  95%|█████████▍| 757/800 [43:15<02:27,  3.43s/it]Generating Augmentations:  95%|█████████▍| 758/800 [43:18<02:23,  3.43s/it]Generating Augmentations:  95%|█████████▍| 759/800 [43:21<02:20,  3.43s/it]Generating Augmentations:  95%|█████████▌| 760/800 [43:25<02:17,  3.43s/it]Generating Augmentations:  95%|█████████▌| 761/800 [43:28<02:13,  3.43s/it]Generating Augmentations:  95%|█████████▌| 762/800 [43:32<02:10,  3.43s/it]Generating Augmentations:  95%|█████████▌| 763/800 [43:35<02:07,  3.44s/it]Generating Augmentations:  96%|█████████▌| 764/800 [43:39<02:03,  3.43s/it]Generating Augmentations:  96%|█████████▌| 765/800 [43:42<02:00,  3.43s/it]Generating Augmentations:  96%|█████████▌| 766/800 [43:46<01:56,  3.43s/it]Generating Augmentations:  96%|█████████▌| 767/800 [43:49<01:53,  3.43s/it]Generating Augmentations:  96%|█████████▌| 768/800 [43:52<01:49,  3.42s/it]Generating Augmentations:  96%|█████████▌| 769/800 [43:56<01:45,  3.41s/it]Generating Augmentations:  96%|█████████▋| 770/800 [43:59<01:42,  3.41s/it]Generating Augmentations:  96%|█████████▋| 771/800 [44:03<01:38,  3.41s/it]Generating Augmentations:  96%|█████████▋| 772/800 [44:06<01:35,  3.41s/it]Generating Augmentations:  97%|█████████▋| 773/800 [44:09<01:32,  3.41s/it]Generating Augmentations:  97%|█████████▋| 774/800 [44:13<01:28,  3.42s/it]Generating Augmentations:  97%|█████████▋| 775/800 [44:16<01:25,  3.42s/it]Generating Augmentations:  97%|█████████▋| 776/800 [44:20<01:22,  3.42s/it]Generating Augmentations:  97%|█████████▋| 777/800 [44:23<01:18,  3.42s/it]Generating Augmentations:  97%|█████████▋| 778/800 [44:26<01:15,  3.41s/it]Generating Augmentations:  97%|█████████▋| 779/800 [44:30<01:11,  3.41s/it]Generating Augmentations:  98%|█████████▊| 780/800 [44:33<01:08,  3.41s/it]Generating Augmentations:  98%|█████████▊| 781/800 [44:37<01:04,  3.41s/it]Generating Augmentations:  98%|█████████▊| 782/800 [44:40<01:01,  3.41s/it]Generating Augmentations:  98%|█████████▊| 783/800 [44:44<00:58,  3.42s/it]Generating Augmentations:  98%|█████████▊| 784/800 [44:47<00:54,  3.42s/it]Generating Augmentations:  98%|█████████▊| 785/800 [44:50<00:51,  3.42s/it]Generating Augmentations:  98%|█████████▊| 786/800 [44:54<00:47,  3.41s/it]Generating Augmentations:  98%|█████████▊| 787/800 [44:57<00:44,  3.41s/it]Generating Augmentations:  98%|█████████▊| 788/800 [45:01<00:40,  3.41s/it]Generating Augmentations:  99%|█████████▊| 789/800 [45:04<00:37,  3.41s/it]Generating Augmentations:  99%|█████████▉| 790/800 [45:07<00:34,  3.41s/it]Generating Augmentations:  99%|█████████▉| 791/800 [45:11<00:30,  3.41s/it]Generating Augmentations:  99%|█████████▉| 792/800 [45:14<00:27,  3.41s/it]Generating Augmentations:  99%|█████████▉| 793/800 [45:18<00:23,  3.41s/it]Generating Augmentations:  99%|█████████▉| 794/800 [45:21<00:20,  3.41s/it]Generating Augmentations:  99%|█████████▉| 795/800 [45:24<00:17,  3.41s/it]Generating Augmentations: 100%|█████████▉| 796/800 [45:28<00:13,  3.41s/it]Generating Augmentations: 100%|█████████▉| 797/800 [45:31<00:10,  3.41s/it]Generating Augmentations: 100%|█████████▉| 798/800 [45:35<00:06,  3.42s/it]Generating Augmentations: 100%|█████████▉| 799/800 [45:38<00:03,  3.42s/it]Generating Augmentations: 100%|██████████| 800/800 [45:42<00:00,  3.42s/it]Generating Augmentations: 100%|██████████| 800/800 [45:42<00:00,  3.43s/it]
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <22_50_pm_06>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <33_50_pm_09>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <13_50_pm_03>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <34_50_pm_06>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <09_50_pm_09>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <31_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <33_50_pm_05>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <09_50_pm_02>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <31_50_pm_06>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <24_50_pm_09>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <06_50_pm_04>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <16_50_pm_02>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <05_50_pm_09>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <17_50_pm_08>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <26_50_pm_05>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+a drone image of <04_50_pm_04>
+Training Classifier:   0%|          | 0/50 [00:00<?, ?it/s]Training Classifier:   2%|▏         | 1/50 [01:24<1:08:51, 84.32s/it]Training Classifier:   4%|▍         | 2/50 [02:48<1:07:20, 84.17s/it]Training Classifier:   6%|▌         | 3/50 [04:12<1:05:55, 84.17s/it]Training Classifier:   8%|▊         | 4/50 [05:37<1:04:48, 84.54s/it]Training Classifier:  10%|█         | 5/50 [07:01<1:03:16, 84.38s/it]Training Classifier:  12%|█▏        | 6/50 [08:26<1:01:56, 84.46s/it]Training Classifier:  14%|█▍        | 7/50 [09:50<1:00:33, 84.51s/it]Training Classifier:  16%|█▌        | 8/50 [11:15<59:10, 84.55s/it]  Training Classifier:  18%|█▊        | 9/50 [12:39<57:42, 84.45s/it]Training Classifier:  20%|██        | 10/50 [14:04<56:17, 84.43s/it]Training Classifier:  22%|██▏       | 11/50 [15:28<54:50, 84.38s/it]Training Classifier:  24%|██▍       | 12/50 [16:52<53:18, 84.16s/it]Training Classifier:  26%|██▌       | 13/50 [18:16<51:58, 84.29s/it]Training Classifier:  28%|██▊       | 14/50 [19:41<50:35, 84.31s/it]Training Classifier:  30%|███       | 15/50 [21:05<49:09, 84.26s/it]Training Classifier:  32%|███▏      | 16/50 [22:29<47:49, 84.41s/it]Training Classifier:  34%|███▍      | 17/50 [23:54<46:25, 84.42s/it]Training Classifier:  36%|███▌      | 18/50 [25:18<44:56, 84.26s/it]Training Classifier:  38%|███▊      | 19/50 [26:42<43:31, 84.25s/it]Training Classifier:  40%|████      | 20/50 [28:06<42:07, 84.26s/it]Training Classifier:  42%|████▏     | 21/50 [29:30<40:39, 84.13s/it]Training Classifier:  44%|████▍     | 22/50 [30:54<39:15, 84.13s/it]Training Classifier:  46%|████▌     | 23/50 [32:18<37:50, 84.09s/it]Training Classifier:  48%|████▊     | 24/50 [33:43<36:29, 84.20s/it]Training Classifier:  50%|█████     | 25/50 [35:07<35:03, 84.13s/it]Training Classifier:  52%|█████▏    | 26/50 [36:32<33:44, 84.37s/it]Training Classifier:  54%|█████▍    | 27/50 [37:56<32:18, 84.27s/it]Training Classifier:  56%|█████▌    | 28/50 [39:20<30:53, 84.27s/it]Training Classifier:  58%|█████▊    | 29/50 [40:44<29:27, 84.19s/it]Training Classifier:  60%|██████    | 30/50 [42:08<28:03, 84.16s/it]Training Classifier:  62%|██████▏   | 31/50 [43:33<26:41, 84.26s/it]Training Classifier:  64%|██████▍   | 32/50 [44:57<25:19, 84.42s/it]Training Classifier:  66%|██████▌   | 33/50 [46:23<23:59, 84.66s/it]Training Classifier:  68%|██████▊   | 34/50 [47:47<22:33, 84.60s/it]Training Classifier:  70%|███████   | 35/50 [49:11<21:07, 84.51s/it]Training Classifier:  72%|███████▏  | 36/50 [50:36<19:45, 84.65s/it]Training Classifier:  74%|███████▍  | 37/50 [52:01<18:20, 84.66s/it]Training Classifier:  76%|███████▌  | 38/50 [53:26<16:55, 84.66s/it]Training Classifier:  78%|███████▊  | 39/50 [54:50<15:31, 84.69s/it]Training Classifier:  80%|████████  | 40/50 [56:16<14:09, 84.97s/it]Training Classifier:  82%|████████▏ | 41/50 [57:41<12:43, 84.88s/it]Training Classifier:  84%|████████▍ | 42/50 [59:06<11:19, 84.99s/it]Training Classifier:  86%|████████▌ | 43/50 [1:00:31<09:54, 84.93s/it]Training Classifier:  88%|████████▊ | 44/50 [1:01:55<08:29, 84.88s/it]Training Classifier:  90%|█████████ | 45/50 [1:03:20<07:04, 84.83s/it]Training Classifier:  92%|█████████▏| 46/50 [1:04:45<05:39, 84.86s/it]Training Classifier:  94%|█████████▍| 47/50 [1:06:10<04:14, 84.76s/it]Training Classifier:  96%|█████████▌| 48/50 [1:07:35<02:49, 84.83s/it]Training Classifier:  98%|█████████▊| 49/50 [1:09:00<01:24, 84.87s/it]Training Classifier: 100%|██████████| 50/50 [1:10:25<00:00, 84.98s/it]Training Classifier: 100%|██████████| 50/50 [1:10:25<00:00, 84.51s/it]
+[rank 33] n=8 saved to: /home/kdoherty/spurge/semantic-aug/results/textual-inversion-0.5/results_6_8.csv

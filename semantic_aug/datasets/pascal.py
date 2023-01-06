@@ -24,7 +24,6 @@ DEFAULT_IMAGE_DIR = os.path.join(PASCAL_DIR, "JPEGImages")
 DEFAULT_LABEL_DIR = os.path.join(PASCAL_DIR, "SegmentationClass")
 DEFAULT_INSTANCE_DIR = os.path.join(PASCAL_DIR, "SegmentationObject")
 
-
 class PASCALDataset(FewShotDataset):
 
     def __init__(self, *args, split: str = "train", seed: int = 0, 
@@ -32,7 +31,7 @@ class PASCALDataset(FewShotDataset):
                  val_image_set: str = VAL_IMAGE_SET, 
                  image_dir: str = DEFAULT_IMAGE_DIR, 
                  label_dir: str = DEFAULT_LABEL_DIR, 
-                 instance_dir: str = DEFAULT_INSTANCE_DIR, 
+                 instance_dir: str = DEFAULT_INSTANCE_DIR,
                  class_names: str = CLASS_NAMES, 
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 

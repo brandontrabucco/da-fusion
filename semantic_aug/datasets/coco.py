@@ -44,7 +44,7 @@ class COCODataset(FewShotDataset):
 
     def __init__(self, *args, split: str = "train", seed: int = 0, 
                  train_image_dir: str = TRAIN_IMAGE_DIR, 
-                 val_image_dir: str = VAL_IMAGE_DIR, 
+                 val_image_dir: str = VAL_IMAGE_DIR,
                  train_instances_file: str = DEFAULT_TRAIN_INSTANCES, 
                  val_instances_file: str = DEFAULT_VAL_INSTANCES, 
                  examples_per_class: int = None, 

@@ -1,0 +1,5 @@
+Initialized process 7 / 3
+Traceback (most recent call last):
+  File "train_classifier.py", line 271, in <module>
+    options = np.array_split(options, world_size)[rank]
+IndexError: list index out of range

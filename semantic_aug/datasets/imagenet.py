@@ -28,7 +28,7 @@ class ImageNetDataset(FewShotDataset):
 
     def __init__(self, *args, split: str = "train", seed: int = 0,
                  train_image_dir: str = TRAIN_IMAGE_DIR, 
-                 val_image_dir: str = VAL_IMAGE_DIR, 
+                 val_image_dir: str = VAL_IMAGE_DIR,
                  train_image_set: str = TRAIN_IMAGE_SET, 
                  val_image_set: str = VAL_IMAGE_SET, 
                  label_synset: str = LABEL_SYNSET,

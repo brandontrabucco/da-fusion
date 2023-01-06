@@ -93,12 +93,15 @@ class TextualInversion(GenerativeAugmentation):
         canvas = image.resize((512, 512), Image.BILINEAR)
 
         name = self.format_name(metadata["name"])
+        full_prompt = self.prompt.format(name=name)
+        
+        print(full_prompt) #verify prompt and token
 
         with autocast('cuda'):
 
             canvas = self.pipe(
                 image=canvas,
-                prompt=[self.prompt.format(name=name)], 
+                prompt=[full_prompt], 
                 strength=self.strength, 
                 guidance_scale=self.guidance_scale
             ).images[0]

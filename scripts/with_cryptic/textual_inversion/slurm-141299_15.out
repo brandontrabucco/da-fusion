@@ -1,0 +1,104 @@
+Initialized process 15 / 40
+Generating Augmentations:   0%|          | 0/100 [00:00<?, ?it/s]Generating Augmentations:   1%|          | 1/100 [00:13<22:42, 13.77s/it]Generating Augmentations:   2%|▏         | 2/100 [00:17<12:26,  7.62s/it]Generating Augmentations:   3%|▎         | 3/100 [00:20<09:07,  5.64s/it]Generating Augmentations:   4%|▍         | 4/100 [00:23<07:32,  4.71s/it]Generating Augmentations:   5%|▌         | 5/100 [00:26<06:39,  4.20s/it]Generating Augmentations:   6%|▌         | 6/100 [00:30<06:05,  3.89s/it]Generating Augmentations:   7%|▋         | 7/100 [00:33<05:43,  3.70s/it]Generating Augmentations:   8%|▊         | 8/100 [00:36<05:29,  3.58s/it]Generating Augmentations:   9%|▉         | 9/100 [00:40<05:17,  3.49s/it]Generating Augmentations:  10%|█         | 10/100 [00:43<05:09,  3.44s/it]Generating Augmentations:  11%|█         | 11/100 [00:46<05:02,  3.40s/it]Generating Augmentations:  12%|█▏        | 12/100 [00:50<04:56,  3.37s/it]Generating Augmentations:  13%|█▎        | 13/100 [00:53<04:51,  3.35s/it]Generating Augmentations:  14%|█▍        | 14/100 [00:56<04:47,  3.34s/it]Generating Augmentations:  15%|█▌        | 15/100 [01:00<04:43,  3.34s/it]Generating Augmentations:  16%|█▌        | 16/100 [01:03<04:40,  3.34s/it]Generating Augmentations:  17%|█▋        | 17/100 [01:06<04:36,  3.33s/it]Generating Augmentations:  18%|█▊        | 18/100 [01:10<04:33,  3.33s/it]Generating Augmentations:  19%|█▉        | 19/100 [01:13<04:30,  3.33s/it]Generating Augmentations:  20%|██        | 20/100 [01:16<04:26,  3.33s/it]Generating Augmentations:  21%|██        | 21/100 [01:20<04:23,  3.33s/it]Generating Augmentations:  22%|██▏       | 22/100 [01:23<04:19,  3.33s/it]Generating Augmentations:  23%|██▎       | 23/100 [01:26<04:17,  3.34s/it]Generating Augmentations:  24%|██▍       | 24/100 [01:30<04:13,  3.34s/it]Generating Augmentations:  25%|██▌       | 25/100 [01:33<04:09,  3.33s/it]Generating Augmentations:  26%|██▌       | 26/100 [01:36<04:07,  3.34s/it]Generating Augmentations:  27%|██▋       | 27/100 [01:40<04:03,  3.34s/it]Generating Augmentations:  28%|██▊       | 28/100 [01:43<04:00,  3.34s/it]Generating Augmentations:  29%|██▉       | 29/100 [01:46<03:56,  3.33s/it]Generating Augmentations:  30%|███       | 30/100 [01:50<03:52,  3.33s/it]Generating Augmentations:  31%|███       | 31/100 [01:53<03:49,  3.32s/it]Generating Augmentations:  32%|███▏      | 32/100 [01:56<03:45,  3.32s/it]Generating Augmentations:  33%|███▎      | 33/100 [01:59<03:42,  3.32s/it]Generating Augmentations:  34%|███▍      | 34/100 [02:03<03:39,  3.32s/it]Generating Augmentations:  35%|███▌      | 35/100 [02:06<03:35,  3.32s/it]Generating Augmentations:  36%|███▌      | 36/100 [02:09<03:32,  3.32s/it]Generating Augmentations:  37%|███▋      | 37/100 [02:13<03:29,  3.33s/it]Generating Augmentations:  38%|███▊      | 38/100 [02:16<03:26,  3.33s/it]Generating Augmentations:  39%|███▉      | 39/100 [02:19<03:22,  3.33s/it]Generating Augmentations:  40%|████      | 40/100 [02:23<03:19,  3.32s/it]Generating Augmentations:  41%|████      | 41/100 [02:26<03:16,  3.33s/it]Generating Augmentations:  42%|████▏     | 42/100 [02:29<03:13,  3.33s/it]Generating Augmentations:  43%|████▎     | 43/100 [02:33<03:09,  3.33s/it]Generating Augmentations:  44%|████▍     | 44/100 [02:36<03:06,  3.33s/it]Generating Augmentations:  45%|████▌     | 45/100 [02:39<03:03,  3.33s/it]Generating Augmentations:  46%|████▌     | 46/100 [02:43<02:59,  3.32s/it]Generating Augmentations:  47%|████▋     | 47/100 [02:46<02:55,  3.32s/it]Generating Augmentations:  48%|████▊     | 48/100 [02:49<02:53,  3.33s/it]Generating Augmentations:  49%|████▉     | 49/100 [02:53<02:49,  3.33s/it]Generating Augmentations:  50%|█████     | 50/100 [02:56<02:46,  3.33s/it]Generating Augmentations:  51%|█████     | 51/100 [03:00<02:47,  3.42s/it]Generating Augmentations:  52%|█████▏    | 52/100 [03:03<02:43,  3.40s/it]Generating Augmentations:  53%|█████▎    | 53/100 [03:06<02:39,  3.39s/it]Generating Augmentations:  54%|█████▍    | 54/100 [03:10<02:35,  3.37s/it]Generating Augmentations:  55%|█████▌    | 55/100 [03:13<02:31,  3.37s/it]Generating Augmentations:  56%|█████▌    | 56/100 [03:16<02:27,  3.36s/it]Generating Augmentations:  57%|█████▋    | 57/100 [03:20<02:24,  3.36s/it]Generating Augmentations:  58%|█████▊    | 58/100 [03:23<02:20,  3.35s/it]Generating Augmentations:  59%|█████▉    | 59/100 [03:26<02:17,  3.35s/it]Generating Augmentations:  60%|██████    | 60/100 [03:30<02:14,  3.35s/it]Generating Augmentations:  61%|██████    | 61/100 [03:33<02:10,  3.35s/it]Generating Augmentations:  62%|██████▏   | 62/100 [03:36<02:07,  3.35s/it]Generating Augmentations:  63%|██████▎   | 63/100 [03:40<02:03,  3.34s/it]Generating Augmentations:  64%|██████▍   | 64/100 [03:43<02:00,  3.34s/it]Generating Augmentations:  65%|██████▌   | 65/100 [03:46<01:56,  3.34s/it]Generating Augmentations:  66%|██████▌   | 66/100 [03:50<01:53,  3.34s/it]Generating Augmentations:  67%|██████▋   | 67/100 [03:53<01:49,  3.33s/it]Generating Augmentations:  68%|██████▊   | 68/100 [03:57<01:46,  3.34s/it]Generating Augmentations:  69%|██████▉   | 69/100 [04:00<01:43,  3.34s/it]Generating Augmentations:  70%|███████   | 70/100 [04:03<01:40,  3.34s/it]Generating Augmentations:  71%|███████   | 71/100 [04:07<01:36,  3.34s/it]Generating Augmentations:  72%|███████▏  | 72/100 [04:10<01:33,  3.35s/it]Generating Augmentations:  73%|███████▎  | 73/100 [04:13<01:30,  3.35s/it]Generating Augmentations:  74%|███████▍  | 74/100 [04:17<01:27,  3.35s/it]Generating Augmentations:  75%|███████▌  | 75/100 [04:20<01:23,  3.35s/it]Generating Augmentations:  76%|███████▌  | 76/100 [04:23<01:20,  3.35s/it]Generating Augmentations:  77%|███████▋  | 77/100 [04:27<01:16,  3.35s/it]Generating Augmentations:  78%|███████▊  | 78/100 [04:30<01:13,  3.35s/it]Generating Augmentations:  79%|███████▉  | 79/100 [04:33<01:10,  3.35s/it]Generating Augmentations:  80%|████████  | 80/100 [04:37<01:06,  3.35s/it]Generating Augmentations:  81%|████████  | 81/100 [04:40<01:03,  3.34s/it]Generating Augmentations:  82%|████████▏ | 82/100 [04:43<01:00,  3.35s/it]Generating Augmentations:  83%|████████▎ | 83/100 [04:47<00:56,  3.35s/it]Generating Augmentations:  84%|████████▍ | 84/100 [04:50<00:53,  3.35s/it]Generating Augmentations:  85%|████████▌ | 85/100 [04:53<00:50,  3.35s/it]Generating Augmentations:  86%|████████▌ | 86/100 [04:57<00:46,  3.35s/it]Generating Augmentations:  87%|████████▋ | 87/100 [05:00<00:43,  3.35s/it]Generating Augmentations:  88%|████████▊ | 88/100 [05:03<00:40,  3.34s/it]Generating Augmentations:  89%|████████▉ | 89/100 [05:07<00:36,  3.34s/it]Generating Augmentations:  90%|█████████ | 90/100 [05:10<00:33,  3.34s/it]Generating Augmentations:  91%|█████████ | 91/100 [05:13<00:30,  3.35s/it]Generating Augmentations:  92%|█████████▏| 92/100 [05:17<00:26,  3.35s/it]Generating Augmentations:  93%|█████████▎| 93/100 [05:20<00:23,  3.35s/it]Generating Augmentations:  94%|█████████▍| 94/100 [05:24<00:20,  3.34s/it]Generating Augmentations:  95%|█████████▌| 95/100 [05:27<00:16,  3.34s/it]Generating Augmentations:  96%|█████████▌| 96/100 [05:30<00:13,  3.34s/it]Generating Augmentations:  97%|█████████▋| 97/100 [05:34<00:10,  3.34s/it]Generating Augmentations:  98%|█████████▊| 98/100 [05:37<00:06,  3.34s/it]Generating Augmentations:  99%|█████████▉| 99/100 [05:40<00:03,  3.34s/it]Generating Augmentations: 100%|██████████| 100/100 [05:44<00:00,  3.34s/it]Generating Augmentations: 100%|██████████| 100/100 [05:44<00:00,  3.44s/it]
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <13_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+a drone image of <36_50_pm_06>
+Training Classifier:   0%|          | 0/50 [00:00<?, ?it/s]Training Classifier:   2%|▏         | 1/50 [01:07<55:22, 67.80s/it]Training Classifier:   4%|▍         | 2/50 [02:16<54:35, 68.25s/it]Training Classifier:   6%|▌         | 3/50 [03:24<53:16, 68.01s/it]Training Classifier:   8%|▊         | 4/50 [04:31<52:02, 67.87s/it]Training Classifier:  10%|█         | 5/50 [05:39<50:51, 67.80s/it]Training Classifier:  12%|█▏        | 6/50 [06:48<50:03, 68.27s/it]Training Classifier:  14%|█▍        | 7/50 [07:57<49:07, 68.56s/it]Training Classifier:  16%|█▌        | 8/50 [09:07<48:14, 68.92s/it]Training Classifier:  18%|█▊        | 9/50 [10:16<47:02, 68.85s/it]Training Classifier:  20%|██        | 10/50 [11:25<45:55, 68.90s/it]Training Classifier:  22%|██▏       | 11/50 [12:34<44:46, 68.89s/it]Training Classifier:  24%|██▍       | 12/50 [13:43<43:45, 69.09s/it]Training Classifier:  26%|██▌       | 13/50 [14:52<42:35, 69.07s/it]Training Classifier:  28%|██▊       | 14/50 [16:01<41:22, 68.95s/it]Training Classifier:  30%|███       | 15/50 [17:11<40:24, 69.26s/it]Training Classifier:  32%|███▏      | 16/50 [18:23<39:41, 70.04s/it]Training Classifier:  34%|███▍      | 17/50 [19:34<38:44, 70.45s/it]Training Classifier:  36%|███▌      | 18/50 [20:46<37:51, 70.98s/it]Training Classifier:  38%|███▊      | 19/50 [21:58<36:51, 71.35s/it]Training Classifier:  40%|████      | 20/50 [23:10<35:46, 71.53s/it]Training Classifier:  42%|████▏     | 21/50 [24:23<34:41, 71.79s/it]Training Classifier:  44%|████▍     | 22/50 [25:35<33:31, 71.85s/it]Training Classifier:  46%|████▌     | 23/50 [26:47<32:22, 71.95s/it]Training Classifier:  48%|████▊     | 24/50 [27:59<31:10, 71.93s/it]Training Classifier:  50%|█████     | 25/50 [29:11<29:57, 71.92s/it]Training Classifier:  52%|█████▏    | 26/50 [30:23<28:49, 72.08s/it]Training Classifier:  54%|█████▍    | 27/50 [31:35<27:39, 72.14s/it]Training Classifier:  56%|█████▌    | 28/50 [32:47<26:24, 72.00s/it]Training Classifier:  58%|█████▊    | 29/50 [33:59<25:11, 71.97s/it]Training Classifier:  60%|██████    | 30/50 [35:11<24:00, 72.02s/it]Training Classifier:  62%|██████▏   | 31/50 [36:24<22:51, 72.17s/it]Training Classifier:  64%|██████▍   | 32/50 [37:36<21:37, 72.10s/it]Training Classifier:  66%|██████▌   | 33/50 [38:48<20:26, 72.14s/it]Training Classifier:  68%|██████▊   | 34/50 [40:02<19:24, 72.78s/it]Training Classifier:  70%|███████   | 35/50 [41:18<18:23, 73.59s/it]Training Classifier:  72%|███████▏  | 36/50 [42:33<17:18, 74.15s/it]Training Classifier:  74%|███████▍  | 37/50 [43:48<16:08, 74.53s/it]Training Classifier:  76%|███████▌  | 38/50 [45:04<14:57, 74.80s/it]Training Classifier:  78%|███████▊  | 39/50 [46:19<13:44, 74.96s/it]Training Classifier:  80%|████████  | 40/50 [47:35<12:30, 75.06s/it]Training Classifier:  82%|████████▏ | 41/50 [48:50<11:15, 75.09s/it]Training Classifier:  84%|████████▍ | 42/50 [50:05<10:02, 75.25s/it]Training Classifier:  86%|████████▌ | 43/50 [51:21<08:47, 75.29s/it]Training Classifier:  88%|████████▊ | 44/50 [52:37<07:32, 75.49s/it]Training Classifier:  90%|█████████ | 45/50 [53:52<06:17, 75.54s/it]Training Classifier:  92%|█████████▏| 46/50 [55:07<05:01, 75.37s/it]Training Classifier:  94%|█████████▍| 47/50 [56:22<03:45, 75.29s/it]Training Classifier:  96%|█████████▌| 48/50 [57:38<02:30, 75.46s/it]Training Classifier:  98%|█████████▊| 49/50 [58:54<01:15, 75.55s/it]Training Classifier: 100%|██████████| 50/50 [1:00:10<00:00, 75.64s/it]Training Classifier: 100%|██████████| 50/50 [1:00:10<00:00, 72.21s/it]
+[rank 15] n=1 saved to: /home/kdoherty/spurge/semantic-aug/results/textual-inversion-0.5/results_3_1.csv

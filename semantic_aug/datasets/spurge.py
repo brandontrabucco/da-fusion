@@ -14,7 +14,8 @@ import torch
 DEFAULT_DATA_DIR = os.path.join(
     os.path.abspath(os.path.dirname(
     os.path.dirname(os.path.dirname(
-        os.path.abspath(__file__))))), 'data/spurge')
+    os.path.abspath(__file__))))), 'data/without_cryptic')
+    #os.path.abspath(__file__))))), 'data/spurge')
 
 
 class SpurgeDataset(FewShotDataset):
@@ -91,5 +92,5 @@ class SpurgeDataset(FewShotDataset):
         return self.all_labels[idx]
     
     def get_metadata_by_idx(self, idx: int) -> Any:
-
-        return dict(name=self.class_names[self.all_labels[idx]])
+        return dict(name=os.path.basename(self.all_images[idx]).replace('.png',''))
+        #return dict(name=self.class_names[self.all_labels[idx]])
