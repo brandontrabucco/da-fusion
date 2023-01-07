@@ -47,7 +47,7 @@ class PASCALDataset(FewShotDataset):
         image_set = {"train": train_image_set, "val": val_image_set}[split]
 
         with open(class_names, "r") as f:
-            self.class_names = [x.strip() for x in f.readlines()]
+            self.class_names = [x.strip() for x in f.readlines()][1:]
 
         self.num_classes = len(self.class_names)
 
@@ -73,7 +73,8 @@ class PASCALDataset(FewShotDataset):
             argmax_index = counts.argmax()
 
             mask = np.equal(instances, instance_ids[argmax_index])
-            class_name = self.class_names[labels.flat[pixel_loc[argmax_index]]]
+            class_name = self.class_names[
+                labels.flat[pixel_loc[argmax_index]] - 1]
 
             class_to_images[class_name].append(
                 os.path.join(image_dir, image_id + ".jpg"))
