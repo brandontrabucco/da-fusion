@@ -7,7 +7,7 @@ Existing data augmentations like rotations and re-colorizations provide diversit
 To install the package, first create a `conda` environment.
 
 ```bash
-conda create -n semantic-aug python=3.7 pytorch==1.12.1 torchvision==0.13.1 cudatoolkit=11.3 -c pytorch
+conda create -n semantic-aug python=3.7 pytorch==1.12.1 torchvision==0.13.1 cudatoolkit=11.6 -c pytorch
 conda activate semantic-aug
 pip install diffusers["torch"] transformers
 ```
