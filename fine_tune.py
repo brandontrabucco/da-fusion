@@ -386,7 +386,8 @@ def main(args):
 
     # build the training dataset
     train_dataset = DATASETS[args.dataset](
-        split="train", examples_per_class=args.examples_per_class, seed=args.seed)
+        split="train", examples_per_class=args.examples_per_class, 
+        seed=args.seed, image_size=(args.resolution, args.resolution))
 
     added_tokens = []
 

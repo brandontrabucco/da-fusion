@@ -48,14 +48,12 @@ class TextualInversionDataset(Dataset):
     def __init__(self, dataset: FewShotDataset, 
                  tokenizer: CLIPTokenizer, 
                  format_name: Callable = format_name,
-                 prompt_templates: List[str] = DEFAULT_PROMPT_TEMPLATES,
-                 image_size: Tuple[int] = (512, 512)):
+                 prompt_templates: List[str] = DEFAULT_PROMPT_TEMPLATES):
 
         self.dataset = dataset
         self.tokenizer = tokenizer
         self.format_name = format_name
         self.prompt_templates = prompt_templates
-        self.image_size = image_size
 
     def __len__(self):
         return len(self.dataset)
@@ -68,8 +66,6 @@ class TextualInversionDataset(Dataset):
         metadata["name"] = self.format_name(metadata["name"])
         prompt = random.choice(self.prompt_templates).format(**metadata)
 
-        image = F.resize(image, self.image_size)
-        
         return image, self.tokenizer(
             prompt, padding="max_length",
             truncation=True, return_tensors="pt",
