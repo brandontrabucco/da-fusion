@@ -84,14 +84,14 @@ class TextualInversion(GenerativeAugmentation):
     def forward(self, image: Image.Image, label: int, 
                 metadata: dict) -> Tuple[Image.Image, int]:
 
-        initializer_ids = self.tokenizer.encode(
+        initializer_ids = self.pipe.tokenizer.encode(
             metadata["name"], add_special_tokens=False)
 
         fine_tuned_tokens = []
 
         for idx in initializer_ids:
 
-            token = self.tokenizer._convert_id_to_token(idx)
+            token = self.pipe.tokenizer._convert_id_to_token(idx)
             token = token.replace("</w>", "")
 
             fine_tuned_tokens.append(f"<{token}>")
