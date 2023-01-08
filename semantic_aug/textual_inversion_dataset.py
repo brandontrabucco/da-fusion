@@ -8,7 +8,7 @@ import torch
 import random
 
 
-DEFAULT_PROMPT_TEMPLATES = [
+DEFAULT_PROMPTS = [
     "a photo of a {name}",
     "a rendering of a {name}",
     "a cropped photo of the {name}",
@@ -35,25 +35,18 @@ DEFAULT_PROMPT_TEMPLATES = [
     "a photo of the weird {name}",
     "a photo of the large {name}",
     "a photo of a cool {name}",
-    "a photo of a small {name}"
-]
-
-
-def format_name(name):
-    return f"<{name.replace(' ', '_')}>"
+    "a photo of a small {name}"]
 
 
 class TextualInversionDataset(Dataset):
 
     def __init__(self, dataset: FewShotDataset, 
                  tokenizer: CLIPTokenizer, 
-                 format_name: Callable = format_name,
-                 prompt_templates: List[str] = DEFAULT_PROMPT_TEMPLATES):
+                 prompts: List[str] = DEFAULT_PROMPTS):
 
         self.dataset = dataset
         self.tokenizer = tokenizer
-        self.format_name = format_name
-        self.prompt_templates = prompt_templates
+        self.prompts = prompts
 
     def __len__(self):
         return len(self.dataset)
@@ -63,8 +56,20 @@ class TextualInversionDataset(Dataset):
         image, label = self.dataset[idx]
         metadata = self.dataset.get_metadata_by_idx(idx)
 
-        metadata["name"] = self.format_name(metadata["name"])
-        prompt = random.choice(self.prompt_templates).format(**metadata)
+        initializer_ids = self.tokenizer.encode(
+            metadata["name"], add_special_tokens=False)
+
+        fine_tuned_tokens = []
+
+        for idx in initializer_ids:
+
+            token = self.tokenizer._convert_id_to_token(idx)
+            token = token.replace("</w>", "")
+
+            fine_tuned_tokens.append(f"<{token}>")
+
+        metadata["name"] = " ".join(fine_tuned_tokens)
+        prompt = random.choice(self.prompts).format(**metadata)
 
         return image, self.tokenizer(
             prompt, padding="max_length",

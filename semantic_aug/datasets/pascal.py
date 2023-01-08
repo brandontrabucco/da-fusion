@@ -13,8 +13,6 @@ from collections import defaultdict
 
 PASCAL_DIR = "/projects/rsalakhugroup/datasets/pascal"
 
-CLASS_NAMES = os.path.join(PASCAL_DIR, "class_names.txt")
-
 TRAIN_IMAGE_SET = os.path.join(
     PASCAL_DIR, "ImageSets/Segmentation/train.txt")
 VAL_IMAGE_SET = os.path.join(
@@ -27,13 +25,19 @@ DEFAULT_INSTANCE_DIR = os.path.join(PASCAL_DIR, "SegmentationObject")
 
 class PASCALDataset(FewShotDataset):
 
+    class_names = ['airplane', 'bicycle', 'bird', 'boat', 'bottle', 
+        'bus', 'car', 'cat', 'chair', 'cow', 'dining table', 'dog', 
+        'horse', 'motorcycle', 'person', 'potted plant', 'sheep', 
+        'sofa', 'train', 'television']
+
+    num_classes: int = len(class_names)
+
     def __init__(self, *args, split: str = "train", seed: int = 0, 
                  train_image_set: str = TRAIN_IMAGE_SET, 
                  val_image_set: str = VAL_IMAGE_SET, 
                  image_dir: str = DEFAULT_IMAGE_DIR, 
                  label_dir: str = DEFAULT_LABEL_DIR, 
                  instance_dir: str = DEFAULT_INSTANCE_DIR, 
-                 class_names: str = CLASS_NAMES, 
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5,
@@ -45,11 +49,6 @@ class PASCALDataset(FewShotDataset):
             generative_aug=generative_aug, **kwargs)
 
         image_set = {"train": train_image_set, "val": val_image_set}[split]
-
-        with open(class_names, "r") as f:
-            self.class_names = [x.strip() for x in f.readlines()][1:]
-
-        self.num_classes = len(self.class_names)
 
         with open(image_set, "r") as f:
             image_set_lines = [x.strip() for x in f.readlines()]

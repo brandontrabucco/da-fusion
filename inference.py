@@ -7,7 +7,6 @@ from diffusers import StableDiffusionPipeline
 from torch import autocast
 from PIL import Image
 
-
 import os
 import torch
 import argparse
@@ -18,9 +17,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Inference script")
 
     parser.add_argument("--model-path", type=str, default="CompVis/stable-diffusion-v1-4")
-    parser.add_argument("--embed-path", type=str, default="coco-step=500-tokens/coco-0-1.pt")
+    parser.add_argument("--embed-path", type=str, default="coco-tokens/coco-2-8.pt")
 
-    parser.add_argument("--prompt", type=str, default="a photo of a <tennis_racket>")
+    parser.add_argument("--prompt", type=str, default="a photo of a <motorcycle>")
     parser.add_argument("--out", type=str, default="inference_test.png")
 
     parser.add_argument("--guidance-scale", type=float, default=7.5)

@@ -393,23 +393,39 @@ def main(args):
 
     for name in train_dataset.class_names:
 
-        placeholder_token = f"<{name.replace(' ', '_')}>" 
-        added_tokens.append(placeholder_token)
-        
-        num_added_tokens = tokenizer.add_tokens(placeholder_token)
+        initializer = name
+        initializer_ids = tokenizer.encode(
+            initializer, add_special_tokens=False)
 
-        initializer_token = name
-        token_ids = tokenizer.encode(
-            initializer_token, add_special_tokens=False)
+        fine_tuned_tokens = []
 
-        placeholder_token_id = tokenizer.convert_tokens_to_ids(placeholder_token)
+        for idx in initializer_ids:
+
+            token = tokenizer._convert_id_to_token(idx)
+            token = token.replace("</w>", "")
+
+            fine_tuned_tokens.append(f"<{token}>")
+
+        placeholder_ids = tokenizer.convert_tokens_to_ids(fine_tuned_tokens)
+
+        for token in fine_tuned_tokens:
+
+            if token not in added_tokens: 
+                added_tokens.append(token)
+
+        num_added_tokens = tokenizer.add_tokens(fine_tuned_tokens)
         text_encoder.resize_token_embeddings(len(tokenizer))
 
         token_embeds = text_encoder.get_input_embeddings().weight.data
-        token_embeds[placeholder_token_id] = torch.mean(
-            torch.stack([token_embeds[idx] for idx in token_ids], dim=0), dim=0)
 
-    num_added_tokens = train_dataset.num_classes
+        for placeholder_idx, initializer_idx in zip(
+            placeholder_ids, initializer_ids
+        ):
+
+            token_embeds[placeholder_idx] = \
+                token_embeds[initializer_idx]
+
+    num_added_tokens = len(added_tokens)
 
     accumulations_per_class = int(np.ceil(
         train_dataset.num_classes / args.train_batch_size))
@@ -589,7 +605,13 @@ def main(args):
                 else:
                     raise ValueError(f"Unknown prediction type {noise_scheduler.config.prediction_type}")
 
-                loss = F.mse_loss(model_pred.float(), target.float(), reduction="mean")
+                loss = F.mse_loss(
+                    model_pred.float(), 
+                    target.float(), 
+                    reduction="none"
+                )
+
+                loss = loss.mean(dim=(1, 2, 3)).sum()
                 accelerator.backward(loss * accumulations_per_class)
 
                 optimizer.step()
