@@ -42,10 +42,12 @@ from semantic_aug.datasets.pascal import PASCALDataset
 from semantic_aug.textual_inversion_dataset import TextualInversionDataset
 
 
-DATASETS = {"spurge": SpurgeDataset, 
-            "coco": COCODataset, 
-            "pascal": PASCALDataset,
-            "imagenet": ImageNetDataset}
+DATASETS = {
+    "spurge": SpurgeDataset, 
+    "coco": COCODataset, 
+    "pascal": PASCALDataset,
+    "imagenet": ImageNetDataset
+}
 
 
 if version.parse(version.parse(PIL.__version__).base_version) >= version.parse("9.1.0"):
@@ -622,6 +624,9 @@ def main(args):
                     accelerator.unwrap_model(text_encoder).get_input_embeddings().weight[
                         index_no_updates
                     ] = orig_embeds_params[index_no_updates]
+
+                loss /= (args.gradient_accumulation_steps / 
+                         accumulations_per_class)
 
             # Checks if the accelerator has performed an optimization step behind the scenes
             if accelerator.sync_gradients:
