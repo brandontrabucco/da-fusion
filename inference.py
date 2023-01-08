@@ -10,6 +10,16 @@ from PIL import Image
 import os
 import torch
 import argparse
+import numpy as np
+import random
+
+
+DATASETS = {
+    "spurge": SpurgeDataset, 
+    "coco": COCODataset, 
+    "pascal": PASCALDataset,
+    "imagenet": ImageNetDataset
+}
 
 
 if __name__ == "__main__":
@@ -17,14 +27,23 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Inference script")
 
     parser.add_argument("--model-path", type=str, default="CompVis/stable-diffusion-v1-4")
-    parser.add_argument("--embed-path", type=str, default="coco-tokens/coco-2-8.pt")
+    parser.add_argument("--embed-path", type=str, default="pascal-tokens/pascal-0-1.pt")
+    
+    parser.add_argument("--dataset", type=str, default="pascal")
+    parser.add_argument("--seed", type=int, default=0)
 
-    parser.add_argument("--prompt", type=str, default="a photo of a <motorcycle>")
-    parser.add_argument("--out", type=str, default="inference_test.png")
+    parser.add_argument("--prompt", type=str, default="a photo of a {name}")
+    parser.add_argument("--out", type=str, default="inference/")
 
     parser.add_argument("--guidance-scale", type=float, default=7.5)
 
     args = parser.parse_args()
+
+    os.makedirs(args.out, exist_ok=True)
+
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
+    random.seed(args.seed)
     
     aug = TextualInversion(
         args.embed_path, prompt=args.prompt, 
@@ -44,11 +63,28 @@ if __name__ == "__main__":
     pipe.set_progress_bar_config(disable=True)
     pipe.safety_checker = None
 
-    with autocast('cuda'):
+    for i, name in enumerate(DATASETS[args.dataset].class_names):
 
-        image = pipe(
-            prompt=args.prompt, 
-            guidance_scale=args.guidance_scale,
-        ).images[0]
+        initializer_ids = pipe.tokenizer.encode(
+            name, add_special_tokens=False)
 
-    image.save(args.out)
+        fine_tuned_tokens = []
+
+        for idx in initializer_ids:
+
+            token = pipe.tokenizer._convert_id_to_token(idx)
+            token = token.replace("</w>", "")
+
+            fine_tuned_tokens.append(f"<{token}>")
+
+        name = " ".join(fine_tuned_tokens)
+
+        with autocast('cuda'):
+
+            image = pipe(
+                prompt=args.prompt.format(name=name), 
+                guidance_scale=args.guidance_scale,
+            ).images[0]
+
+        image.save(os.path.join(args.out, (
+            "-".join(fine_tuned_tokens) + ".png")))

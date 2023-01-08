@@ -390,6 +390,7 @@ def main(args):
         seed=args.seed, image_size=(args.resolution, args.resolution))
 
     added_tokens = []
+    num_added_tokens = 0
 
     for name in train_dataset.class_names:
 
@@ -406,17 +407,16 @@ def main(args):
 
             fine_tuned_tokens.append(f"<{token}>")
 
-        placeholder_ids = tokenizer.convert_tokens_to_ids(fine_tuned_tokens)
-
-        for token in fine_tuned_tokens:
-
-            if token not in added_tokens: 
-                added_tokens.append(token)
-
-        num_added_tokens = tokenizer.add_tokens(fine_tuned_tokens)
+        num_added_tokens += tokenizer.add_tokens(fine_tuned_tokens)
         text_encoder.resize_token_embeddings(len(tokenizer))
 
+        for x in fine_tuned_tokens: 
+
+            if x not in added_tokens: 
+                added_tokens.append(x)
+
         token_embeds = text_encoder.get_input_embeddings().weight.data
+        placeholder_ids = tokenizer.convert_tokens_to_ids(fine_tuned_tokens)
 
         for placeholder_idx, initializer_idx in zip(
             placeholder_ids, initializer_ids
@@ -424,8 +424,6 @@ def main(args):
 
             token_embeds[placeholder_idx] = \
                 token_embeds[initializer_idx]
-
-    num_added_tokens = len(added_tokens)
 
     accumulations_per_class = int(np.ceil(
         train_dataset.num_classes / args.train_batch_size))
