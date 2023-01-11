@@ -2,11 +2,14 @@ from semantic_aug.datasets.coco import COCODataset
 from semantic_aug.datasets.spurge import SpurgeDataset
 from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
+from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
 from diffusers import StableDiffusionPipeline
+from itertools import product
 from torch import autocast
 from PIL import Image
 
+from tqdm import tqdm
 import os
 import torch
 import argparse
@@ -31,11 +34,17 @@ if __name__ == "__main__":
     
     parser.add_argument("--dataset", type=str, default="pascal")
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--examples-per-class", type=int, default=1)
+    parser.add_argument("--num-synthetic", type=int, default=10)
 
     parser.add_argument("--prompt", type=str, default="a photo of a {name}")
     parser.add_argument("--out", type=str, default="inference/")
 
     parser.add_argument("--guidance-scale", type=float, default=7.5)
+    parser.add_argument("--strength", type=float, default=0.5)
+    
+    parser.add_argument("--aug", type=str, default="real-guidance", 
+                        choices=["real-guidance", "textual-inversion"])
 
     args = parser.parse_args()
 
@@ -44,47 +53,41 @@ if __name__ == "__main__":
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     random.seed(args.seed)
-    
-    aug = TextualInversion(
-        args.embed_path, prompt=args.prompt, 
-        model_path=args.model_path, 
-        guidance_scale=args.guidance_scale)
 
-    pipe = StableDiffusionPipeline.from_pretrained(
-        args.model_path, 
-        use_auth_token=True,
-        revision="fp16", 
-        torch_dtype=torch.float16
-    ).to('cuda')
+    if args.aug == "real-guidance":
 
-    pipe.tokenizer = aug.pipe.tokenizer
-    pipe.text_encoder = aug.pipe.text_encoder
+        aug = RealGuidance(
+            model_path=args.model_path, 
+            prompt=args.prompt, strength=args.strength, 
+            guidance_scale=args.guidance_scale)
 
-    pipe.set_progress_bar_config(disable=True)
-    pipe.safety_checker = None
+    elif args.aug == "textual-inversion":
 
-    for i, name in enumerate(DATASETS[args.dataset].class_names):
+        aug = TextualInversion(
+            args.embed_path, model_path=args.model_path, 
+            prompt=args.prompt, strength=args.strength, 
+            guidance_scale=args.guidance_scale)
 
-        initializer_ids = pipe.tokenizer.encode(
-            name, add_special_tokens=False)
+    train_dataset = DATASETS[
+        args.dataset](split="train", seed=args.seed, 
+                      examples_per_class=args.examples_per_class)
 
-        fine_tuned_tokens = []
+    options = product(range(len(train_dataset)), range(args.num_synthetic))
 
-        for idx in initializer_ids:
+    for idx, num in tqdm(list(
+            options), desc="Generating Augmentations"):
 
-            token = pipe.tokenizer._convert_id_to_token(idx)
-            token = token.replace("</w>", "")
+        image = train_dataset.get_image_by_idx(idx)
+        label = train_dataset.get_label_by_idx(idx)
 
-            fine_tuned_tokens.append(f"<{token}>")
+        metadata = train_dataset.get_metadata_by_idx(idx)
 
-        name = " ".join(fine_tuned_tokens)
+        image, label = aug(
+            image, label, metadata)
 
-        with autocast('cuda'):
+        name = metadata['name'].replace(" ", "_")
 
-            image = pipe(
-                prompt=args.prompt.format(name=name), 
-                guidance_scale=args.guidance_scale,
-            ).images[0]
+        pil_image, image = image, os.path.join(
+            args.out, f"{args.aug}-{name}-{idx}-{num}.png")
 
-        image.save(os.path.join(args.out, (
-            "-".join(fine_tuned_tokens) + ".png")))
+        pil_image.save(image)
