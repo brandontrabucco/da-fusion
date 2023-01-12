@@ -14,9 +14,7 @@ import torch
 DEFAULT_DATA_DIR = os.path.join(
     os.path.abspath(os.path.dirname(
     os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__))))), 'data/without_cryptic')
-    #os.path.abspath(__file__))))), 'data/spurge')
-
+    os.path.abspath(__file__))))), 'data/spurge')
 
 class SpurgeDataset(FewShotDataset):
 
