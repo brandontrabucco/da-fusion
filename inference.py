@@ -4,6 +4,7 @@ from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
+from semantic_aug.augmentations.inpainting import Inpainting
 from diffusers import StableDiffusionPipeline
 from itertools import product
 from torch import autocast
@@ -44,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument("--strength", type=float, default=0.5)
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
-                        choices=["real-guidance", "textual-inversion"])
+                        choices=["real-guidance", "textual-inversion", "inpainting"])
 
     args = parser.parse_args()
 
@@ -68,11 +69,20 @@ if __name__ == "__main__":
             prompt=args.prompt, strength=args.strength, 
             guidance_scale=args.guidance_scale)
 
+    elif args.aug == "inpainting":
+        aug = Inpainting(
+            model_path=args.model_path, 
+            prompt=args.prompt, strength=args.strength, 
+            guidance_scale=args.guidance_scale)
+
+
     train_dataset = DATASETS[
         args.dataset](split="train", seed=args.seed, 
                       examples_per_class=args.examples_per_class)
 
     options = product(range(len(train_dataset)), range(args.num_synthetic))
+
+    
 
     for idx, num in tqdm(list(
             options), desc="Generating Augmentations"):

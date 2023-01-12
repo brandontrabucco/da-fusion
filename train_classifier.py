@@ -4,6 +4,7 @@ from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
+from semantic_aug.augmentations.inpainting import Inpainting
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
 from itertools import product
@@ -25,7 +26,7 @@ DEFAULT_MODEL_PATH = "CompVis/stable-diffusion-v1-4"
 DEFAULT_PROMPT = "a photo of a {name}"
 
 DEFAULT_SYNTHETIC_DIR = "/projects/rsalakhugroup/\
-btrabucc/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
+mgurinas/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
 
 DEFAULT_EMBED_PATH = "{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt"
 
@@ -64,6 +65,13 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
 
         aug = TextualInversion(
             embed_path, model_path=model_path, 
+            prompt=prompt, strength=strength, 
+            guidance_scale=guidance_scale)
+
+    elif aug == "inpainting":
+
+        aug = Inpainting(
+            model_path=model_path, 
             prompt=prompt, strength=strength, 
             guidance_scale=guidance_scale)
 
@@ -243,7 +251,7 @@ if __name__ == "__main__":
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
-                        choices=["real-guidance", "textual-inversion", "none"])
+                        choices=["real-guidance", "textual-inversion", "inpainting", "none"])
 
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     
