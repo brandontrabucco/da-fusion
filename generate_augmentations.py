@@ -46,6 +46,8 @@ if __name__ == "__main__":
     parser.add_argument("--aug", type=str, default="real-guidance", 
                         choices=["real-guidance", "textual-inversion"])
 
+    parser.add_argument("--class-name", type=str, default=None)
+
     args = parser.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
@@ -81,6 +83,9 @@ if __name__ == "__main__":
         label = train_dataset.get_label_by_idx(idx)
 
         metadata = train_dataset.get_metadata_by_idx(idx)
+
+        if args.class_name is not None: 
+            if metadata["name"] != args.class_name: continue
 
         image, label = aug(
             image, label, metadata)

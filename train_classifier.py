@@ -109,53 +109,79 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
 
         model.train()
 
-        epoch_loss = 0.0
-        epoch_accuracy = 0.0
-        epoch_size = 0.0
+        epoch_loss = torch.zeros(
+            train_dataset.num_classes, 
+            dtype=torch.float32, device='cuda')
+        epoch_accuracy = torch.zeros(
+            train_dataset.num_classes, 
+            dtype=torch.float32, device='cuda')
+        epoch_size = torch.zeros(
+            train_dataset.num_classes, 
+            dtype=torch.float32, device='cuda')
 
         for image, label in train_dataloader:
             image, label = image.cuda(), label.cuda()
 
             logits = model(image)
             prediction = logits.argmax(dim=1)
-            loss = F.cross_entropy(logits, label).mean()
+
+            loss = F.cross_entropy(logits, label, reduction="none")
+            accuracy = (prediction == label).float()
 
             optim.zero_grad()
-            loss.backward()
+            loss.mean().backward()
             optim.step()
 
-            epoch_loss += loss.detach().cpu().numpy() * logits.shape[0]
-            epoch_accuracy += (prediction == label).float().sum().cpu().numpy()
-            epoch_size += float(image.shape[0])
+            with torch.no_grad():
+            
+                epoch_size.scatter_add_(0, label, torch.ones_like(loss))
+                epoch_loss.scatter_add_(0, label, loss)
+                epoch_accuracy.scatter_add_(0, label, accuracy)
 
-        training_loss = epoch_loss / epoch_size
-        training_accuracy = epoch_accuracy / epoch_size
+        training_loss = epoch_loss / epoch_size.clamp(min=1)
+        training_accuracy = epoch_accuracy / epoch_size.clamp(min=1)
+
+        training_loss = training_loss.cpu().numpy()
+        training_accuracy = training_accuracy.cpu().numpy()
 
         model.eval()
 
-        epoch_loss = 0.0
-        epoch_accuracy = 0.0
-        epoch_size = 0.0
+        epoch_loss = torch.zeros(
+            train_dataset.num_classes, 
+            dtype=torch.float32, device='cuda')
+        epoch_accuracy = torch.zeros(
+            train_dataset.num_classes, 
+            dtype=torch.float32, device='cuda')
+        epoch_size = torch.zeros(
+            train_dataset.num_classes, 
+            dtype=torch.float32, device='cuda')
 
         for image, label in val_dataloader:
             image, label = image.cuda(), label.cuda()
 
             logits = model(image)
             prediction = logits.argmax(dim=1)
-            loss = F.cross_entropy(logits, label).mean()
 
-            epoch_loss += loss.detach().cpu().numpy() * logits.shape[0]
-            epoch_accuracy += (prediction == label).float().sum().cpu().numpy()
-            epoch_size += float(image.shape[0])
+            loss = F.cross_entropy(logits, label, reduction="none")
+            accuracy = (prediction == label).float()
 
-        validation_loss = epoch_loss / epoch_size
-        validation_accuracy = epoch_accuracy / epoch_size
+            with torch.no_grad():
+            
+                epoch_size.scatter_add_(0, label, torch.ones_like(loss))
+                epoch_loss.scatter_add_(0, label, loss)
+                epoch_accuracy.scatter_add_(0, label, accuracy)
+
+        validation_loss = epoch_loss / epoch_size.clamp(min=1)
+        validation_accuracy = epoch_accuracy / epoch_size.clamp(min=1)
+
+        validation_loss = validation_loss.cpu().numpy()
+        validation_accuracy = validation_accuracy.cpu().numpy()
 
         records.append(dict(
             seed=seed, 
             examples_per_class=examples_per_class,
             epoch=epoch, 
-            value=training_loss, 
+            value=training_loss.mean(), 
             metric="Loss", 
             split="Training"
         ))
@@ -164,7 +190,7 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
             seed=seed, 
             examples_per_class=examples_per_class,
             epoch=epoch, 
-            value=validation_loss, 
+            value=validation_loss.mean(), 
             metric="Loss", 
             split="Validation"
         ))
@@ -173,7 +199,7 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
             seed=seed, 
             examples_per_class=examples_per_class,
             epoch=epoch, 
-            value=training_accuracy, 
+            value=training_accuracy.mean(), 
             metric="Accuracy", 
             split="Training"
         ))
@@ -182,10 +208,48 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
             seed=seed, 
             examples_per_class=examples_per_class,
             epoch=epoch, 
-            value=validation_accuracy, 
+            value=validation_accuracy.mean(), 
             metric="Accuracy", 
             split="Validation"
         ))
+
+        for i, name in enumerate(train_dataset.class_names):
+
+            records.append(dict(
+                seed=seed, 
+                examples_per_class=examples_per_class,
+                epoch=epoch, 
+                value=training_loss[i], 
+                metric=f"Loss {name.title()}", 
+                split="Training"
+            ))
+
+            records.append(dict(
+                seed=seed, 
+                examples_per_class=examples_per_class,
+                epoch=epoch, 
+                value=validation_loss[i], 
+                metric=f"Loss {name.title()}", 
+                split="Validation"
+            ))
+
+            records.append(dict(
+                seed=seed, 
+                examples_per_class=examples_per_class,
+                epoch=epoch, 
+                value=training_accuracy[i], 
+                metric=f"Accuracy {name.title()}", 
+                split="Training"
+            ))
+
+            records.append(dict(
+                seed=seed, 
+                examples_per_class=examples_per_class,
+                epoch=epoch, 
+                value=validation_accuracy[i], 
+                metric=f"Accuracy {name.title()}", 
+                split="Validation"
+            ))
             
     return records
 
