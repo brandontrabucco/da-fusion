@@ -744,7 +744,7 @@ if __name__ == "__main__":
             image = train_dataset.get_image_by_idx(idx)
             metadata = train_dataset.get_metadata_by_idx(idx)
 
-            name = metadata["name"].format(" ", "_")
+            name = metadata["name"].replace(" ", "_")
             path = f"{args.dataset}-{seed}-{examples_per_class}"
 
             path = os.path.join("extracted", path, name, f"{idx}.png")
@@ -754,7 +754,7 @@ if __name__ == "__main__":
 
         for class_name in train_dataset.class_names:
 
-            formatted_name = class_name.format(" ", "_")
+            formatted_name = class_name.replace(" ", "_")
             dirname = f"{args.dataset}-{seed}-{examples_per_class}/{formatted_name}"
 
             args = parse_args()
