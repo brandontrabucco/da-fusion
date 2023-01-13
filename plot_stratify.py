@@ -37,15 +37,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Few-Shot Baseline")
 
     parser.add_argument("--logdirs", nargs="+", type=str, default=[
-        "./pascal-baselines", "./coco-baselines", "./imagenet-baselines", "./spurge-baselines-new"])
+        "./pascal-baselines"])
     
     parser.add_argument("--datasets", nargs="+", type=str, 
-                        default=["Pascal", "COCO", "ImageNet", "Spurge"])
+                        default=["Pascal"])
     
     parser.add_argument("--method-names", nargs="+", type=str, 
                         default=["baseline", "real-guidance-0.5", "textual-inversion-0.5"])
     
-    parser.add_argument("--name", type=str, default="visualization")
+    parser.add_argument("--name", type=str, default="stratification")
 
     args = parser.parse_args()
 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
             data = pd.concat([pd.read_csv(x, index_col=0) 
                               for x in files], ignore_index=True)
 
-            data = data[(data["metric"] == "Accuracy") & 
+            data = data[(data["metric"].str.contains("Accuracy ")) & 
                         (data[ "split"] == "Validation")]
 
             def select_by_epoch(df):
@@ -86,6 +86,7 @@ if __name__ == "__main__":
 
             best["method"] = bname
             best["dataset"] = dataset
+
             combined_dataframe.append(best)
 
     matplotlib.rc('font', family='Times New Roman', serif='cm10')
@@ -97,57 +98,61 @@ if __name__ == "__main__":
 
     combined_dataframe = pd.concat([combined_dataframe[
         combined_dataframe['method'] == n] for n in args.method_names])
+
+    combined_dataframe["class_name"] = \
+        combined_dataframe["metric"].str.replace("Accuracy ", "")
     
     color_palette = sns.color_palette(n_colors=len(args.method_names))
-
-    fig, axs = plt.subplots(1, len(args.datasets),
-                            figsize=(6 * len(args.datasets), 6))
 
     for i, dataset in enumerate(args.datasets):
 
         results = combined_dataframe[combined_dataframe["dataset"] == dataset]
 
-        axis = sns.lineplot(x="examples_per_class", y="value", hue="method", 
-                            data=results, errorbar=('ci', 68),
-                            linewidth=4, palette=color_palette,
-                            ax=axs[i] if len(args.datasets) > 1 else axs)
+        for j, examples_per_class in enumerate(
+                results["examples_per_class"].unique()):
 
-        if i == 0: handles, labels = axis.get_legend_handles_labels()
-        axis.legend([],[], frameon=False)
+            results2 = results[results["examples_per_class"] == examples_per_class]
+            
+            fig, axs = plt.subplots(1, 1, figsize=(20, 6))
 
-        axis.set(xlabel=None)
-        axis.set(ylabel=None)
+            axis = sns.barplot(x="class_name", y="value", hue="method", 
+                               data=results2, errorbar=('ci', 68),
+                               linewidth=4, palette=color_palette,
+                               ax=axs)
 
-        axis.spines['right'].set_visible(False)
-        axis.spines['top'].set_visible(False)
+            if i == 0: handles, labels = axis.get_legend_handles_labels()
+            axis.legend([],[], frameon=False)
 
-        axis.xaxis.set_ticks_position('bottom')
-        axis.yaxis.set_ticks_position('left')
+            axis.set(xlabel=None)
+            axis.set(ylabel=None)
 
-        axis.yaxis.set_tick_params(labelsize=16)
-        axis.xaxis.set_tick_params(labelsize=16)
+            axis.spines['right'].set_visible(False)
+            axis.spines['top'].set_visible(False)
 
-        axis.set_xlabel("Examples Per Class", fontsize=24,
-                        fontweight='bold', labelpad=12)
+            axis.xaxis.set_ticks_position('bottom')
+            axis.yaxis.set_ticks_position('left')
 
-        axis.set_ylabel("Accuracy (Val)", fontsize=24,
-                        fontweight='bold', labelpad=12)
+            axis.yaxis.set_tick_params(labelsize=16)
+            axis.xaxis.set_tick_params(labelsize=16, labelrotation=45)
 
-        axis.set_title(f"Dataset = {dataset}",
-                       fontsize=24, fontweight='bold', pad=12)
+            axis.set_ylabel("Accuracy (Val)", fontsize=24,
+                            fontweight='bold', labelpad=12)
 
-        axis.grid(color='grey', linestyle='dotted', linewidth=2)
+            axis.set_title(f"Dataset = {dataset} (Examples Per Class = {examples_per_class})",
+                           fontsize=24, fontweight='bold', pad=12)
 
-    legend = fig.legend(handles, [pretty(x) for x in args.method_names],
-                        loc="lower center", ncol=len(args.method_names),
-                        prop={'size': 24, 'weight': 'bold'})
+            axis.grid(color='grey', linestyle='dotted', linewidth=2)
 
-    for i, legend_object in enumerate(legend.legendHandles):
-        legend_object.set_linewidth(4.0)
-        legend_object.set_color(color_palette[i])
+            legend = fig.legend(handles, [pretty(x) for x in args.method_names],
+                                loc="lower center", ncol=len(args.method_names),
+                                prop={'size': 24, 'weight': 'bold'})
 
-    plt.tight_layout(pad=1.0)
-    fig.subplots_adjust(bottom=0.35)
+            for i, legend_object in enumerate(legend.legendHandles):
+                legend_object.set_linewidth(4.0)
+                legend_object.set_color(color_palette[i])
 
-    plt.savefig(f"{args.name}.pdf")
-    plt.savefig(f"{args.name}.png")
+            plt.tight_layout(pad=1.0)
+            fig.subplots_adjust(bottom=0.35)
+
+            plt.savefig(f"{args.name}-{dataset}-{examples_per_class}-barplot.pdf")
+            plt.savefig(f"{args.name}-{dataset}-{examples_per_class}-barplot.png")

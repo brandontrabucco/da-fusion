@@ -2,15 +2,22 @@ import argparse
 import logging
 import math
 import os
+import shutil
 import random
 from pathlib import Path
-from typing import Optional, Iterator
+from typing import Optional
+from itertools import product
 
 import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.utils.checkpoint
 from torch.utils.data import Dataset
+
+from semantic_aug.datasets.coco import COCODataset
+from semantic_aug.datasets.spurge import SpurgeDataset
+from semantic_aug.datasets.imagenet import ImageNetDataset
+from semantic_aug.datasets.pascal import PASCALDataset
 
 import datasets
 import diffusers
@@ -27,19 +34,10 @@ from huggingface_hub import HfFolder, Repository, whoami
 
 # TODO: remove and import from diffusers.utils when the new version of diffusers is released
 from packaging import version
-from itertools import product
 from PIL import Image
 from torchvision import transforms
 from tqdm.auto import tqdm
 from transformers import CLIPTextModel, CLIPTokenizer
-
-# import few shot datasets
-from semantic_aug.few_shot_dataset import FewShotDataset
-from semantic_aug.datasets.coco import COCODataset
-from semantic_aug.datasets.spurge import SpurgeDataset
-from semantic_aug.datasets.imagenet import ImageNetDataset
-from semantic_aug.datasets.pascal import PASCALDataset
-from semantic_aug.textual_inversion_dataset import TextualInversionDataset
 
 
 DATASETS = {
@@ -76,11 +74,10 @@ check_min_version("0.10.0.dev0")
 logger = get_logger(__name__)
 
 
-def save_progress(text_encoder, added_tokens, accelerator, args, save_path):
+def save_progress(text_encoder, placeholder_token_id, accelerator, args, save_path):
     logger.info("Saving embeddings")
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    learned_embeds = accelerator.unwrap_model(text_encoder).get_input_embeddings().weight[-len(added_tokens):].detach().cpu()
-    learned_embeds_dict = {token_name: learned_embeds[idx] for idx, token_name in enumerate(added_tokens)}
+    learned_embeds = accelerator.unwrap_model(text_encoder).get_input_embeddings().weight[placeholder_token_id]
+    learned_embeds_dict = {args.placeholder_token: learned_embeds.detach().cpu()}
     torch.save(learned_embeds_dict, save_path)
 
 
@@ -118,11 +115,12 @@ def parse_args():
         default=None,
         help="Pretrained tokenizer name or path if not the same as model_name",
     )
+    parser.add_argument("--learnable_property", type=str, default="object", help="Choose between 'object' and 'style'")
     parser.add_argument("--repeats", type=int, default=100, help="How many times to repeat the training data.")
     parser.add_argument(
         "--output_dir",
         type=str,
-        default="text-inversion-model",
+        default="./",
         help="The output directory where the model predictions and checkpoints will be written.",
     )
     parser.add_argument("--seed", type=int, default=None, help="A seed for reproducible training.")
@@ -134,6 +132,9 @@ def parse_args():
             "The resolution for input images, all the images in the train/validation dataset will be resized to this"
             " resolution"
         ),
+    )
+    parser.add_argument(
+        "--center_crop", action="store_true", help="Whether to center crop images before resizing to resolution"
     )
     parser.add_argument(
         "--train_batch_size", type=int, default=16, help="Batch size (per device) for the training dataloader."
@@ -254,7 +255,7 @@ def parse_args():
 
     parser.add_argument("--num-trials", type=int, default=8)
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
-
+    
     parser.add_argument("--dataset", type=str, default="coco", 
                         choices=["spurge", "imagenet", "coco", "pascal"])
 
@@ -263,10 +264,143 @@ def parse_args():
     if env_local_rank != -1 and env_local_rank != args.local_rank:
         args.local_rank = env_local_rank
 
-    if args.dataset is None:
-        raise ValueError("You must specify a train dataset.")
-
     return args
+
+
+imagenet_templates_small = [
+    "a photo of a {}",
+    "a rendering of a {}",
+    "a cropped photo of the {}",
+    "the photo of a {}",
+    "a photo of a clean {}",
+    "a photo of a dirty {}",
+    "a dark photo of the {}",
+    "a photo of my {}",
+    "a photo of the cool {}",
+    "a close-up photo of a {}",
+    "a bright photo of the {}",
+    "a cropped photo of a {}",
+    "a photo of the {}",
+    "a good photo of the {}",
+    "a photo of one {}",
+    "a close-up photo of the {}",
+    "a rendition of the {}",
+    "a photo of the clean {}",
+    "a rendition of a {}",
+    "a photo of a nice {}",
+    "a good photo of a {}",
+    "a photo of the nice {}",
+    "a photo of the small {}",
+    "a photo of the weird {}",
+    "a photo of the large {}",
+    "a photo of a cool {}",
+    "a photo of a small {}",
+]
+
+imagenet_style_templates_small = [
+    "a painting in the style of {}",
+    "a rendering in the style of {}",
+    "a cropped painting in the style of {}",
+    "the painting in the style of {}",
+    "a clean painting in the style of {}",
+    "a dirty painting in the style of {}",
+    "a dark painting in the style of {}",
+    "a picture in the style of {}",
+    "a cool painting in the style of {}",
+    "a close-up painting in the style of {}",
+    "a bright painting in the style of {}",
+    "a cropped painting in the style of {}",
+    "a good painting in the style of {}",
+    "a close-up painting in the style of {}",
+    "a rendition in the style of {}",
+    "a nice painting in the style of {}",
+    "a small painting in the style of {}",
+    "a weird painting in the style of {}",
+    "a large painting in the style of {}",
+]
+
+
+class TextualInversionDataset(Dataset):
+    def __init__(
+        self,
+        data_root,
+        tokenizer,
+        learnable_property="object",  # [object, style]
+        size=512,
+        repeats=100,
+        interpolation="bicubic",
+        flip_p=0.5,
+        set="train",
+        placeholder_token="*",
+        center_crop=False,
+    ):
+        self.data_root = data_root
+        self.tokenizer = tokenizer
+        self.learnable_property = learnable_property
+        self.size = size
+        self.placeholder_token = placeholder_token
+        self.center_crop = center_crop
+        self.flip_p = flip_p
+
+        self.image_paths = [os.path.join(self.data_root, file_path) for file_path in os.listdir(self.data_root)]
+
+        self.num_images = len(self.image_paths)
+        self._length = self.num_images
+
+        if set == "train":
+            self._length = self.num_images * repeats
+
+        self.interpolation = {
+            "linear": PIL_INTERPOLATION["linear"],
+            "bilinear": PIL_INTERPOLATION["bilinear"],
+            "bicubic": PIL_INTERPOLATION["bicubic"],
+            "lanczos": PIL_INTERPOLATION["lanczos"],
+        }[interpolation]
+
+        self.templates = imagenet_style_templates_small if learnable_property == "style" else imagenet_templates_small
+        self.flip_transform = transforms.RandomHorizontalFlip(p=self.flip_p)
+
+    def __len__(self):
+        return self._length
+
+    def __getitem__(self, i):
+        example = {}
+        image = Image.open(self.image_paths[i % self.num_images])
+
+        if not image.mode == "RGB":
+            image = image.convert("RGB")
+
+        placeholder_string = self.placeholder_token
+        text = random.choice(self.templates).format(placeholder_string)
+
+        example["input_ids"] = self.tokenizer(
+            text,
+            padding="max_length",
+            truncation=True,
+            max_length=self.tokenizer.model_max_length,
+            return_tensors="pt",
+        ).input_ids[0]
+
+        # default to score-sde preprocessing
+        img = np.array(image).astype(np.uint8)
+
+        if self.center_crop:
+            crop = min(img.shape[0], img.shape[1])
+            (h, w,) = (
+                img.shape[0],
+                img.shape[1],
+            )
+            img = img[(h - crop) // 2 : (h + crop) // 2, (w - crop) // 2 : (w + crop) // 2]
+
+        image = Image.fromarray(img)
+        image = image.resize((self.size, self.size), resample=self.interpolation)
+
+        image = self.flip_transform(image)
+        image = np.array(image).astype(np.uint8)
+        image = (image / 127.5 - 1.0).astype(np.float32)
+
+        example["pixel_values"] = torch.from_numpy(image).permute(2, 0, 1)
+        return example
 
 
 def get_full_repo_name(model_id: str, organization: Optional[str] = None, token: Optional[str] = None):
@@ -279,51 +413,8 @@ def get_full_repo_name(model_id: str, organization: Optional[str] = None, token:
         return f"{organization}/{model_id}"
 
 
-class BalancedSampler(torch.utils.data.Sampler):
-
-    data_source: FewShotDataset
-
-    def __init__(self, data_source: FewShotDataset, 
-                 num_samples: Optional[int] = None) -> None:
-
-        self.data_source = data_source
-        self._num_samples = num_samples
-
-        if not isinstance(self.num_samples, int) or self.num_samples <= 0:
-            raise ValueError("num_samples should be a positive integer "
-                             "value, but got num_samples={}".format(self.num_samples))
-
-    @property
-    def num_samples(self) -> int:
-        # dataset size might change at runtime
-        if self._num_samples is None:
-            return len(self.data_source)
-        return self._num_samples
-
-    def __iter__(self) -> Iterator[int]:
-        
-        seed = int(torch.empty((), dtype=torch.int64).random_().item())
-        generator = torch.Generator()
-        generator.manual_seed(seed)
-
-        num_classes = self.data_source.num_classes
-        labels = np.array([self.data_source.get_label_by_idx(
-            idx) for idx in range(len(self.data_source))])
-
-        class_to_indices = {l: np.where(
-            labels == l)[0] for l in np.unique(labels)}
-
-        for i in range(self.num_samples):
-            class_idx = class_to_indices[i % num_classes]
-            yield class_idx[torch.randint(
-                high=class_idx.size, size=(1,),
-                dtype=torch.int64, generator=generator)[0]]
-
-    def __len__(self) -> int:
-        return self.num_samples
-
-
 def main(args):
+
     logging_dir = os.path.join(args.output_dir, args.logging_dir)
 
     accelerator = Accelerator(
@@ -386,52 +477,29 @@ def main(args):
         args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision
     )
 
-    # build the training dataset
-    train_dataset = DATASETS[args.dataset](
-        split="train", examples_per_class=args.examples_per_class, 
-        seed=args.seed, image_size=(args.resolution, args.resolution))
+    # Add the placeholder token in tokenizer
+    num_added_tokens = tokenizer.add_tokens(args.placeholder_token)
+    if num_added_tokens == 0:
+        raise ValueError(
+            f"The tokenizer already contains the token {args.placeholder_token}. Please pass a different"
+            " `placeholder_token` that is not already in the tokenizer."
+        )
 
-    added_tokens = []
-    num_added_tokens = 0
+    # Convert the initializer_token, placeholder_token to ids
+    token_ids = tokenizer.encode(args.initializer_token, add_special_tokens=False)
+    # Check if initializer_token is a single token or a sequence of tokens
+    if len(token_ids) > 1:
+        raise ValueError("The initializer token must be a single token.")
 
-    for name in train_dataset.class_names:
+    initializer_token_id = token_ids[0]
+    placeholder_token_id = tokenizer.convert_tokens_to_ids(args.placeholder_token)
 
-        initializer = name
-        initializer_ids = tokenizer.encode(
-            initializer, add_special_tokens=False)
+    # Resize the token embeddings as we are adding new special tokens to the tokenizer
+    text_encoder.resize_token_embeddings(len(tokenizer))
 
-        fine_tuned_tokens = []
-
-        for idx in initializer_ids:
-
-            token = tokenizer._convert_id_to_token(idx)
-            token = token.replace("</w>", "")
-
-            fine_tuned_tokens.append(f"<{token}>")
-
-        num_added_tokens += tokenizer.add_tokens(fine_tuned_tokens)
-        text_encoder.resize_token_embeddings(len(tokenizer))
-
-        for x in fine_tuned_tokens: 
-
-            if x not in added_tokens: 
-                added_tokens.append(x)
-
-        token_embeds = text_encoder.get_input_embeddings().weight.data
-        placeholder_ids = tokenizer.convert_tokens_to_ids(fine_tuned_tokens)
-
-        for placeholder_idx, initializer_idx in zip(
-            placeholder_ids, initializer_ids
-        ):
-
-            token_embeds[placeholder_idx] = \
-                token_embeds[initializer_idx]
-
-    accumulations_per_class = int(np.ceil(
-        train_dataset.num_classes / args.train_batch_size))
-
-    assert accumulations_per_class <= args.gradient_accumulation_steps, \
-        f"increase --gradient_accumulation_steps to at least {accumulations_per_class}"
+    # Initialise the newly added placeholder token with the embeddings of the initializer token
+    token_embeds = text_encoder.get_input_embeddings().weight.data
+    token_embeds[placeholder_token_id] = token_embeds[initializer_token_id]
 
     # Freeze vae and unet
     vae.requires_grad_(False)
@@ -461,8 +529,7 @@ def main(args):
 
     if args.scale_lr:
         args.learning_rate = (
-            args.learning_rate * accelerator.num_processes * (
-                args.gradient_accumulation_steps / accumulations_per_class)
+            args.learning_rate * args.gradient_accumulation_steps * args.train_batch_size * accelerator.num_processes
         )
 
     # Initialize the optimizer
@@ -474,15 +541,18 @@ def main(args):
         eps=args.adam_epsilon,
     )
 
-    train_sampler = BalancedSampler(
-        train_dataset, num_samples=len(train_dataset) * args.repeats)
-
-    # wrap training dataset with a prompt generator for textual inversion
-    train_dataset = TextualInversionDataset(train_dataset, tokenizer)
-
-    train_dataloader = torch.utils.data.DataLoader(
-        train_dataset, sampler=train_sampler, 
-        batch_size=args.train_batch_size)
+    # Dataset and DataLoaders creation:
+    train_dataset = TextualInversionDataset(
+        data_root=args.train_data_dir,
+        tokenizer=tokenizer,
+        size=args.resolution,
+        placeholder_token=args.placeholder_token,
+        repeats=args.repeats,
+        learnable_property=args.learnable_property,
+        center_crop=args.center_crop,
+        set="train",
+    )
+    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=args.train_batch_size, shuffle=True)
 
     # Scheduler and math around the number of training steps.
     overrode_max_train_steps = False
@@ -567,8 +637,7 @@ def main(args):
 
     for epoch in range(first_epoch, args.num_train_epochs):
         text_encoder.train()
-
-        for step, (image, prompt) in enumerate(train_dataloader):
+        for step, batch in enumerate(train_dataloader):
             # Skip steps until we reach the resumed step
             if args.resume_from_checkpoint and epoch == first_epoch and step < resume_step:
                 if step % args.gradient_accumulation_steps == 0:
@@ -577,7 +646,7 @@ def main(args):
 
             with accelerator.accumulate(text_encoder):
                 # Convert images to latent space
-                latents = vae.encode(image.to(dtype=weight_dtype)).latent_dist.sample().detach()
+                latents = vae.encode(batch["pixel_values"].to(dtype=weight_dtype)).latent_dist.sample().detach()
                 latents = latents * 0.18215
 
                 # Sample noise that we'll add to the latents
@@ -592,7 +661,7 @@ def main(args):
                 noisy_latents = noise_scheduler.add_noise(latents, noise, timesteps)
 
                 # Get the text embedding for conditioning
-                encoder_hidden_states = text_encoder(prompt)[0].to(dtype=weight_dtype)
+                encoder_hidden_states = text_encoder(batch["input_ids"])[0].to(dtype=weight_dtype)
 
                 # Predict the noise residual
                 model_pred = unet(noisy_latents, timesteps, encoder_hidden_states).sample
@@ -605,42 +674,28 @@ def main(args):
                 else:
                     raise ValueError(f"Unknown prediction type {noise_scheduler.config.prediction_type}")
 
-                loss = F.mse_loss(
-                    model_pred.float(), 
-                    target.float(), 
-                    reduction="none"
-                )
+                loss = F.mse_loss(model_pred.float(), target.float(), reduction="mean")
 
-                loss = loss.mean(dim=(1, 2, 3)).sum()
-                accelerator.backward(loss * accumulations_per_class)
+                accelerator.backward(loss)
 
                 optimizer.step()
                 lr_scheduler.step()
                 optimizer.zero_grad()
 
                 # Let's make sure we don't update any embedding weights besides the newly added token
-                index_no_updates = torch.arange(len(tokenizer)) < (len(tokenizer) - num_added_tokens)
+                index_no_updates = torch.arange(len(tokenizer)) != placeholder_token_id
                 with torch.no_grad():
                     accelerator.unwrap_model(text_encoder).get_input_embeddings().weight[
                         index_no_updates
                     ] = orig_embeds_params[index_no_updates]
-
-                loss /= (args.gradient_accumulation_steps / 
-                         accumulations_per_class)
 
             # Checks if the accelerator has performed an optimization step behind the scenes
             if accelerator.sync_gradients:
                 progress_bar.update(1)
                 global_step += 1
                 if global_step % args.save_steps == 0:
-                    save_path = os.path.join(args.output_dir, f"{args.dataset}-step={global_step}-tokens/{args.dataset}-{args.seed}-{args.examples_per_class}.pt")
-                    save_progress(text_encoder, added_tokens, accelerator, args, save_path)
-
-                if global_step % args.checkpointing_steps == 0:
-                    if accelerator.is_main_process:
-                        save_path = os.path.join(args.output_dir, f"checkpoint-{global_step}")
-                        accelerator.save_state(save_path)
-                        logger.info(f"Saved state to {save_path}")
+                    save_path = os.path.join(args.output_dir, f"learned_embeds-steps-{global_step}.bin")
+                    save_progress(text_encoder, placeholder_token_id, accelerator, args, save_path)
 
             logs = {"loss": loss.detach().item(), "lr": lr_scheduler.get_last_lr()[0]}
             progress_bar.set_postfix(**logs)
@@ -652,26 +707,9 @@ def main(args):
     # Create the pipeline using using the trained modules and save it.
     accelerator.wait_for_everyone()
     if accelerator.is_main_process:
-        if args.push_to_hub and args.only_save_embeds:
-            logger.warn("Enabling full model saving because --push_to_hub=True was specified.")
-            save_full_model = True
-        else:
-            save_full_model = not args.only_save_embeds
-        if save_full_model:
-            pipeline = StableDiffusionPipeline.from_pretrained(
-                args.pretrained_model_name_or_path,
-                text_encoder=accelerator.unwrap_model(text_encoder),
-                vae=vae,
-                unet=unet,
-                tokenizer=tokenizer,
-            )
-            pipeline.save_pretrained(args.output_dir)
         # Save the newly trained embeddings
-        save_path = os.path.join(args.output_dir, f"{args.dataset}-tokens/{args.dataset}-{args.seed}-{args.examples_per_class}.pt")
-        save_progress(text_encoder, added_tokens, accelerator, args, save_path)
-
-        if args.push_to_hub:
-            repo.push_to_hub(commit_message="End of training", blocking=False, auto_lfs_prune=True)
+        save_path = os.path.join(args.output_dir, "learned_embeds.bin")
+        save_progress(text_encoder, placeholder_token_id, accelerator, args, save_path)
 
     accelerator.end_training()
 
@@ -679,6 +717,7 @@ def main(args):
 if __name__ == "__main__":
 
     args = parse_args()
+    output_dir = args.output_dir
 
     rank = int(os.environ.pop("RANK", 0))
     world_size = int(os.environ.pop("WORLD_SIZE", 1))
@@ -694,7 +733,43 @@ if __name__ == "__main__":
 
     for seed, examples_per_class in options.tolist():
 
-        args.seed = seed
-        args.examples_per_class = examples_per_class
+        os.makedirs("extracted", exist_ok=True)
 
-        main(args)
+        train_dataset = DATASETS[
+            args.dataset](split="train", seed=seed, 
+                          examples_per_class=examples_per_class)
+
+        for idx in range(len(train_dataset)):
+
+            image = train_dataset.get_image_by_idx(idx)
+            metadata = train_dataset.get_metadata_by_idx(idx)
+
+            name = metadata["name"].format(" ", "_")
+            path = f"{args.dataset}-{seed}-{examples_per_class}"
+
+            path = os.path.join("extracted", path, name, f"{idx}.png")
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+
+            image.save(path)
+
+        for class_name in train_dataset.class_names:
+
+            formatted_name = class_name.format(" ", "_")
+            dirname = f"{args.dataset}-{seed}-{examples_per_class}/{formatted_name}"
+
+            args = parse_args()
+            
+            args.seed = seed
+            args.examples_per_class = examples_per_class
+
+            args.placeholder_token = f"<{formatted_name}>"
+            args.initializer_token = "the"
+
+            args.train_data_dir = os.path.join(
+                output_dir, "extracted", dirname)
+            args.output_dir = os.path.join(
+                output_dir, "fine-tuned", dirname)
+
+            main(args)
+
+            shutil.rmtree(args.train_data_dir)
