@@ -2,6 +2,7 @@ import argparse
 import logging
 import math
 import os
+import gc
 import shutil
 import random
 from pathlib import Path
@@ -704,14 +705,21 @@ def main(args):
             if global_step >= args.max_train_steps:
                 break
 
-    # Create the pipeline using using the trained modules and save it.
     accelerator.wait_for_everyone()
+
     if accelerator.is_main_process:
         # Save the newly trained embeddings
         save_path = os.path.join(args.output_dir, "learned_embeds.bin")
-        save_progress(text_encoder, placeholder_token_id, accelerator, args, save_path)
+        save_progress(text_encoder, placeholder_token_id, 
+                      accelerator, args, save_path)
 
     accelerator.end_training()
+    accelerator.free_memory()
+
+    del accelerator, vae, unet, text_encoder
+
+    gc.collect()
+    torch.cuda.empty_cache()
 
 
 if __name__ == "__main__":
@@ -760,7 +768,6 @@ if __name__ == "__main__":
             args = parse_args()
             
             args.seed = seed
-            args.examples_per_class = examples_per_class
 
             args.placeholder_token = f"<{formatted_name}>"
             args.initializer_token = "the"
