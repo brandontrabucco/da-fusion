@@ -6,6 +6,7 @@ import seaborn as sns
 import os
 import glob
 import argparse
+import math
 
 
 def pretty(text):
@@ -100,8 +101,15 @@ if __name__ == "__main__":
     
     color_palette = sns.color_palette(n_colors=len(args.method_names))
 
-    fig, axs = plt.subplots(1, len(args.datasets),
-                            figsize=(6 * len(args.datasets), 6))
+    legend_rows = int(math.ceil(
+        len(args.method_names) / len(args.datasets)))
+
+    fig, axs = plt.subplots(
+        1, len(args.datasets),
+        figsize=(6 * len(args.datasets), (
+            6 if legend_rows == 1 else
+            6.5 if legend_rows == 2 else 7
+        )))
 
     for i, dataset in enumerate(args.datasets):
 
@@ -139,15 +147,20 @@ if __name__ == "__main__":
         axis.grid(color='grey', linestyle='dotted', linewidth=2)
 
     legend = fig.legend(handles, [pretty(x) for x in args.method_names],
-                        loc="lower center", ncol=len(args.method_names),
-                        prop={'size': 24, 'weight': 'bold'})
+                        loc="lower center", prop={'size': 24, 'weight': 'bold'}, 
+                        ncol=min(len(args.method_names), len(args.datasets)))
 
     for i, legend_object in enumerate(legend.legendHandles):
         legend_object.set_linewidth(4.0)
         legend_object.set_color(color_palette[i])
 
+    print(legend_rows)
+
     plt.tight_layout(pad=1.0)
-    fig.subplots_adjust(bottom=0.35)
+    fig.subplots_adjust(bottom=(
+        0.35 if legend_rows == 1 else
+        0.40 if legend_rows == 2 else 0.45
+    ))
 
     plt.savefig(f"{args.name}.pdf")
     plt.savefig(f"{args.name}.png")
