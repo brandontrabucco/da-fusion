@@ -14,8 +14,8 @@ conda activate semantic-aug-1
 cd ~/semantic-aug
 
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=40 python train_classifier.py \
---logdir ./pascal-baselines/inpainting \
---dataset pascal --aug inpainting --prompt "a photo" \
+--logdir ./coco-baselines/inpainting \
+--dataset coco --aug inpainting --prompt "a photo" \
 --strength 0.5 --num-synthetic 10 \
 --synthetic-probability 0.5 --num-trials 8 \
 --examples-per-class 1 2 4 8 16

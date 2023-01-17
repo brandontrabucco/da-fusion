@@ -4,6 +4,7 @@ from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
+from semantic_aug.augmentations.inpainting_ti import TextualInversionInpainting
 from semantic_aug.augmentations.inpainting import Inpainting
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
@@ -72,6 +73,13 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
 
         aug = Inpainting(
             model_path=model_path, 
+            prompt=prompt, strength=strength, 
+            guidance_scale=guidance_scale)
+
+    elif aug == "inpainting-ti":
+
+        aug = TextualInversionInpainting(
+            embed_path, model_path=model_path, 
             prompt=prompt, strength=strength, 
             guidance_scale=guidance_scale)
 
@@ -315,7 +323,7 @@ if __name__ == "__main__":
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
-                        choices=["real-guidance", "textual-inversion", "inpainting", "none"])
+                        choices=["real-guidance", "textual-inversion", "inpainting", "inpainting-ti", "none"])
 
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     

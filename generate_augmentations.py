@@ -4,11 +4,13 @@ from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
+from semantic_aug.augmentations.inpainting_ti import TextualInversionInpainting
 from semantic_aug.augmentations.inpainting import Inpainting
 from diffusers import StableDiffusionPipeline
 from itertools import product
 from torch import autocast
 from PIL import Image
+
 
 from tqdm import tqdm
 import os
@@ -45,7 +47,7 @@ if __name__ == "__main__":
     parser.add_argument("--strength", type=float, default=0.5)
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
-                        choices=["real-guidance", "textual-inversion", "inpainting"])
+                        choices=["real-guidance", "textual-inversion", "inpainting", "inpainting-ti"])
 
     parser.add_argument("--class-name", type=str, default=None)
 
@@ -72,8 +74,16 @@ if __name__ == "__main__":
             guidance_scale=args.guidance_scale)
 
     elif args.aug == "inpainting":
+        
         aug = Inpainting(
             model_path=args.model_path, 
+            prompt=args.prompt, strength=args.strength, 
+            guidance_scale=args.guidance_scale)
+
+    elif args.aug == "inpainting-ti":
+
+        aug = TextualInversionInpainting(
+            args.embed_path, model_path=args.model_path, 
             prompt=args.prompt, strength=args.strength, 
             guidance_scale=args.guidance_scale)
 
