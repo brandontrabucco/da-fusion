@@ -5,6 +5,7 @@ from semantic_aug.datasets.pascal import PASCALDataset
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
 from semantic_aug.augmentations.stack_augs import StackAugs
+from semantic_aug.augmentations.integrated_stacking import IntegratedStacking
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
 from itertools import product
@@ -53,12 +54,25 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
-
+    
+    if aug == "integrated-stacking":
+        aug = IntegratedStacking(
+            embed_path, model_path=model_path, 
+            prompt=prompt,
+            guidance_scale=guidance_scale)
+    
     if aug == "real-guidance":
 
         aug = RealGuidance(
             model_path=model_path, 
             prompt=prompt, strength=strength, 
+            guidance_scale=guidance_scale)
+
+    elif aug == "stack-augs":
+
+        aug = StackAugs(
+            embed_path, model_path=model_path, 
+            prompt_text_inv=prompt, strength=strength, 
             guidance_scale=guidance_scale)
 
     elif aug == "textual-inversion":
@@ -68,13 +82,6 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
             prompt=prompt, strength=strength, 
             guidance_scale=guidance_scale)
     
-    elif aug == "stack-augs":
-
-        aug = StackAugs(
-            embed_path, model_path=model_path, 
-            prompt_text_inv=prompt, strength=strength, 
-            guidance_scale=guidance_scale)
-
     elif aug == "none":
 
         synthetic_probability = 0.0
@@ -251,7 +258,7 @@ if __name__ == "__main__":
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
     
     parser.add_argument("--aug", type=str, default="real-guidance", 
-                        choices=["real-guidance", "stack-augs", "textual-inversion", "none"])
+                        choices=["integrated-stacking", "real-guidance", "stack-augs", "textual-inversion", "none"])
 
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     
