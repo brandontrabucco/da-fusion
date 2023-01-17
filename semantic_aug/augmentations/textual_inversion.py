@@ -51,13 +51,18 @@ def load_embeddings(embed_path: str,
     return tokenizer, text_encoder.to('cuda')
 
 
+def format_name(name):
+    return f"<{name.replace(' ', '_')}>"
+
+
 class TextualInversion(GenerativeAugmentation):
 
     def __init__(self, fine_tuned_embeddings: str, 
                  model_path: str = "CompVis/stable-diffusion-v1-4",
                  prompt: str = "a photo of a {name}",
                  strength: float = 0.5, 
-                 guidance_scale: float = 7.5):
+                 guidance_scale: float = 7.5,
+                 format_name: Callable = format_name):
 
         super(TextualInversion, self).__init__()
 
@@ -80,31 +85,20 @@ class TextualInversion(GenerativeAugmentation):
         self.prompt = prompt
         self.strength = strength
         self.guidance_scale = guidance_scale
+        self.format_name = format_name
 
     def forward(self, image: Image.Image, label: int, 
                 metadata: dict) -> Tuple[Image.Image, int]:
 
-        initializer_ids = self.pipe.tokenizer.encode(
-            metadata["name"], add_special_tokens=False)
-
-        fine_tuned_tokens = []
-
-        for idx in initializer_ids:
-
-            token = self.pipe.tokenizer._convert_id_to_token(idx)
-            token = token.replace("</w>", "")
-
-            fine_tuned_tokens.append(f"<{token}>")
-
-        metadata["name"] = " ".join(fine_tuned_tokens)
-
         canvas = image.resize((512, 512), Image.BILINEAR)
+
+        name = self.format_name(metadata["name"])
 
         with autocast('cuda'):
 
             canvas = self.pipe(
                 image=canvas,
-                prompt=[self.prompt.format(**metadata)], 
+                prompt=[self.prompt.format(name=name)], 
                 strength=self.strength, 
                 guidance_scale=self.guidance_scale
             ).images[0]
