@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=spurge
+#SBATCH --job-name=imagenet
 #SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-4,matrix-2-13,matrix-1-8
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
@@ -13,11 +13,12 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=40 python train_classifier.py \
---logdir ./imagenet-baselines/real-guidance-0.5 \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
+python train_classifier.py --logdir imagenet-baselines/real-guidance-0.5 \
 --synthetic-dir "/projects/rsalakhugroup/btrabucc/aug/\
 real-guidance-0.5/{dataset}-{seed}-{examples_per_class}" \
---dataset imagenet --aug real-guidance --prompt "a photo of a {name}" \
---strength 0.5 --num-synthetic 10 \
---synthetic-probability 0.5 --num-trials 8 \
---examples-per-class 1 2 4 8 16
+--dataset imagenet --prompt "a photo of a {name}" \
+--aug real-guidance --guidance-scale 7.5 \
+--strength 0.5 --mask 0 --inverted 0 \
+--num-synthetic 10 --synthetic-probability 0.5 \
+--num-trials 8 --examples-per-class 1 2 4 8 16

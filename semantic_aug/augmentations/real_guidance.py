@@ -2,10 +2,11 @@ from semantic_aug.generative_augmentation import GenerativeAugmentation
 from diffusers import StableDiffusionImg2ImgPipeline
 from diffusers import StableDiffusionInpaintPipeline
 from diffusers.utils import logging
-from PIL import Image, ImageMorph, ImageFilter
+from PIL import Image, ImageOps
 
 from typing import Any, Tuple, Callable
 from torch import autocast
+from scipy.ndimage import maximum_filter
 
 import numpy as np
 import torch
@@ -15,28 +16,34 @@ import torch.nn.functional as F
 
 class RealGuidance(GenerativeAugmentation):
 
+    pipe = None  # global sharing is a hack to avoid OOM
+
     def __init__(self, model_path: str = "CompVis/stable-diffusion-v1-4",
                  prompt: str = "a photo of a {name}",
                  strength: float = 0.5, 
                  guidance_scale: float = 7.5,
                  mask: bool = False,
                  inverted: bool = False,
-                 mask_grow_radius: int = 10):
+                 mask_grow_radius: int = 16,
+                 **kwargs):
 
         super(RealGuidance, self).__init__()
 
-        PipelineClass = (StableDiffusionInpaintPipeline 
-                         if mask else StableDiffusionInpaintPipeline)
+        if RealGuidance.pipe is None:
 
-        self.pipe = PipeClass.from_pretrained(
-            model_path, use_auth_token=True,
-            revision="fp16", 
-            torch_dtype=torch.float16
-        ).to('cuda')
+            PipelineClass = (StableDiffusionInpaintPipeline 
+                             if mask else 
+                             StableDiffusionImg2ImgPipeline)
 
-        logging.disable_progress_bar()
-        self.pipe.set_progress_bar_config(disable=True)
-        self.pipe.safety_checker = None
+            self.pipe = PipelineClass.from_pretrained(
+                model_path, use_auth_token=True,
+                revision="fp16", 
+                torch_dtype=torch.float16
+            ).to('cuda')
+
+            logging.disable_progress_bar()
+            self.pipe.set_progress_bar_config(disable=True)
+            self.pipe.safety_checker = None
 
         self.prompt = prompt
         self.strength = strength
@@ -62,24 +69,25 @@ class RealGuidance(GenerativeAugmentation):
             guidance_scale=self.guidance_scale
         )
 
-        if self.mask:  # focal object mask
+        if self.mask:  # use focal object mask
 
-            kwargs["mask"] = Image.fromarray((
-                np.where(metadata["mask"], 0, 255) 
-                if self.inverted else 
+            mask_image = Image.fromarray((
                 np.where(metadata["mask"], 255, 0)
-            ).astype(np.uint8))
+            ).astype(np.uint8)).resize((512, 512), Image.NEAREST)
 
-            kwargs["mask"] = kwargs["mask"]\
-                .resize((512, 512), Image.BILINEAR)
+            mask_image = Image.fromarray(
+                maximum_filter(np.array(mask_image), 
+                               size=self.mask_grow_radius))
 
-            kwargs["mask"] = kwargs["mask"].filter((
-                ImageFilter.MinFilter 
-                if self.inverted else 
-                ImageFilter.MaxFilter
-            )(self.mask_grow_radius))
+            if self.inverted:
 
-        canvas = self.pipe(**kwargs).images[0]
+                mask_image = ImageOps.invert(
+                    mask_image.convert('L')).convert('1')
+
+            kwargs["mask_image"] = mask_image
+
+        with autocast("cuda"):
+            canvas = self.pipe(**kwargs).images[0]
         canvas = canvas.resize(image.size, Image.BILINEAR)
 
         return canvas, label

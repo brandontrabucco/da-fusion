@@ -2,12 +2,15 @@ from semantic_aug.datasets.coco import COCODataset
 from semantic_aug.datasets.spurge import SpurgeDataset
 from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
+from semantic_aug.augmentations.compose import ComposeParallel
+from semantic_aug.augmentations.compose import ComposeSequential
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
 from itertools import product
 from tqdm import trange
+from typing import List
 
 import torch
 import torch.nn as nn
@@ -33,51 +36,65 @@ DATASETS = {
     "spurge": SpurgeDataset, 
     "coco": COCODataset, 
     "pascal": PASCALDataset,
-    "imagenet": ImageNetDataset``
+    "imagenet": ImageNetDataset
+}
+
+COMPOSERS = {
+    "parallel": ComposeParallel,
+    "sequential": ComposeSequential
+}
+
+AUGMENTATIONS = {
+    "real-guidance": RealGuidance,
+    "textual-inversion": TextualInversion
 }
 
 
-def run_experiment(examples_per_class: int = 0, seed: int = 0, 
-                   dataset: str = "spurge", aug: str = "real-guidance", 
+def run_experiment(examples_per_class: int = 0, 
+                   seed: int = 0, 
+                   dataset: str = "spurge", 
                    num_synthetic: int = 100, 
                    iterations_per_epoch: int = 200, 
                    num_epochs: int = 50, 
-                   batch_size: int = 32,
-                   strength: float = 0.5, 
-                   guidance_scale: float = 7.5, 
+                   batch_size: int = 32, 
+                   aug: List[str] = None,
+                   strength: List[float] = None, 
+                   guidance_scale: List[float] = None,
+                   mask: List[bool] = None,
+                   inverted: List[bool] = None, 
+                   probs: List[float] = None,
+                   compose: str = "parallel",
                    synthetic_probability: float = 0.5, 
                    synthetic_dir: str = DEFAULT_SYNTHETIC_DIR, 
                    embed_path: str = DEFAULT_EMBED_PATH,
                    model_path: str = DEFAULT_MODEL_PATH,
-                   prompt: str = DEFAULT_PROMPT,
-                   mask: bool = False,
-                   inverted: bool = False):
+                   prompt: str = DEFAULT_PROMPT):
 
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
 
-    if aug == "real-guidance":
+    if aug is not None:
 
-        aug = RealGuidance(
-            model_path=model_path, 
-            prompt=prompt, strength=strength, 
-            guidance_scale=guidance_scale,
-            mask=mask, inverted=inverted)
+        aug = COMPOSERS[compose]([
+            
+            AUGMENTATIONS[aug](
+                embed_path=embed_path, 
+                model_path=model_path, 
+                prompt=prompt, 
+                strength=strength, 
+                guidance_scale=guidance_scale,
+                mask=mask, 
+                inverted=inverted
+            )
 
-    elif aug == "textual-inversion":
+            for (aug, guidance_scale, 
+                 strength, mask, inverted) in zip(
+                aug, guidance_scale, 
+                strength, mask, inverted
+            )
 
-        aug = TextualInversion(
-            embed_path, model_path=model_path, 
-            prompt=prompt, strength=strength, 
-            guidance_scale=guidance_scale,
-            mask=mask, inverted=inverted)
-
-    elif aug == "none":
-
-        synthetic_probability = 0.0
-        num_synthetic = 0
-        aug = None
+        ], probs=probs)
 
     train_dataset = DATASETS[dataset](
         split="train", examples_per_class=examples_per_class, 
@@ -296,11 +313,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Few-Shot Baseline")
 
     parser.add_argument("--logdir", type=str, default="few_shot_combined")
-    parser.add_argument("--checkpoint", type=str, default="CompVis/stable-diffusion-v1-4")
+    parser.add_argument("--model-path", type=str, default="CompVis/stable-diffusion-v1-4")
+
     parser.add_argument("--prompt", type=str, default="a photo of a {name}")
 
-    parser.add_argument("--strength", type=float, default=0.5)
-    parser.add_argument("--guidance-scale", type=float, default=7.5)
     parser.add_argument("--synthetic-probability", type=float, default=0.5)
     parser.add_argument("--synthetic-dir", type=str, default=DEFAULT_SYNTHETIC_DIR)
 
@@ -312,16 +328,24 @@ if __name__ == "__main__":
     parser.add_argument("--num-trials", type=int, default=8)
     parser.add_argument("--examples-per-class", nargs='+', type=int, default=[1, 2, 4, 8, 16])
     
-    parser.add_argument("--aug", type=str, default="real-guidance", 
-                        choices=["real-guidance", "textual-inversion", "none"])
-
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     
-    parser.add_argument("--dataset", type=str, default="coco", 
+    parser.add_argument("--dataset", type=str, default="pascal", 
                         choices=["spurge", "imagenet", "coco", "pascal"])
+    
+    parser.add_argument("--aug", nargs="+", type=str, default=None, 
+                        choices=["real-guidance", "textual-inversion"])
 
-    parser.add_argument("--mask", action="store_true")
-    parser.add_argument("--inverted", action="store_true")
+    parser.add_argument("--strength", nargs="+", type=float, default=None)
+    parser.add_argument("--guidance-scale", nargs="+", type=float, default=None)
+
+    parser.add_argument("--mask", nargs="+", type=int, default=None, choices=[0, 1])
+    parser.add_argument("--inverted", nargs="+", type=int, default=None, choices=[0, 1])
+    
+    parser.add_argument("--probs", nargs="+", type=float, default=None)
+    
+    parser.add_argument("--compose", type=str, default="parallel", 
+                        choices=["parallel", "sequential"])
     
     args = parser.parse_args()
 
@@ -346,19 +370,23 @@ if __name__ == "__main__":
     for seed, examples_per_class in options.tolist():
 
         hyperparameters = dict(
-            seed=seed, examples_per_class=examples_per_class,
-            dataset=args.dataset, aug=args.aug,
+            examples_per_class=examples_per_class,
+            seed=seed, 
+            dataset=args.dataset,
             num_epochs=args.num_epochs,
             iterations_per_epoch=args.iterations_per_epoch, 
             batch_size=args.batch_size,
-            model_path=args.checkpoint,
+            model_path=args.model_path,
             synthetic_probability=args.synthetic_probability, 
             num_synthetic=args.num_synthetic, 
-            prompt=args.prompt,
+            prompt=args.prompt, 
+            aug=args.aug,
             strength=args.strength, 
             guidance_scale=args.guidance_scale,
             mask=args.mask, 
-            inverted=args.inverted)
+            inverted=args.inverted,
+            probs=args.probs,
+            compose=args.compose)
 
         synthetic_dir = args.synthetic_dir.format(**hyperparameters)
         embed_path = args.embed_path.format(**hyperparameters)

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=spurge
+#SBATCH --job-name=coco
 #SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-4,matrix-2-13,matrix-1-8
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
@@ -13,9 +13,9 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
-RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=40 python train_classifier.py \
+RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
+python train_classifier.py \
 --logdir ./coco-baselines/baseline \
---dataset coco --aug none \
---strength 0.0 --num-synthetic 0 \
+--dataset coco --num-synthetic 0 \
 --synthetic-probability 0.0 --num-trials 8 \
 --examples-per-class 1 2 4 8 16

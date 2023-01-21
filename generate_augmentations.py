@@ -2,6 +2,8 @@ from semantic_aug.datasets.coco import COCODataset
 from semantic_aug.datasets.spurge import SpurgeDataset
 from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
+from semantic_aug.augmentations.compose import ComposeParallel
+from semantic_aug.augmentations.compose import ComposeSequential
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
 from diffusers import StableDiffusionPipeline
@@ -24,10 +26,22 @@ DATASETS = {
     "imagenet": ImageNetDataset
 }
 
+COMPOSE = {
+    "parallel": ComposeParallel,
+    "sequential": ComposeSequential
+}
+
+AUGMENT = {
+    "real-guidance": RealGuidance,
+    "textual-inversion": TextualInversion
+}
+
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("Inference script")
+    
+    parser.add_argument("--out", type=str, default="real-guidance/")
 
     parser.add_argument("--model-path", type=str, default="CompVis/stable-diffusion-v1-4")
     parser.add_argument("--embed-path", type=str, default="pascal-tokens/pascal-0-1.pt")
@@ -38,18 +52,22 @@ if __name__ == "__main__":
     parser.add_argument("--num-synthetic", type=int, default=10)
 
     parser.add_argument("--prompt", type=str, default="a photo of a {name}")
-    parser.add_argument("--out", type=str, default="inference/")
-
-    parser.add_argument("--guidance-scale", type=float, default=7.5)
-    parser.add_argument("--strength", type=float, default=0.5)
     
-    parser.add_argument("--aug", type=str, default="real-guidance", 
+    parser.add_argument("--aug", nargs="+", type=str, default=["real-guidance"], 
                         choices=["real-guidance", "textual-inversion"])
 
-    parser.add_argument("--class-name", type=str, default=None)
+    parser.add_argument("--guidance-scale", nargs="+", type=float, default=[7.5])
+    parser.add_argument("--strength", nargs="+", type=float, default=[0.5])
 
-    parser.add_argument("--mask", action="store_true")
-    parser.add_argument("--inverted", action="store_true")
+    parser.add_argument("--mask", nargs="+", type=int, default=[0], choices=[0, 1])
+    parser.add_argument("--inverted", nargs="+", type=int, default=[0], choices=[0, 1])
+    
+    parser.add_argument("--probs", nargs="+", type=float, default=None)
+    
+    parser.add_argument("--compose", type=str, default="parallel", 
+                        choices=["parallel", "sequential"])
+
+    parser.add_argument("--class-name", type=str, default=None)
 
     args = parser.parse_args()
 
@@ -59,21 +77,25 @@ if __name__ == "__main__":
     np.random.seed(args.seed)
     random.seed(args.seed)
 
-    if args.aug == "real-guidance":
-
-        aug = RealGuidance(
+    aug = COMPOSE[args.compose]([
+        
+        AUGMENT[aug](
+            embed_path=args.embed_path, 
             model_path=args.model_path, 
-            prompt=args.prompt, strength=args.strength, 
-            guidance_scale=args.guidance_scale,
-            mask=args.mask, inverted=args.inverted)
+            prompt=args.prompt, 
+            strength=strength, 
+            guidance_scale=guidance_scale,
+            mask=mask, 
+            inverted=inverted
+        )
 
-    elif args.aug == "textual-inversion":
+        for (aug, guidance_scale, 
+             strength, mask, inverted) in zip(
+            args.aug, args.guidance_scale, 
+            args.strength, args.mask, args.inverted
+        )
 
-        aug = TextualInversion(
-            args.embed_path, model_path=args.model_path, 
-            prompt=args.prompt, strength=args.strength, 
-            guidance_scale=args.guidance_scale,
-            mask=args.mask, inverted=args.inverted)
+    ], probs=args.probs)
 
     train_dataset = DATASETS[
         args.dataset](split="train", seed=args.seed, 
@@ -98,6 +120,6 @@ if __name__ == "__main__":
         name = metadata['name'].replace(" ", "_")
 
         pil_image, image = image, os.path.join(
-            args.out, f"{args.aug}-{name}-{idx}-{num}.png")
+            args.out, f"{name}-{idx}-{num}.png")
 
         pil_image.save(image)
