@@ -2,7 +2,7 @@ from semantic_aug.generative_augmentation import GenerativeAugmentation
 from diffusers import StableDiffusionImg2ImgPipeline
 from diffusers import StableDiffusionInpaintPipeline
 from diffusers.utils import logging
-from PIL import Image
+from PIL import Image, ImageMorph, ImageFilter
 
 from typing import Any, Tuple, Callable
 from torch import autocast
@@ -20,7 +20,8 @@ class RealGuidance(GenerativeAugmentation):
                  strength: float = 0.5, 
                  guidance_scale: float = 7.5,
                  mask: bool = False,
-                 inverted: bool = False):
+                 inverted: bool = False,
+                 mask_grow_radius: int = 10):
 
         super(RealGuidance, self).__init__()
 
@@ -43,6 +44,7 @@ class RealGuidance(GenerativeAugmentation):
 
         self.mask = mask
         self.inverted = inverted
+        self.mask_grow_radius = mask_grow_radius
 
     def forward(self, image: Image.Image, label: int, 
                 metadata: dict) -> Tuple[Image.Image, int]:
@@ -67,6 +69,15 @@ class RealGuidance(GenerativeAugmentation):
                 if self.inverted else 
                 np.where(metadata["mask"], 255, 0)
             ).astype(np.uint8))
+
+            kwargs["mask"] = kwargs["mask"]\
+                .resize((512, 512), Image.BILINEAR)
+
+            kwargs["mask"] = kwargs["mask"].filter((
+                ImageFilter.MinFilter 
+                if self.inverted else 
+                ImageFilter.MaxFilter
+            )(self.mask_grow_radius))
 
         canvas = self.pipe(**kwargs).images[0]
         canvas = canvas.resize(image.size, Image.BILINEAR)
