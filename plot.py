@@ -38,15 +38,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Few-Shot Baseline")
 
     parser.add_argument("--logdirs", nargs="+", type=str, default=[
-        "./pascal-baselines", "./coco-baselines", "./imagenet-baselines", "./spurge-baselines-new"])
+        "./spurge-baselines", "./pascal-baselines", "./coco-baselines", "./imagenet-baselines"])
     
     parser.add_argument("--datasets", nargs="+", type=str, 
-                        default=["Pascal", "COCO", "ImageNet", "Spurge"])
+                        default=["Spurge", "Pascal", "COCO", "ImageNet"])
+    
+    parser.add_argument("--method-dirs", nargs="+", type=str, 
+                        default=["baseline", "real-guidance", "ours"])
     
     parser.add_argument("--method-names", nargs="+", type=str, 
-                        default=["baseline", "real-guidance-0.5", "textual-inversion-0.5"])
+                        default=["Baseline", "Real Guidance (He et al., 2022)", "MBDA (Ours)"])
     
     parser.add_argument("--name", type=str, default="visualization")
+    
+    parser.add_argument("--rows", type=int, default=1)
 
     args = parser.parse_args()
 
@@ -97,18 +102,18 @@ if __name__ == "__main__":
         combined_dataframe, ignore_index=True)
 
     combined_dataframe = pd.concat([combined_dataframe[
-        combined_dataframe['method'] == n] for n in args.method_names])
+        combined_dataframe['method'] == n] for n in args.method_dirs])
     
-    color_palette = sns.color_palette(n_colors=len(args.method_names))
+    color_palette = sns.color_palette(n_colors=len(args.method_dirs))
 
-    legend_rows = int(math.ceil(
-        len(args.method_names) / len(args.datasets)))
+    legend_rows = int(math.ceil(len(args.method_names) / len(args.datasets)))
+    columns = int(math.ceil(len(args.datasets) / args.rows))
 
     fig, axs = plt.subplots(
-        1, len(args.datasets),
-        figsize=(6 * len(args.datasets), (
-            6 if legend_rows == 1 else
-            6.5 if legend_rows == 2 else 7
+        args.rows, columns,
+        figsize=(6 * columns, 4 * args.rows + (
+            2.0 if legend_rows == 1 else
+            2.5 if legend_rows == 2 else 3
         )))
 
     for i, dataset in enumerate(args.datasets):
@@ -118,7 +123,11 @@ if __name__ == "__main__":
         axis = sns.lineplot(x="examples_per_class", y="value", hue="method", 
                             data=results, errorbar=('ci', 68),
                             linewidth=4, palette=color_palette,
-                            ax=axs[i] if len(args.datasets) > 1 else axs)
+                            ax=(
+            axs[i // columns, i % columns] 
+            if args.rows > 1 and len(args.datasets) > 1 
+            else axs[i] if len(args.datasets) > 1 else axs
+        ))
 
         if i == 0: handles, labels = axis.get_legend_handles_labels()
         axis.legend([],[], frameon=False)
@@ -135,8 +144,9 @@ if __name__ == "__main__":
         axis.yaxis.set_tick_params(labelsize=16)
         axis.xaxis.set_tick_params(labelsize=16)
 
-        axis.set_xlabel("Examples Per Class", fontsize=24,
-                        fontweight='bold', labelpad=12)
+        if i // columns == args.rows - 1:
+            axis.set_xlabel("Examples Per Class", fontsize=24,
+                            fontweight='bold', labelpad=12)
 
         axis.set_ylabel("Accuracy (Val)", fontsize=24,
                         fontweight='bold', labelpad=12)
@@ -146,7 +156,7 @@ if __name__ == "__main__":
 
         axis.grid(color='grey', linestyle='dotted', linewidth=2)
 
-    legend = fig.legend(handles, [pretty(x) for x in args.method_names],
+    legend = fig.legend(handles, [x for x in args.method_names],
                         loc="lower center", prop={'size': 24, 'weight': 'bold'}, 
                         ncol=min(len(args.method_names), len(args.datasets)))
 
@@ -154,13 +164,13 @@ if __name__ == "__main__":
         legend_object.set_linewidth(4.0)
         legend_object.set_color(color_palette[i])
 
-    print(legend_rows)
-
     plt.tight_layout(pad=1.0)
+    fig.subplots_adjust(hspace=0.3)
+
     fig.subplots_adjust(bottom=(
-        0.35 if legend_rows == 1 else
-        0.40 if legend_rows == 2 else 0.45
-    ))
+        0.25 if legend_rows == 1 else
+        0.35 if legend_rows == 2 else 0.4
+    ) / args.rows + 0.05)
 
     plt.savefig(f"{args.name}.pdf")
     plt.savefig(f"{args.name}.png")

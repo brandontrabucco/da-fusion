@@ -16,6 +16,8 @@ cd ~/spurge/semantic-aug
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
 python train_classifier.py \
 --logdir ./spurge-baselines-new/textual-inversion-0.5 \
+--synthetic-dir "/projects/rsalakhugroup/btrabucc/aug/\
+textual-inversion-0.5/{dataset}-{seed}-{examples_per_class}" \
 --dataset spurge --aug textual-inversion \
 --prompt "a drone image of {name}" \
 --embed-path "spurge-tokens/spurge-0-1.pt" \
