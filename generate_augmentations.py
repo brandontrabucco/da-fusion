@@ -48,6 +48,9 @@ if __name__ == "__main__":
 
     parser.add_argument("--class-name", type=str, default=None)
 
+    parser.add_argument("--mask", action="store_true")
+    parser.add_argument("--inverted", action="store_true")
+
     args = parser.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
@@ -61,14 +64,16 @@ if __name__ == "__main__":
         aug = RealGuidance(
             model_path=args.model_path, 
             prompt=args.prompt, strength=args.strength, 
-            guidance_scale=args.guidance_scale)
+            guidance_scale=args.guidance_scale,
+            mask=args.mask, inverted=args.inverted)
 
     elif args.aug == "textual-inversion":
 
         aug = TextualInversion(
             args.embed_path, model_path=args.model_path, 
             prompt=args.prompt, strength=args.strength, 
-            guidance_scale=args.guidance_scale)
+            guidance_scale=args.guidance_scale,
+            mask=args.mask, inverted=args.inverted)
 
     train_dataset = DATASETS[
         args.dataset](split="train", seed=args.seed, 

@@ -29,10 +29,12 @@ btrabucc/aug/{dataset}-{aug}-{seed}-{examples_per_class}"
 
 DEFAULT_EMBED_PATH = "{dataset}-tokens/{dataset}-{seed}-{examples_per_class}.pt"
 
-DATASETS = {"spurge": SpurgeDataset, 
-            "coco": COCODataset, 
-            "pascal": PASCALDataset,
-            "imagenet": ImageNetDataset}
+DATASETS = {
+    "spurge": SpurgeDataset, 
+    "coco": COCODataset, 
+    "pascal": PASCALDataset,
+    "imagenet": ImageNetDataset``
+}
 
 
 def run_experiment(examples_per_class: int = 0, seed: int = 0, 
@@ -47,7 +49,9 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
                    synthetic_dir: str = DEFAULT_SYNTHETIC_DIR, 
                    embed_path: str = DEFAULT_EMBED_PATH,
                    model_path: str = DEFAULT_MODEL_PATH,
-                   prompt: str = DEFAULT_PROMPT):
+                   prompt: str = DEFAULT_PROMPT,
+                   mask: bool = False,
+                   inverted: bool = False):
 
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -58,14 +62,16 @@ def run_experiment(examples_per_class: int = 0, seed: int = 0,
         aug = RealGuidance(
             model_path=model_path, 
             prompt=prompt, strength=strength, 
-            guidance_scale=guidance_scale)
+            guidance_scale=guidance_scale,
+            mask=mask, inverted=inverted)
 
     elif aug == "textual-inversion":
 
         aug = TextualInversion(
             embed_path, model_path=model_path, 
             prompt=prompt, strength=strength, 
-            guidance_scale=guidance_scale)
+            guidance_scale=guidance_scale,
+            mask=mask, inverted=inverted)
 
     elif aug == "none":
 
@@ -313,6 +319,9 @@ if __name__ == "__main__":
     
     parser.add_argument("--dataset", type=str, default="coco", 
                         choices=["spurge", "imagenet", "coco", "pascal"])
+
+    parser.add_argument("--mask", action="store_true")
+    parser.add_argument("--inverted", action="store_true")
     
     args = parser.parse_args()
 
@@ -347,7 +356,9 @@ if __name__ == "__main__":
             num_synthetic=args.num_synthetic, 
             prompt=args.prompt,
             strength=args.strength, 
-            guidance_scale=args.guidance_scale)
+            guidance_scale=args.guidance_scale,
+            mask=args.mask, 
+            inverted=args.inverted)
 
         synthetic_dir = args.synthetic_dir.format(**hyperparameters)
         embed_path = args.embed_path.format(**hyperparameters)

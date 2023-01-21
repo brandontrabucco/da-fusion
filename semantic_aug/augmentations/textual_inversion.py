@@ -1,5 +1,6 @@
 from semantic_aug.generative_augmentation import GenerativeAugmentation
 from diffusers import StableDiffusionImg2ImgPipeline
+from diffusers import StableDiffusionInpaintPipeline
 from transformers import (
     CLIPFeatureExtractor, 
     CLIPTextModel, 
@@ -15,7 +16,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-ERROR_MESSAGE = "The tokenizer already contains the token {token}. \
+ERROR_MESSAGE = "Tokenizer already contains the token {token}. \
 Please pass a different `token` that is not already in the tokenizer."
 
 
@@ -60,16 +61,21 @@ class TextualInversion(GenerativeAugmentation):
     def __init__(self, fine_tuned_embeddings: str, 
                  model_path: str = "CompVis/stable-diffusion-v1-4",
                  prompt: str = "a photo of a {name}",
+                 format_name: Callable = format_name,
                  strength: float = 0.5, 
                  guidance_scale: float = 7.5,
-                 format_name: Callable = format_name):
+                 mask: bool = False,
+                 inverted: bool = False):
 
         super(TextualInversion, self).__init__()
+
+        PipelineClass = (StableDiffusionInpaintPipeline 
+                         if mask else StableDiffusionInpaintPipeline)
 
         tokenizer, text_encoder = load_embeddings(
             fine_tuned_embeddings, model_path=model_path)
 
-        self.pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
+        self.pipe = PipelineClass.from_pretrained(
             model_path, use_auth_token=True,
             revision="fp16", 
             torch_dtype=torch.float16
@@ -87,22 +93,35 @@ class TextualInversion(GenerativeAugmentation):
         self.guidance_scale = guidance_scale
         self.format_name = format_name
 
+        self.mask = mask
+        self.inverted = inverted
+
     def forward(self, image: Image.Image, label: int, 
                 metadata: dict) -> Tuple[Image.Image, int]:
 
         canvas = image.resize((512, 512), Image.BILINEAR)
+        name = self.format_name(metadata.get("name", ""))
+        prompt = self.prompt.format(name=name)
 
-        name = self.format_name(metadata["name"])
+        if self.mask: assert "mask" in metadata, \
+            "mask=True but no mask present in metadata"
 
-        with autocast('cuda'):
+        kwargs = dict(
+            image=canvas,
+            prompt=[prompt], 
+            strength=self.strength, 
+            guidance_scale=self.guidance_scale
+        )
 
-            canvas = self.pipe(
-                image=canvas,
-                prompt=[self.prompt.format(name=name)], 
-                strength=self.strength, 
-                guidance_scale=self.guidance_scale
-            ).images[0]
+        if self.mask:  # focal object mask
 
-        image = canvas.resize(image.size, Image.BILINEAR)
+            kwargs["mask"] = Image.fromarray((
+                np.where(metadata["mask"], 0, 255) 
+                if self.inverted else 
+                np.where(metadata["mask"], 255, 0)
+            ).astype(np.uint8))
 
-        return image, label
+        canvas = self.pipe(**kwargs).images[0]
+        canvas = canvas.resize(image.size, Image.BILINEAR)
+
+        return canvas, label

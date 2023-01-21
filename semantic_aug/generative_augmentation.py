@@ -14,11 +14,3 @@ class GenerativeAugmentation(nn.Module, abc.ABC):
                 metadata: dict) -> Tuple[Image.Image, int]:
 
         return NotImplemented
-
-
-class Identity(GenerativeAugmentation):
-
-    def forward(self, image: Image.Image, label: int, 
-                metadata: dict) -> Tuple[Image.Image, int]:
-                
-        return image, label
