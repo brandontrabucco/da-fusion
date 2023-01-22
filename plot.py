@@ -57,8 +57,8 @@ if __name__ == "__main__":
 
     combined_dataframe = []
 
-    for dataset, logdir in zip(
-            args.datasets, args.logdirs):
+    for logdir, dataset in zip(
+            args.logdirs, args.datasets):
 
         for bname in os.listdir(logdir):
 
@@ -118,7 +118,9 @@ if __name__ == "__main__":
 
     for i, dataset in enumerate(args.datasets):
 
-        results = combined_dataframe[combined_dataframe["dataset"] == dataset]
+        results = combined_dataframe
+        if dataset not in ["all", "All", "Overall"]:
+            results = results[results["dataset"] == dataset]
 
         axis = sns.lineplot(x="examples_per_class", y="value", hue="method", 
                             data=results, errorbar=('ci', 68),
@@ -151,8 +153,7 @@ if __name__ == "__main__":
         axis.set_ylabel("Accuracy (Val)", fontsize=24,
                         fontweight='bold', labelpad=12)
 
-        axis.set_title(f"Dataset = {dataset}",
-                       fontsize=24, fontweight='bold', pad=12)
+        axis.set_title(dataset, fontsize=24, fontweight='bold', pad=12)
 
         axis.grid(color='grey', linestyle='dotted', linewidth=2)
 
