@@ -14,11 +14,11 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
-python train_classifier.py --logdir spurge-baselines/textual-inversion-0.5 \
+python train_classifier.py --logdir spurge-baselines/real-guidance-0.5-cap \
 --synthetic-dir "/projects/rsalakhugroup/btrabucc/aug/\
-textual-inversion-0.5/{dataset}-{seed}-{examples_per_class}" \
---dataset spurge --prompt "a photo of a {name}" \
---aug textual-inversion --guidance-scale 7.5 \
+real-guidance-0.5-cap/{dataset}-{seed}-{examples_per_class}" \
+--dataset spurge --prompt "a photo" \
+--aug real-guidance --guidance-scale 7.5 \
 --strength 0.5 --mask 0 --inverted 0 \
 --num-synthetic 50 --synthetic-probability 0.5 \
 --num-trials 8 --examples-per-class 1 2 4 8 16

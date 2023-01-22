@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=pascal
+#SBATCH --job-name=coco
 #SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-4,matrix-2-13,matrix-1-8
 #SBATCH --time=72:00:00
 #SBATCH --nodes=1
@@ -14,10 +14,10 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
-python train_classifier.py --logdir pascal-baselines/textual-inversion-1.0-0.75-0.5-0.25-a \
+python train_classifier.py --logdir coco-baselines/textual-inversion-1.0-0.75-0.5-0.25 \
 --synthetic-dir "/projects/rsalakhugroup/btrabucc/aug/\
-textual-inversion-1.0-0.75-0.5-0.25-a/{dataset}-{seed}-{examples_per_class}" \
---dataset pascal --prompt "a photo of a {name}" \
+textual-inversion-1.0-0.75-0.5-0.25/{dataset}-{seed}-{examples_per_class}" \
+--dataset coco --prompt "a photo of a {name}" \
 --aug textual-inversion textual-inversion textual-inversion textual-inversion \
 --guidance-scale 7.5 7.5 7.5 7.5 \
 --strength 1.0 0.75 0.5 0.25 \
