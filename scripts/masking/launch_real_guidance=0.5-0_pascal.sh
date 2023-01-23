@@ -14,13 +14,13 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
-python train_classifier.py --logdir pascal-baselines/textual-inversion-mask-0.75-0 \
+python train_classifier.py --logdir pascal-baselines/real-guidance-mask-0.5-0 \
 --synthetic-dir "/projects/rsalakhugroup/btrabucc/aug/\
-textual-inversion-mask-0.75-0/{dataset}-{seed}-{examples_per_class}" \
---dataset pascal --prompt "a photo of a {name}" \
---aug textual-inversion \
+real-guidance-mask-0.5-0/{dataset}-{seed}-{examples_per_class}" \
+--dataset pascal --prompt "a photo" \
+--aug real-guidance \
 --guidance-scale 7.5 \
---strength 0.75 \
+--strength 0.5 \
 --mask 1 \
 --inverted 0 \
 --probs 1 \
