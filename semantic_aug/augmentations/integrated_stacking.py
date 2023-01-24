@@ -63,7 +63,7 @@ class IntegratedStacking(GenerativeAugmentation):
                  guidance_scale: float = 7.5,
                  format_name: Callable = format_name):
 
-        super(StackAugs, self).__init__()
+        super(IntegratedStacking, self).__init__()
 
         tokenizer, text_encoder = load_embeddings(
             fine_tuned_embeddings, model_path=model_path)
