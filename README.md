@@ -1,4 +1,6 @@
-# Prompt-Based Data Augmentation
+# Effective Data Augmentation With Diffusion Models
+
+![DA-Fusion](images/main-diagram.png)
 
 Existing data augmentations like rotations and re-colorizations provide diversity but preserve semantics. We explore how prompt-based generative models complement existing data augmentations by controlling image semantics via prompts. Our generative data augmentations build on Stable Diffusion and improve visual few-shot learning.
 
@@ -7,16 +9,16 @@ Existing data augmentations like rotations and re-colorizations provide diversit
 To install the package, first create a `conda` environment.
 
 ```bash
-conda create -n semantic-aug python=3.7 pytorch==1.12.1 torchvision==0.13.1 cudatoolkit=11.6 -c pytorch
-conda activate semantic-aug
+conda create -n da-fusion python=3.7 pytorch==1.12.1 torchvision==0.13.1 cudatoolkit=11.6 -c pytorch
+conda activate da-fusion
 pip install diffusers["torch"] transformers
 ```
 
 Then download and install the source code.
 
 ```bash
-git clone git@github.com:brandontrabucco/semantic-aug.git
-pip install -e semantic-aug
+git clone git@github.com:brandontrabucco/da-fusion.git
+pip install -e da-fusion
 ```
 
 ## Spurge Experiments
