@@ -44,7 +44,7 @@ coco2017/
     annotations/
 ```
 
-The `COCO_DIR` config variable located [here](https://github.com/brandontrabucco/da-fusion/blob/main/semantic_aug/datasets/coco.py#L15) should be updated to point to the location of the `coco2017` on your system.
+`COCO_DIR` located [here](https://github.com/brandontrabucco/da-fusion/blob/main/semantic_aug/datasets/coco.py#L15) should be updated to point to the location of `coco2017` on your system.
 
 ## Setting Up The Spurge Dataset
 
