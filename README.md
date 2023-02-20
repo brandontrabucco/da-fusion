@@ -82,6 +82,7 @@ We used a [custom plotting script](https://github.com/brandontrabucco/da-fusion/
 
 If you find our method helpful, consider citing our preprint!
 
+```
 @misc{https://doi.org/10.48550/arxiv.2302.07944,
   doi = {10.48550/ARXIV.2302.07944},
   url = {https://arxiv.org/abs/2302.07944},
@@ -92,3 +93,4 @@ If you find our method helpful, consider citing our preprint!
   year = {2023},
   copyright = {arXiv.org perpetual, non-exclusive license}
 }
+```
