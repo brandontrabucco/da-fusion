@@ -4,6 +4,8 @@
 
 Existing data augmentations like rotations and re-colorizations provide diversity but preserve semantics. We explore how prompt-based generative models complement existing data augmentations by controlling image semantics via prompts. Our generative data augmentations build on Stable Diffusion and improve visual few-shot learning.
 
+[Preprint](https://arxiv.org/abs/2302.07944)
+
 ## Installation
 
 To install the package, first create a `conda` environment.
@@ -72,6 +74,21 @@ python train_classifier.py --logdir pascal-baselines/textual-inversion-0.5 \
 --num-trials 1 --examples-per-class 4
 ```
 
-This example will train a classifier on the PASCAL VOC task, with 4 images per class, using the prompt `"a photo of a ClassX"` where the special token `ClassX` is fine-tuned (from scratch) with textual inversion. Slurm scripts that reproduce the paper are located in `scripts/textual_inversion`.
+This example will train a classifier on the PASCAL VOC task, with 4 images per class, using the prompt `"a photo of a ClassX"` where the special token `ClassX` is fine-tuned (from scratch) with textual inversion. Slurm scripts that reproduce the paper are located in `scripts/textual_inversion`. Results are logged to `.csv` files based on the script argument `--logdir`. 
 
+We used a [custom plotting script](https://github.com/brandontrabucco/da-fusion/blob/main/plot.py) to generate the figures in the main paper.
 
+## Citation
+
+If you find our method helpful, consider citing our preprint!
+
+@misc{https://doi.org/10.48550/arxiv.2302.07944,
+  doi = {10.48550/ARXIV.2302.07944},
+  url = {https://arxiv.org/abs/2302.07944},
+  author = {Trabucco, Brandon and Doherty, Kyle and Gurinas, Max and Salakhutdinov, Ruslan},
+  keywords = {Computer Vision and Pattern Recognition (cs.CV), Artificial Intelligence (cs.AI), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Effective Data Augmentation With Diffusion Models},
+  publisher = {arXiv},
+  year = {2023},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
