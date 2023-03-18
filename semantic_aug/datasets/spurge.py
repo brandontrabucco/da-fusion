@@ -27,6 +27,7 @@ class SpurgeDataset(FewShotDataset):
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5,
+                 use_randaugment: bool = False,
                  image_size: Tuple[int] = (256, 256), **kwargs):
 
         super(SpurgeDataset, self).__init__(
@@ -58,7 +59,17 @@ class SpurgeDataset(FewShotDataset):
         self.all_images = self.absent + self.apparent
         self.all_labels = [0] * len(self.absent) + [1] * len(self.apparent)
 
-        train_transform = transforms.Compose([
+        if use_randaugment: train_transform = transforms.Compose([
+            transforms.Resize(image_size),
+            transforms.RandAugment(),
+            transforms.ToTensor(),
+            transforms.ConvertImageDtype(torch.float),
+            transforms.Lambda(lambda x: x.expand(3, *image_size)),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                  std=[0.5, 0.5, 0.5])
+        ])
+
+        else: train_transform = transforms.Compose([
             transforms.Resize(image_size),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),

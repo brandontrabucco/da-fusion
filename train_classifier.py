@@ -69,6 +69,7 @@ def run_experiment(examples_per_class: int = 0,
                    embed_path: str = DEFAULT_EMBED_PATH,
                    model_path: str = DEFAULT_MODEL_PATH,
                    prompt: str = DEFAULT_PROMPT,
+                   use_randaugment: bool = False,
                    erasure_ckpt_path: str = None):
 
     torch.manual_seed(seed)
@@ -102,6 +103,7 @@ def run_experiment(examples_per_class: int = 0,
         split="train", examples_per_class=examples_per_class, 
         synthetic_probability=synthetic_probability, 
         synthetic_dir=synthetic_dir,
+        use_randaugment=use_randaugment,
         generative_aug=aug, seed=seed)
 
     if num_synthetic > 0 and aug is not None:
@@ -350,6 +352,7 @@ if __name__ == "__main__":
                         choices=["parallel", "sequential"])
     
     parser.add_argument("--erasure-ckpt-path", type=str, default=None)
+    parser.add_argument("--use-randaugment", action="store_true")
     
     args = parser.parse_args()
 
@@ -391,6 +394,7 @@ if __name__ == "__main__":
             inverted=args.inverted,
             probs=args.probs,
             compose=args.compose,
+            use_randaugment=args.use_randaugment,
             erasure_ckpt_path=args.erasure_ckpt_path)
 
         synthetic_dir = args.synthetic_dir.format(**hyperparameters)

@@ -50,6 +50,7 @@ class COCODataset(FewShotDataset):
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5,
+                 use_randaugment: bool = False,
                  image_size: Tuple[int] = (256, 256), **kwargs):
 
         super(COCODataset, self).__init__(
@@ -103,7 +104,17 @@ class COCODataset(FewShotDataset):
         self.all_labels = [i for i, key in enumerate(
             self.class_names) for _ in self.class_to_images[key]]
 
-        train_transform = transforms.Compose([
+        if use_randaugment: train_transform = transforms.Compose([
+            transforms.Resize(image_size),
+            transforms.RandAugment(),
+            transforms.ToTensor(),
+            transforms.ConvertImageDtype(torch.float),
+            transforms.Lambda(lambda x: x.expand(3, *image_size)),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                  std=[0.5, 0.5, 0.5])
+        ])
+
+        else: train_transform = transforms.Compose([
             transforms.Resize(image_size),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomRotation(degrees=15.0),
