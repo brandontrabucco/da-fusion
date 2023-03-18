@@ -44,7 +44,7 @@ if __name__ == "__main__":
     parser.add_argument("--out", type=str, default="real-guidance/")
 
     parser.add_argument("--model-path", type=str, default="CompVis/stable-diffusion-v1-4")
-    parser.add_argument("--embed-path", type=str, default="pascal-tokens/pascal-0-1.pt")
+    parser.add_argument("--embed-path", type=str, default="erasure-tokens/pascal-tokens/pascal-0-8.pt")
     
     parser.add_argument("--dataset", type=str, default="pascal")
     parser.add_argument("--seed", type=int, default=0)
@@ -68,6 +68,8 @@ if __name__ == "__main__":
                         choices=["parallel", "sequential"])
 
     parser.add_argument("--class-name", type=str, default=None)
+    
+    parser.add_argument("--erasure-ckpt-path", type=str, default=None)
 
     args = parser.parse_args()
 
@@ -86,7 +88,8 @@ if __name__ == "__main__":
             strength=strength, 
             guidance_scale=guidance_scale,
             mask=mask, 
-            inverted=inverted
+            inverted=inverted,
+            erasure_ckpt_path=args.erasure_ckpt_path
         )
 
         for (aug, guidance_scale, 

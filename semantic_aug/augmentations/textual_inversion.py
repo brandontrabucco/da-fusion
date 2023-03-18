@@ -13,6 +13,7 @@ from typing import Any, Tuple, Callable
 from torch import autocast
 from scipy.ndimage import maximum_filter
 
+import os
 import numpy as np
 import torch
 import torch.nn as nn
@@ -72,6 +73,7 @@ class TextualInversion(GenerativeAugmentation):
                  mask: bool = False,
                  inverted: bool = False,
                  mask_grow_radius: int = 16,
+                 erasure_ckpt_path: str = None,
                  **kwargs):
 
         super(TextualInversion, self).__init__()
@@ -107,6 +109,9 @@ class TextualInversion(GenerativeAugmentation):
         self.inverted = inverted
         self.mask_grow_radius = mask_grow_radius
 
+        self.erasure_ckpt_path = erasure_ckpt_path
+        self.erasure_word_name = None
+
     def forward(self, image: Image.Image, label: int, 
                 metadata: dict) -> Tuple[Image.Image, int]:
 
@@ -116,6 +121,23 @@ class TextualInversion(GenerativeAugmentation):
 
         if self.mask: assert "mask" in metadata, \
             "mask=True but no mask present in metadata"
+        
+        word_name = metadata.get("name", "").replace(" ", "")
+
+        if self.erasure_ckpt_path is not None and (
+                self.erasure_word_name is None 
+                or self.erasure_word_name != word_name):
+
+            self.erasure_word_name = word_name
+            ckpt_name = "method_full-sg_3-ng_1-iter_1000-lr_1e-05"
+
+            ckpt_path = os.path.join(
+                self.erasure_ckpt_path, 
+                f"compvis-word_{word_name}-{ckpt_name}",
+                f"diffusers-word_{word_name}-{ckpt_name}.pt")
+    
+            self.pipe.unet.load_state_dict(torch.load(
+                ckpt_path, map_location='cuda'))
 
         kwargs = dict(
             image=canvas,

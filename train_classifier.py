@@ -68,7 +68,8 @@ def run_experiment(examples_per_class: int = 0,
                    synthetic_dir: str = DEFAULT_SYNTHETIC_DIR, 
                    embed_path: str = DEFAULT_EMBED_PATH,
                    model_path: str = DEFAULT_MODEL_PATH,
-                   prompt: str = DEFAULT_PROMPT):
+                   prompt: str = DEFAULT_PROMPT,
+                   erasure_ckpt_path: str = None):
 
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -85,7 +86,8 @@ def run_experiment(examples_per_class: int = 0,
                 strength=strength, 
                 guidance_scale=guidance_scale,
                 mask=mask, 
-                inverted=inverted
+                inverted=inverted,
+                erasure_ckpt_path=erasure_ckpt_path
             )
 
             for (aug, guidance_scale, 
@@ -347,6 +349,8 @@ if __name__ == "__main__":
     parser.add_argument("--compose", type=str, default="parallel", 
                         choices=["parallel", "sequential"])
     
+    parser.add_argument("--erasure-ckpt-path", type=str, default=None)
+    
     args = parser.parse_args()
 
     try:
@@ -386,7 +390,8 @@ if __name__ == "__main__":
             mask=args.mask, 
             inverted=args.inverted,
             probs=args.probs,
-            compose=args.compose)
+            compose=args.compose,
+            erasure_ckpt_path=args.erasure_ckpt_path)
 
         synthetic_dir = args.synthetic_dir.format(**hyperparameters)
         embed_path = args.embed_path.format(**hyperparameters)

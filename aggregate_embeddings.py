@@ -34,6 +34,9 @@ if __name__ == "__main__":
         for file in glob.glob(path):
             merged_dict.update(torch.load(file))
 
-        torch.save(merged_dict, args.embed_path.format(
+        target_path = args.embed_path.format(
             dataset=args.dataset, seed=seed, 
-            examples_per_class=examples_per_class))
+            examples_per_class=examples_per_class)
+
+        os.makedirs(os.path.dirname(target_path), exist_ok=True)
+        torch.save(merged_dict, target_path)

@@ -260,6 +260,11 @@ def parse_args():
     parser.add_argument("--dataset", type=str, default="coco", 
                         choices=["spurge", "imagenet", "coco", "pascal"])
 
+    parser.add_argument("--unet-ckpt", type=str, default=None)
+
+    parser.add_argument("--erase-concepts", action="store_true", 
+                        help="erase text inversion concepts first")
+
     args = parser.parse_args()
     env_local_rank = int(os.environ.get("LOCAL_RANK", -1))
     if env_local_rank != -1 and env_local_rank != args.local_rank:
@@ -477,6 +482,10 @@ def main(args):
     unet = UNet2DConditionModel.from_pretrained(
         args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision
     )
+
+    if args.unet_ckpt is not None:
+        unet.load_state_dict(torch.load(args.unet_ckpt))
+        print(f"Loaded UNET from {args.unet_ckpt}")
 
     # Add the placeholder token in tokenizer
     num_added_tokens = tokenizer.add_tokens(args.placeholder_token)
@@ -741,7 +750,7 @@ if __name__ == "__main__":
 
     for seed, examples_per_class in options.tolist():
 
-        os.makedirs("extracted", exist_ok=True)
+        os.makedirs(os.path.join(output_dir, "extracted"), exist_ok=True)
 
         train_dataset = DATASETS[
             args.dataset](split="train", seed=seed, 
@@ -755,7 +764,7 @@ if __name__ == "__main__":
             name = metadata["name"].replace(" ", "_")
             path = f"{args.dataset}-{seed}-{examples_per_class}"
 
-            path = os.path.join("extracted", path, name, f"{idx}.png")
+            path = os.path.join(output_dir, "extracted", path, name, f"{idx}.png")
             os.makedirs(os.path.dirname(path), exist_ok=True)
 
             image.save(path)
@@ -776,6 +785,13 @@ if __name__ == "__main__":
                 output_dir, "extracted", dirname)
             args.output_dir = os.path.join(
                 output_dir, "fine-tuned", dirname)
+
+            word_name = class_name.replace(" ", "")
+
+            if args.erase_concepts: args.unet_ckpt = (
+                "/projects/rsalakhugroup/btrabucc/esd-models/" + 
+                f"compvis-word_{word_name}-method_full-sg_3-ng_1-iter_1000-lr_1e-05/" + 
+                f"diffusers-word_{word_name}-method_full-sg_3-ng_1-iter_1000-lr_1e-05.pt")
 
             main(args)
 

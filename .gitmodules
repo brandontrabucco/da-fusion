@@ -1,0 +1,6 @@
+[submodule "stable-diffusion"]
+	path = stable-diffusion
+	url = https://github.com/CompVis/stable-diffusion.git
+[submodule "erasing"]
+	path = erasing
+	url = https://github.com/brandontrabucco/erasing.git
