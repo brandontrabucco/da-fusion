@@ -27,6 +27,7 @@ class RealGuidance(GenerativeAugmentation):
                  inverted: bool = False,
                  mask_grow_radius: int = 16,
                  erasure_ckpt_path: str = None,
+                 disable_safety_checker: bool = True,
                  **kwargs):
 
         super(RealGuidance, self).__init__()
@@ -45,7 +46,9 @@ class RealGuidance(GenerativeAugmentation):
 
             logging.disable_progress_bar()
             self.pipe.set_progress_bar_config(disable=True)
-            self.pipe.safety_checker = None
+
+            if disable_safety_checker: 
+                self.pipe.safety_checker = None
 
         self.prompt = prompt
         self.strength = strength
@@ -108,8 +111,17 @@ class RealGuidance(GenerativeAugmentation):
 
             kwargs["mask_image"] = mask_image
 
-        with autocast("cuda"):
-            canvas = self.pipe(**kwargs).images[0]
-        canvas = canvas.resize(image.size, Image.BILINEAR)
+        has_nsfw_concept = True
+        while has_nsfw_concept:
+            with autocast("cuda"):
+                outputs = self.pipe(**kwargs)
+
+            has_nsfw_concept = (
+                self.pipe.safety_checker is not None 
+                and outputs.nsfw_content_detected[0]
+            )
+
+        canvas = outputs.images[0].resize(
+            image.size, Image.BILINEAR)
 
         return canvas, label
