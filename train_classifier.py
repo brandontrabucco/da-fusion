@@ -24,6 +24,12 @@ import numpy as np
 import random
 import os
 
+try: 
+    from cutmix.cutmix import CutMix
+    IS_CUTMIX_INSTALLED = True
+except:
+    IS_CUTMIX_INSTALLED = False
+
 
 DEFAULT_MODEL_PATH = "CompVis/stable-diffusion-v1-4"
 DEFAULT_PROMPT = "a photo of a {name}"
@@ -71,6 +77,7 @@ def run_experiment(examples_per_class: int = 0,
                    model_path: str = DEFAULT_MODEL_PATH,
                    prompt: str = DEFAULT_PROMPT,
                    use_randaugment: bool = False,
+                   use_cutmix: bool = False,
                    erasure_ckpt_path: str = None,
                    image_size: int = 256,
                    classifier_backbone: str = "resnet50"):
@@ -113,11 +120,19 @@ def run_experiment(examples_per_class: int = 0,
     if num_synthetic > 0 and aug is not None:
         train_dataset.generate_augmentations(num_synthetic)
 
+    cutmix_dataset = None
+    if use_cutmix and IS_CUTMIX_INSTALLED:
+        cutmix_dataset = CutMix(
+            train_dataset, beta=1.0, prob=0.5, num_mix=2, 
+            num_class=train_dataset.num_classes)
+
     train_sampler = torch.utils.data.RandomSampler(
+        cutmix_dataset if cutmix_dataset is not None else 
         train_dataset, replacement=True, 
         num_samples=batch_size * iterations_per_epoch)
 
     train_dataloader = DataLoader(
+        cutmix_dataset if cutmix_dataset is not None else 
         train_dataset, batch_size=batch_size, 
         sampler=train_sampler, num_workers=4)
 
@@ -163,6 +178,8 @@ def run_experiment(examples_per_class: int = 0,
             prediction = logits.argmax(dim=1)
 
             loss = F.cross_entropy(logits, label, reduction="none")
+            if len(label.shape) > 1: label = label.argmax(dim=1)
+
             accuracy = (prediction == label).float()
 
             optim.zero_grad()
@@ -385,7 +402,9 @@ if __name__ == "__main__":
                         choices=["parallel", "sequential"])
     
     parser.add_argument("--erasure-ckpt-path", type=str, default=None)
+
     parser.add_argument("--use-randaugment", action="store_true")
+    parser.add_argument("--use-cutmix", action="store_true")
     
     args = parser.parse_args()
 
@@ -428,6 +447,7 @@ if __name__ == "__main__":
             probs=args.probs,
             compose=args.compose,
             use_randaugment=args.use_randaugment,
+            use_cutmix=args.use_cutmix,
             erasure_ckpt_path=args.erasure_ckpt_path,
             image_size=args.image_size,
             classifier_backbone=args.classifier_backbone)

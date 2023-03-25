@@ -14,9 +14,9 @@ conda activate semantic-aug
 cd ~/spurge/semantic-aug
 
 RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
-python train_classifier.py --logdir deit-pascal-baselines/textual-inversion-1.0-0.75-0.5-0.25 \
+python train_classifier.py --logdir cutmix-pascal-baselines/textual-inversion-1.0-0.75-0.5-0.25 \
 --synthetic-dir "/projects/rsalakhugroup/btrabucc/aug/\
-textual-inversion-1.0-0.75-0.5-0.25/deit-{dataset}-{seed}-{examples_per_class}" \
+textual-inversion-1.0-0.75-0.5-0.25/cutmix-{dataset}-{seed}-{examples_per_class}" \
 --dataset pascal --prompt "a photo of a {name}" \
 --aug textual-inversion textual-inversion textual-inversion textual-inversion \
 --guidance-scale 7.5 7.5 7.5 7.5 \
@@ -26,4 +26,4 @@ textual-inversion-1.0-0.75-0.5-0.25/deit-{dataset}-{seed}-{examples_per_class}" 
 --probs 0.25 0.25 0.25 0.25 \
 --compose parallel --num-synthetic 10 --synthetic-probability 0.5 \
 --num-trials 8 --examples-per-class 1 2 4 8 16 \
---classifier-backbone deit --image-size 224
+--use-cutmix
