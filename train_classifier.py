@@ -8,6 +8,7 @@ from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
+from transformers import AutoImageProcessor, DeiTModel
 from itertools import product
 from tqdm import trange
 from typing import List
@@ -70,7 +71,9 @@ def run_experiment(examples_per_class: int = 0,
                    model_path: str = DEFAULT_MODEL_PATH,
                    prompt: str = DEFAULT_PROMPT,
                    use_randaugment: bool = False,
-                   erasure_ckpt_path: str = None):
+                   erasure_ckpt_path: str = None,
+                   image_size: int = 256,
+                   classifier_backbone: str = "resnet50"):
 
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -104,7 +107,8 @@ def run_experiment(examples_per_class: int = 0,
         synthetic_probability=synthetic_probability, 
         synthetic_dir=synthetic_dir,
         use_randaugment=use_randaugment,
-        generative_aug=aug, seed=seed)
+        generative_aug=aug, seed=seed,
+        image_size=(image_size, image_size))
 
     if num_synthetic > 0 and aug is not None:
         train_dataset.generate_augmentations(num_synthetic)
@@ -117,7 +121,9 @@ def run_experiment(examples_per_class: int = 0,
         train_dataset, batch_size=batch_size, 
         sampler=train_sampler, num_workers=4)
 
-    val_dataset = DATASETS[dataset](split="val", seed=seed)
+    val_dataset = DATASETS[dataset](
+        split="val", seed=seed,
+        image_size=(image_size, image_size))
 
     val_sampler = torch.utils.data.RandomSampler(
         val_dataset, replacement=True, 
@@ -127,7 +133,11 @@ def run_experiment(examples_per_class: int = 0,
         val_dataset, batch_size=batch_size, 
         sampler=val_sampler, num_workers=4)
 
-    model = ClassificationModel(train_dataset.num_classes).cuda()
+    model = ClassificationModel(
+        train_dataset.num_classes, 
+        backbone=classifier_backbone
+    ).cuda()
+
     optim = torch.optim.Adam(model.parameters(), lr=0.0001)
 
     records = []
@@ -283,32 +293,51 @@ def run_experiment(examples_per_class: int = 0,
 
 class ClassificationModel(nn.Module):
     
-    def __init__(self, num_classes: int):
+    def __init__(self, num_classes: int, backbone: str = "resnet50"):
         
         super(ClassificationModel, self).__init__()
+
+        self.backbone = backbone
+        self.image_processor  = None
+
+        if backbone == "resnet50":
         
-        self.base_model = resnet50(weights=ResNet50_Weights.DEFAULT)
-        self.out = nn.Linear(2048, num_classes)
+            self.base_model = resnet50(weights=ResNet50_Weights.DEFAULT)
+            self.out = nn.Linear(2048, num_classes)
+
+        elif backbone == "deit":
+
+            self.base_model = DeiTModel.from_pretrained(
+                "facebook/deit-base-distilled-patch16-224")
+            self.out = nn.Linear(768, num_classes)
         
     def forward(self, image):
         
         x = image
-        
-        with torch.no_grad():
 
-            x = self.base_model.conv1(x)
-            x = self.base_model.bn1(x)
-            x = self.base_model.relu(x)
-            x = self.base_model.maxpool(x)
+        if self.backbone == "resnet50":
+            
+            with torch.no_grad():
 
-            x = self.base_model.layer1(x)
-            x = self.base_model.layer2(x)
-            x = self.base_model.layer3(x)
-            x = self.base_model.layer4(x)
+                x = self.base_model.conv1(x)
+                x = self.base_model.bn1(x)
+                x = self.base_model.relu(x)
+                x = self.base_model.maxpool(x)
 
-            x = self.base_model.avgpool(x)
-            x = torch.flatten(x, 1)
-        
+                x = self.base_model.layer1(x)
+                x = self.base_model.layer2(x)
+                x = self.base_model.layer3(x)
+                x = self.base_model.layer4(x)
+
+                x = self.base_model.avgpool(x)
+                x = torch.flatten(x, 1)
+
+        elif self.backbone == "deit":
+            
+            with torch.no_grad():
+
+                x = self.base_model(x)[0][:, 0, :]
+            
         return self.out(x)
 
 
@@ -323,6 +352,10 @@ if __name__ == "__main__":
 
     parser.add_argument("--synthetic-probability", type=float, default=0.5)
     parser.add_argument("--synthetic-dir", type=str, default=DEFAULT_SYNTHETIC_DIR)
+    
+    parser.add_argument("--image-size", type=int, default=256)
+    parser.add_argument("--classifier-backbone", type=str, 
+                        default="resnet50", choices=["resnet50", "deit"])
 
     parser.add_argument("--iterations-per-epoch", type=int, default=200)
     parser.add_argument("--num-epochs", type=int, default=50)
@@ -395,7 +428,9 @@ if __name__ == "__main__":
             probs=args.probs,
             compose=args.compose,
             use_randaugment=args.use_randaugment,
-            erasure_ckpt_path=args.erasure_ckpt_path)
+            erasure_ckpt_path=args.erasure_ckpt_path,
+            image_size=args.image_size,
+            classifier_backbone=args.classifier_backbone)
 
         synthetic_dir = args.synthetic_dir.format(**hyperparameters)
         embed_path = args.embed_path.format(**hyperparameters)
