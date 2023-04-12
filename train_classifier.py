@@ -2,6 +2,8 @@ from semantic_aug.datasets.coco import COCODataset
 from semantic_aug.datasets.spurge import SpurgeDataset
 from semantic_aug.datasets.imagenet import ImageNetDataset
 from semantic_aug.datasets.pascal import PASCALDataset
+from semantic_aug.datasets.caltech101 import CalTech101Dataset
+from semantic_aug.datasets.flowers102 import Flowers102Dataset
 from semantic_aug.augmentations.compose import ComposeParallel
 from semantic_aug.augmentations.compose import ComposeSequential
 from semantic_aug.augmentations.real_guidance import RealGuidance
@@ -43,7 +45,9 @@ DATASETS = {
     "spurge": SpurgeDataset, 
     "coco": COCODataset, 
     "pascal": PASCALDataset,
-    "imagenet": ImageNetDataset
+    "imagenet": ImageNetDataset,
+    "caltech": CalTech101Dataset,
+    "flowers": Flowers102Dataset
 }
 
 COMPOSERS = {
@@ -385,7 +389,7 @@ if __name__ == "__main__":
     parser.add_argument("--embed-path", type=str, default=DEFAULT_EMBED_PATH)
     
     parser.add_argument("--dataset", type=str, default="pascal", 
-                        choices=["spurge", "imagenet", "coco", "pascal"])
+                        choices=["spurge", "imagenet", "coco", "pascal", "flowers", "caltech"])
     
     parser.add_argument("--aug", nargs="+", type=str, default=None, 
                         choices=["real-guidance", "textual-inversion"])

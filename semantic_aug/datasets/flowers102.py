@@ -150,6 +150,8 @@ class Flowers102Dataset(FewShotDataset):
         rng = np.random.default_rng(seed)
         class_to_ids = {key: rng.permutation(
             len(class_to_images[key])) for key in self.class_names}
+        
+        class_to_ids = {key: np.array_split(class_to_ids[key], 2)[0 if split == "train" else 1] for key in self.class_names}
 
         if examples_per_class is not None:
             class_to_ids = {key: ids[:examples_per_class] 
