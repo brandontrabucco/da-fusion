@@ -95,4 +95,5 @@ class SpurgeDataset5Fold(FewShotDataset):
         return self.all_labels[idx]
     
     def get_metadata_by_idx(self, idx: int) -> Any:
-        return dict(name=os.path.basename(self.all_images[idx]).replace('.png',''))
+        return dict(name=os.path.basename(self.all_images[idx]).replace('.png',''),
+                   class_token = ["no spurge", "leafy spurge"][self.all_labels[idx]])

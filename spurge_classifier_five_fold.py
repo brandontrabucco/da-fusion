@@ -57,8 +57,9 @@ def run_experiment(seed: int = 0,
         synthetic_probability=synthetic_probability, 
         synthetic_dir=synthetic_dir,
         generative_aug=aug, seed=seed)
-
-    train_dataset.generate_augmentations(num_synthetic)
+    
+    if num_synthetic > 0:
+        train_dataset.generate_augmentations(num_synthetic)
 
     train_sampler = torch.utils.data.RandomSampler(
         train_dataset, replacement=True, 

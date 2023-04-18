@@ -29,6 +29,8 @@ def load_embeddings(embed_path: str,
     text_encoder = CLIPTextModel.from_pretrained(
         model_path, use_auth_token=True, 
         subfolder="text_encoder")
+    
+    token_count = 0
 
     for token, token_embedding in torch.load(
             embed_path, map_location="cpu").items():
@@ -47,8 +49,10 @@ def load_embeddings(embed_path: str,
         # get the id for the token and assign new embeds
         embeddings.weight.data[added_token_id] = \
             token_embedding.to(embeddings.weight.dtype)
+        
+        token_count += 1 
 
-    return tokenizer, text_encoder.to('cuda')
+    return tokenizer, text_encoder.to('cuda'), token_count
 
 
 def format_name(name):
@@ -66,7 +70,7 @@ class TextualInversion(GenerativeAugmentation):
 
         super(TextualInversion, self).__init__()
 
-        tokenizer, text_encoder = load_embeddings(
+        tokenizer, text_encoder, token_count = load_embeddings(
             fine_tuned_embeddings, model_path=model_path)
 
         self.pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
@@ -86,6 +90,7 @@ class TextualInversion(GenerativeAugmentation):
         self.strength = strength
         self.guidance_scale = guidance_scale
         self.format_name = format_name
+        self.token_count = token_count
 
     def forward(self, image: Image.Image, label: int, 
                 metadata: dict) -> Tuple[Image.Image, int]:
@@ -93,7 +98,12 @@ class TextualInversion(GenerativeAugmentation):
         canvas = image.resize((512, 512), Image.BILINEAR)
 
         name = self.format_name(metadata["name"])
-        full_prompt = self.prompt.format(name=name)
+        class_token = self.format_name(metadata["class_token"])
+        
+        if self.token_count is 2:
+            full_prompt = self.prompt.format(name=class_token)
+        else:
+            full_prompt = self.prompt.format(name=name)
         
         print(full_prompt) #verify prompt and token
 
