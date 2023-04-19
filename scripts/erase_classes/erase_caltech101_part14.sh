@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #SBATCH --job-name=erase
 #SBATCH --exclude=matrix-1-12,matrix-0-24,matrix-1-4,matrix-2-13,matrix-1-8
