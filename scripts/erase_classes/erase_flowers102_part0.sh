@@ -13,7 +13,7 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate ldm
 cd ~/spurge/semantic-aug/stable-diffusion
 
-for CLASS_NAME in 'dining table' 'dog' 'horse' 'motorcycle' 'person'; do
+for CLASS_NAME in 'pink primrose' 'hard-leaved pocket orchid' 'canterbury bells' 'sweet pea' 'english marigold'; do
 
 python train-scripts/train-esd.py --prompt "$CLASS_NAME" --train_method 'full' --devices '0,0'
 
