@@ -1001,11 +1001,11 @@ if __name__ == "__main__":
 
     print(f'Initialized process {rank} / {world_size}')
 
-    options = product(range(args.num_trials), args.examples_per_class)
+    options = product(range(args.num_trials), args.examples_per_class, args.num_vectors)
     options = np.array(list(options))
     options = np.array_split(options, world_size)[rank]
 
-    for seed, examples_per_class in options.tolist():
+    for seed, examples_per_class, num_vectors in options.tolist():
 
         os.makedirs(os.path.join(output_dir, "extracted"), exist_ok=True)
 
@@ -1019,7 +1019,7 @@ if __name__ == "__main__":
             metadata = train_dataset.get_metadata_by_idx(idx)
 
             name = metadata["name"].replace(" ", "_")
-            path = f"{args.dataset}-{seed}-{examples_per_class}"
+            path = f"{args.dataset}-{seed}-{examples_per_class}-{num_vectors}"
 
             path = os.path.join(output_dir, "extracted", path, name, f"{idx}.png")
             os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -1029,7 +1029,7 @@ if __name__ == "__main__":
         for class_name in train_dataset.class_names:
 
             formatted_name = class_name.replace(" ", "_")
-            dirname = f"{args.dataset}-{seed}-{examples_per_class}/{formatted_name}"
+            dirname = f"{args.dataset}-{seed}-{examples_per_class}-{num_vectors}/{formatted_name}"
 
             args = parse_args()
             
