@@ -1001,7 +1001,7 @@ def main(args):
 
     del accelerator, vae, unet, text_encoder
     
-    if arg.only_save_embeds:
+    if args.only_save_embeds:
         clean_directory(os.path.join(args.output_dir,'fine-tuned'), "learned_embeds.bin")
     
     gc.collect()
