@@ -203,7 +203,8 @@ def parse_args():
     )
     parser.add_argument(
         "--num_vectors",
-        type=int,
+        nargs='+', 
+        type=int, 
         default=1,
         help="How many textual inversion vectors shall be used to learn the concept.",
     )
@@ -1034,6 +1035,7 @@ if __name__ == "__main__":
             args = parse_args()
             
             args.seed = seed
+            args.num_vectors = num_vectors
 
             args.placeholder_token = f"<{formatted_name}>"
             args.initializer_token = "the"
