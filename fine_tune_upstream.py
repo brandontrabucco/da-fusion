@@ -102,6 +102,14 @@ check_min_version("0.20.0.dev0")
 
 logger = get_logger(__name__)
 
+def clean_directory(dir_path, exception_file):
+    for filename in os.listdir(dir_path):
+        file_path = os.path.join(dir_path, filename)
+        if filename != exception_file:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
 
 def save_model_card(repo_id: str, images=None, base_model=str, repo_folder=None):
     img_str = ""
@@ -201,6 +209,14 @@ def parse_args():
         action="store_true",
         help="Save the complete stable diffusion pipeline.",
     )
+    
+    parser.add_argument(
+        "--only_save_embeds",
+        action="store_true",
+        default=False,
+        help="Save only the embeddings for the new concept.",
+    )
+    
     parser.add_argument(
         "--num_vectors",
         nargs='+', 
@@ -984,10 +1000,12 @@ def main(args):
     accelerator.free_memory()
 
     del accelerator, vae, unet, text_encoder
-
+    
+    if arg.only_save_embeds:
+        clean_directory(os.path.join(args.output_dir,'fine-tuned'), "learned_embeds.bin")
+    
     gc.collect()
     torch.cuda.empty_cache()
-
 
 if __name__ == "__main__":
 
