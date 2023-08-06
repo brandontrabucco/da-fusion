@@ -19,44 +19,13 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from glob import glob
 
 ERROR_MESSAGE = "Tokenizer already contains the token {token}. \
 Please pass a different `token` that is not already in the tokenizer."
 
-
-def load_embeddings(embed_path: str,
-                    model_path: str = "CompVis/stable-diffusion-v1-4"):
-
-    tokenizer = CLIPTokenizer.from_pretrained(
-        model_path, use_auth_token=True,
-        subfolder="tokenizer")
-
-    text_encoder = CLIPTextModel.from_pretrained(
-        model_path, use_auth_token=True, 
-        subfolder="text_encoder")
-
-    for token, token_embedding in torch.load(embed_path, map_location="cpu").items():
-
-        # add the token in tokenizer multiple times
-        num_added_tokens = tokenizer.add_tokens([token] * token_embedding.shape[0])
-        assert num_added_tokens > 0, ERROR_MESSAGE.format(token=token)
-
-        # resize the token embeddings
-        text_encoder.resize_token_embeddings(len(tokenizer))
-        added_token_ids = tokenizer.convert_tokens_to_ids([token] * token_embedding.shape[0])
-
-        # get the old word embeddings
-        embeddings = text_encoder.get_input_embeddings()
-
-        # assign the new embeddings
-        for idx, token_id in enumerate(added_token_ids):
-            embeddings.weight.data[token_id] = token_embedding[idx].to(embeddings.weight.dtype)
-
-    return tokenizer, text_encoder.to('cuda')
-
 def format_name(name):
     return f"<{name.replace(' ', '_')}>"
-
 
 class TextualInversion(GenerativeAugmentation):
 
@@ -83,24 +52,26 @@ class TextualInversion(GenerativeAugmentation):
                              if mask else 
                              StableDiffusionImg2ImgPipeline)
 
-            tokenizer, text_encoder = load_embeddings(
-                embed_path, model_path=model_path)
-
             TextualInversion.pipe = PipelineClass.from_pretrained(
                 model_path, use_auth_token=True,
                 revision="fp16", 
                 torch_dtype=torch.float16
             ).to('cuda')
-
-            self.pipe.tokenizer = tokenizer
-            self.pipe.text_encoder = text_encoder
-
+            
             logging.disable_progress_bar()
             self.pipe.set_progress_bar_config(disable=True)
 
             if disable_safety_checker:
                 self.pipe.safety_checker = None
-
+        
+        embeds_list = glob(embed_path + '/**/learned_embeds.bin')
+        
+        for e in embeds_list:
+            try:
+                self.pipe.load_textual_inversion(e)
+            except Exception as ex:
+                print(f"Error encountered: {ex}") 
+        
         self.prompt = prompt
         self.strength = strength
         self.guidance_scale = guidance_scale
