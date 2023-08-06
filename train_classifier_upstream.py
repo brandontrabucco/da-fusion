@@ -7,7 +7,8 @@ from semantic_aug.datasets.flowers102 import Flowers102Dataset
 from semantic_aug.augmentations.compose import ComposeParallel
 from semantic_aug.augmentations.compose import ComposeSequential
 from semantic_aug.augmentations.real_guidance import RealGuidance
-from semantic_aug.augmentations.textual_inversion import TextualInversion
+#from semantic_aug.augmentations.textual_inversion import TextualInversion
+from semantic_aug.augmentations.textual_inversion_upstream import TextualInversion
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
 from transformers import AutoImageProcessor, DeiTModel
