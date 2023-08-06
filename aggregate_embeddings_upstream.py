@@ -30,6 +30,7 @@ if __name__ == "__main__":
 
         path = os.path.join(args.input_path, (
             f"{args.dataset}-{seed}-{examples_per_class}-{num_vectors}/*/learned_embeds.bin"))
+        print(path)
 
         merged_dict = dict()
         for file in glob.glob(path):
