@@ -24,8 +24,16 @@ from glob import glob
 ERROR_MESSAGE = "Tokenizer already contains the token {token}. \
 Please pass a different `token` that is not already in the tokenizer."
 
-def format_name(name):
-    return f"<{name.replace(' ', '_')}>"
+def format_name(name, num_tokens: int = 1):
+
+    special_token = f"<{name.replace(' ', '_')}>"
+
+    return " ".join([
+        special_token
+        if token_idx == 0 else
+        f"{special_token}_{token_idx}"
+        for token_idx in range(num_tokens)
+    ])
 
 class TextualInversion(GenerativeAugmentation):
 
@@ -42,6 +50,7 @@ class TextualInversion(GenerativeAugmentation):
                  mask_grow_radius: int = 16,
                  erasure_ckpt_path: str = None,
                  disable_safety_checker: bool = True,
+                 tokens_per_class: int = 1,
                  **kwargs):
 
         super(TextualInversion, self).__init__()
@@ -64,18 +73,16 @@ class TextualInversion(GenerativeAugmentation):
             if disable_safety_checker:
                 self.pipe.safety_checker = None
         
-        embeds_list = glob(embed_path + '/**/learned_embeds.bin')
-        
-        for e in embeds_list:
-            try:
+            embeds_list = glob(embed_path + '/**/learned_embeds.bin')
+            
+            for e in embeds_list:
                 self.pipe.load_textual_inversion(e)
-            except Exception as ex:
-                print(f"Error encountered: {ex}") 
         
         self.prompt = prompt
         self.strength = strength
         self.guidance_scale = guidance_scale
         self.format_name = format_name
+        self.tokens_per_class = tokens_per_class
 
         self.mask = mask
         self.inverted = inverted
@@ -88,7 +95,9 @@ class TextualInversion(GenerativeAugmentation):
                 metadata: dict) -> Tuple[Image.Image, int]:
 
         canvas = image.resize((512, 512), Image.BILINEAR)
-        name = self.format_name(metadata.get("name", ""))
+        name = self.format_name(
+            metadata.get("name", ""),
+            num_tokens=self.tokens_per_class)
         prompt = self.prompt.format(name=name)
 
         if self.mask: assert "mask" in metadata, \
