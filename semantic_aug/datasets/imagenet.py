@@ -26,6 +26,29 @@ VAL_IMAGE_DIR = os.path.join(
 
 class ImageNetDataset(FewShotDataset):
 
+    class_names = ['steel arch bridge', 'ram', 'great white shark', 'sombrero', 
+        'hamster', 'racket', 'chain mail', 'ski mask', 'potpie', 'cocktail shaker', 
+        'Indian cobra', 'green snake', 'orange', 'Great Pyrenees', 'minibus', 'wall clock', 
+        "yellow lady's slipper", 'vacuum', 'guillotine', 'redshank', 'pajama', 
+        'tile roof', 'hen of the woods', 'oboe', 'overskirt', 'slug', 'running shoe', 
+        'harp', 'strawberry', 'sturgeon', 'leatherback turtle', 'malamute', 'ladybug', 
+        'mink', 'bulletproof vest', 'walking stick', 'can opener', 'pelican', 
+        'projectile', 'gorilla', 'green mamba', 'drilling platform', 
+        'black and gold garden spider', 'suit', 'volcano', 'hoopskirt', 
+        'meat loaf', 'scuba diver', 'armadillo', 'crane', 'throne', 'barrel', 
+        'golfcart', 'Border collie', 'fire engine', 'Indian elephant', 
+        "carpenter's kit", 'black-and-tan coonhound', 'ballplayer', 'earthstar', 
+        'Italian greyhound', 'confectionery', 'warthog', 'dishwasher', 'American egret', 
+        'bald eagle', 'beagle', 'pinwheel', 'wombat', 'disk brake', 'pole', 'sandbar', 'drake',
+        'cheeseburger', 'sea anemone', 'computer keyboard', 'suspension bridge', 'ibex', 
+        'toilet seat', 'vulture', 'coffee mug', 'Bouvier des Flandres', 
+        'honeycomb', 'African chameleon', 'barn spider', 'ladle', 'Airedale', 
+        'maze', 'scoreboard', 'fly', 'Bedlington terrier', 
+        'yawl', 'revolver', 'racer', 'croquet ball', 'obelisk', 'mosque', 
+        'dowitcher', 'shovel', 'sleeping bag']
+
+    num_classes: int = len(class_names)
+
     def __init__(self, *args, split: str = "train", seed: int = 0,
                  train_image_dir: str = TRAIN_IMAGE_DIR, 
                  val_image_dir: str = VAL_IMAGE_DIR, 
@@ -35,7 +58,6 @@ class ImageNetDataset(FewShotDataset):
                  examples_per_class: int = None, 
                  generative_aug: GenerativeAugmentation = None, 
                  synthetic_probability: float = 0.5,
-                 max_classes: int = 100,
                  use_randaugment: bool = False,
                  image_size: Tuple[int] = (256, 256), **kwargs):
 
@@ -50,7 +72,6 @@ class ImageNetDataset(FewShotDataset):
         with open(label_synset, "r") as f:
             label_synset_lines = f.readlines()
 
-        self.class_names = []
         self.dir_to_class_names = dict()
 
         for synset in label_synset_lines:
@@ -58,7 +79,6 @@ class ImageNetDataset(FewShotDataset):
             dir_name, synset = synset.split(" ", maxsplit=1)
             class_name = synset.split(",")[0].strip()
 
-            self.class_names.append(class_name)
             self.dir_to_class_names[dir_name] = class_name
 
         class_to_images = defaultdict(list)
@@ -75,10 +95,6 @@ class ImageNetDataset(FewShotDataset):
                 os.path.join(image_dir, path + ".JPEG"))
 
         rng = np.random.default_rng(seed)
-        self.class_names = [self.class_names[i] for i in (
-            rng.permutation(len(self.class_names))[:max_classes])]
-
-        self.num_classes = len(self.class_names)
         class_to_ids = {key: rng.permutation(
             len(class_to_images[key])) for key in self.class_names}
 

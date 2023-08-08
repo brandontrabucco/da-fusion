@@ -8,6 +8,8 @@ from semantic_aug.augmentations.compose import ComposeParallel
 from semantic_aug.augmentations.compose import ComposeSequential
 from semantic_aug.augmentations.real_guidance import RealGuidance
 from semantic_aug.augmentations.textual_inversion import TextualInversion
+from semantic_aug.augmentations.textual_inversion_upstream \
+    import TextualInversion as MultiTokenTextualInversion
 from torch.utils.data import DataLoader
 from torchvision.models import resnet50, ResNet50_Weights
 from transformers import AutoImageProcessor, DeiTModel
@@ -57,7 +59,8 @@ COMPOSERS = {
 
 AUGMENTATIONS = {
     "real-guidance": RealGuidance,
-    "textual-inversion": TextualInversion
+    "textual-inversion": TextualInversion,
+    "multi-token-inversion": MultiTokenTextualInversion
 }
 
 
@@ -80,6 +83,7 @@ def run_experiment(examples_per_class: int = 0,
                    embed_path: str = DEFAULT_EMBED_PATH,
                    model_path: str = DEFAULT_MODEL_PATH,
                    prompt: str = DEFAULT_PROMPT,
+                   tokens_per_class: int = 4,
                    use_randaugment: bool = False,
                    use_cutmix: bool = False,
                    erasure_ckpt_path: str = None,
@@ -102,7 +106,8 @@ def run_experiment(examples_per_class: int = 0,
                 guidance_scale=guidance_scale,
                 mask=mask, 
                 inverted=inverted,
-                erasure_ckpt_path=erasure_ckpt_path
+                erasure_ckpt_path=erasure_ckpt_path,
+                tokens_per_class=tokens_per_class
             )
 
             for (aug, guidance_scale, 
@@ -392,7 +397,8 @@ if __name__ == "__main__":
                         choices=["spurge", "imagenet", "coco", "pascal", "flowers", "caltech"])
     
     parser.add_argument("--aug", nargs="+", type=str, default=None, 
-                        choices=["real-guidance", "textual-inversion"])
+                        choices=["real-guidance", "textual-inversion",
+                                 "multi-token-inversion"])
 
     parser.add_argument("--strength", nargs="+", type=float, default=None)
     parser.add_argument("--guidance-scale", nargs="+", type=float, default=None)
@@ -409,6 +415,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--use-randaugment", action="store_true")
     parser.add_argument("--use-cutmix", action="store_true")
+
+    parser.add_argument("--tokens-per-class", type=int, default=4)
     
     args = parser.parse_args()
 
@@ -443,6 +451,7 @@ if __name__ == "__main__":
             synthetic_probability=args.synthetic_probability, 
             num_synthetic=args.num_synthetic, 
             prompt=args.prompt, 
+            tokens_per_class=args.tokens_per_class,
             aug=args.aug,
             strength=args.strength, 
             guidance_scale=args.guidance_scale,
