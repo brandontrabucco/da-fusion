@@ -231,7 +231,6 @@ def parse_args():
         "--placeholder_token",
         type=str,
         default=None,
-        required=True,
         help="A token to use as a placeholder for the concept.",
     )
     parser.add_argument(
@@ -1001,11 +1000,21 @@ if __name__ == "__main__":
 
     print(f'Initialized process {rank} / {world_size}')
 
-    options = product(range(args.num_trials), args.examples_per_class)
-    options = np.array(list(options))
-    options = np.array_split(options, world_size)[rank]
+    class_names = DATASETS[args.dataset].class_names
 
-    for seed, examples_per_class in options.tolist():
+    options = list(product(
+        range(args.num_trials),
+        args.examples_per_class,
+        class_names))
+
+    print(f"{len(options)} Total Options")
+
+    options_idx = np.arange(len(options))
+    options_idx = np.array_split(options_idx, world_size)[rank]
+
+    options = [options[idx] for idx in options_idx]
+
+    for seed, examples_per_class, class_name in options:
 
         os.makedirs(os.path.join(output_dir, "extracted"), exist_ok=True)
 
@@ -1018,38 +1027,37 @@ if __name__ == "__main__":
             image = train_dataset.get_image_by_idx(idx)
             metadata = train_dataset.get_metadata_by_idx(idx)
 
-            name = metadata["name"].replace(" ", "_")
-            path = f"{args.dataset}-{seed}-{examples_per_class}"
+            if metadata["name"] == class_name:
 
-            path = os.path.join(output_dir, "extracted", path, name, f"{idx}.png")
-            os.makedirs(os.path.dirname(path), exist_ok=True)
+                name = metadata["name"].replace(" ", "_")
+                path = f"{args.dataset}-{seed}-{examples_per_class}"
 
-            image.save(path)
+                path = os.path.join(output_dir, "extracted", path, name, f"{idx}.png")
+                os.makedirs(os.path.dirname(path), exist_ok=True)
 
-        for class_name in train_dataset.class_names:
+                image.save(path)
 
-            formatted_name = class_name.replace(" ", "_")
-            dirname = f"{args.dataset}-{seed}-{examples_per_class}/{formatted_name}"
+        formatted_name = class_name.replace(" ", "_")
+        dirname = f"{args.dataset}-{seed}-{examples_per_class}/{formatted_name}"
 
-            args = parse_args()
-            
-            args.seed = seed
+        args = parse_args()
+        
+        args.seed = seed
 
-            args.placeholder_token = f"<{formatted_name}>"
-            args.initializer_token = "the"
+        args.placeholder_token = f"<{formatted_name}>"
 
-            args.train_data_dir = os.path.join(
-                output_dir, "extracted", dirname)
-            args.output_dir = os.path.join(
-                output_dir, "fine-tuned", dirname)
+        args.train_data_dir = os.path.join(
+            output_dir, "extracted", dirname)
+        args.output_dir = os.path.join(
+            output_dir, "fine-tuned", dirname)
 
-            word_name = class_name.replace(" ", "")
+        word_name = class_name.replace(" ", "")
 
-            if args.erase_concepts: args.unet_ckpt = (
-                "/projects/rsalakhugroup/btrabucc/esd-models/" + 
-                f"compvis-word_{word_name}-method_full-sg_3-ng_1-iter_1000-lr_1e-05/" + 
-                f"diffusers-word_{word_name}-method_full-sg_3-ng_1-iter_1000-lr_1e-05.pt")
+        if args.erase_concepts: args.unet_ckpt = (
+            "/projects/rsalakhugroup/btrabucc/esd-models/" + 
+            f"compvis-word_{word_name}-method_full-sg_3-ng_1-iter_1000-lr_1e-05/" + 
+            f"diffusers-word_{word_name}-method_full-sg_3-ng_1-iter_1000-lr_1e-05.pt")
 
-            main(args)
+        main(args)
 
-            shutil.rmtree(args.train_data_dir)
+        shutil.rmtree(args.train_data_dir)
