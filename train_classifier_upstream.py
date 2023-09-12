@@ -467,7 +467,7 @@ if __name__ == "__main__":
             erasure_ckpt_path=args.erasure_ckpt_path,
             image_size=args.image_size,
             classifier_backbone=args.classifier_backbone)
-
+        
         synthetic_dir = args.synthetic_dir.format(**hyperparameters)
         embed_path = args.embed_path.format(**hyperparameters)
 
