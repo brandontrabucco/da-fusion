@@ -102,6 +102,26 @@ check_min_version("0.20.0.dev0")
 
 logger = get_logger(__name__)
 
+def create_mosaic(img, in_sz=39):
+    # Calculate the number of copies needed to exceed 512x512 pixels
+    copies_x = (512 // in_sz) + 1
+    copies_y = (512 // in_sz) + 1
+
+    # Create a new blank image with dimensions slightly larger than 512x512
+    mosaic_width = copies_x * in_sz
+    mosaic_height = copies_y * in_sz
+    mosaic = Image.new('RGB', (mosaic_width, mosaic_height))
+
+    # Loop over a grid and paste the image into the correct positions
+    for x in range(copies_x):
+        for y in range(copies_y):
+            mosaic.paste(img, (x * in_sz, y * in_sz))
+
+    # Crop the image to 512x512
+    mosaic = mosaic.crop((0, 0, 512, 512))
+
+    return mosaic
+
 
 def save_model_card(repo_id: str, images=None, base_model=str, repo_folder=None):
     img_str = ""
@@ -546,6 +566,8 @@ class TextualInversionDataset(Dataset):
 
         if not image.mode == "RGB":
             image = image.convert("RGB")
+        
+        image = create_mosaic(image)
 
         placeholder_string = self.placeholder_token
         text = random.choice(self.templates).format(placeholder_string)
@@ -1061,3 +1083,4 @@ if __name__ == "__main__":
         main(args)
 
         shutil.rmtree(args.train_data_dir)
+

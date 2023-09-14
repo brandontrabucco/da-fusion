@@ -35,6 +35,16 @@ def format_name(name, num_tokens: int = 1):
         for token_idx in range(num_tokens)
     ])
 
+def center_crop(img, new_width, new_height):
+    width, height = img.size
+
+    left = (width - new_width)/2
+    top = (height - new_height)/2
+    right = (width + new_width)/2
+    bottom = (height + new_height)/2
+
+    return img.crop((left, top, right, bottom))
+
 class TextualInversion(GenerativeAugmentation):
 
     pipe = None  # global sharing is a hack to avoid OOM
@@ -153,8 +163,10 @@ class TextualInversion(GenerativeAugmentation):
                 self.pipe.safety_checker is not None 
                 and outputs.nsfw_content_detected[0]
             )
+        
+        mosaic_crop = center_crop(outputs.images[0], 39, 39)
 
-        canvas = outputs.images[0].resize(
+        canvas = mosaic_crop.resize(
             image.size, Image.BILINEAR)
 
         return canvas, label
