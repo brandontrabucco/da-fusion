@@ -45,6 +45,26 @@ def center_crop(img, new_width, new_height):
 
     return img.crop((left, top, right, bottom))
 
+def create_mosaic(img, in_sz=39, out_sz=512):
+    # Calculate the number of copies needed to exceed 512x512 pixels
+    copies_x = (out_sz // in_sz) + 1
+    copies_y = (out_sz // in_sz) + 1
+
+    # Create a new blank image with dimensions slightly larger than 512x512
+    mosaic_width = copies_x * in_sz
+    mosaic_height = copies_y * in_sz
+    mosaic = Image.new('RGB', (mosaic_width, mosaic_height))
+
+    # Loop over a grid and paste the image into the correct positions
+    for x in range(copies_x):
+        for y in range(copies_y):
+            mosaic.paste(img, (x * in_sz, y * in_sz))
+
+    # Crop the image to out_sz x out_sz
+    mosaic = mosaic.crop((0, 0, out_sz, out_sz))
+
+    return mosaic
+
 class TextualInversion(GenerativeAugmentation):
 
     pipe = None  # global sharing is a hack to avoid OOM
@@ -104,7 +124,7 @@ class TextualInversion(GenerativeAugmentation):
     def forward(self, image: Image.Image, label: int, 
                 metadata: dict) -> Tuple[Image.Image, int]:
 
-        canvas = image.resize((512, 512), Image.BILINEAR)
+        canvas = create_mosaic(image)
         name = self.format_name(
             metadata.get("name", ""),
             num_tokens=self.tokens_per_class)
