@@ -1083,4 +1083,7 @@ if __name__ == "__main__":
         main(args)
 
         shutil.rmtree(args.train_data_dir)
+	for filename in os.listdir(args.output_dir):
+            if filename != 'learned_embeds.bin':
+                os.remove(filename)
 
