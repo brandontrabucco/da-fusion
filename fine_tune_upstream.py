@@ -24,6 +24,7 @@ import shutil
 import warnings
 from pathlib import Path
 from itertools import product
+import glob
 
 import numpy as np
 import PIL
@@ -1061,3 +1062,24 @@ if __name__ == "__main__":
         main(args)
 
         shutil.rmtree(args.train_data_dir)
+
+        all_paths = glob.glob(os.path.join(args.output_dir, '**', '*'), recursive=True)
+
+        # Filter out directories to keep only files
+        file_list = [path for path in all_paths if os.path.isfile(path)]
+
+        # Debug: Print the list of files in the directory
+        print(f"Files in {args.output_dir} and its subdirectories: {file_list}")
+
+        # Remove files
+        for filepath in file_list:
+            filename = os.path.basename(filepath)
+            
+            if filename != 'learned_embeds.bin':
+                # Check if the file exists before trying to remove it
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+                else:
+                    print(f"File {filepath} not found")
+                
+
