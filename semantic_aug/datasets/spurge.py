@@ -43,11 +43,11 @@ class SpurgeDataset(FewShotDataset):
         def filter_files(files, cluster):
             return [f for f in files if f.endswith(f"_{cluster}.png")]
 
-        absent_train = filter_files(absent, 0)
-        present_train = filter_files(present, 0)
+        absent_train = filter_files(absent, 1)
+        present_train = filter_files(present, 1)
 
-        absent_val = filter_files(absent, 1)
-        present_val = filter_files(present, 1)
+        absent_val = filter_files(absent, 2)
+        present_val = filter_files(present, 2)
 
         rng.shuffle(absent_train)
         rng.shuffle(present_train)
