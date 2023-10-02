@@ -20,7 +20,7 @@ DEFAULT_DATA_DIR = os.path.join(
 class SpurgeDataset(FewShotDataset):
 
     num_classes: int = 2
-    class_names = ["no spurge", "leafy spurge"]
+    class_names = ["absent", "present"] #simplifying class names and aligning with variables throughout
 
     def __init__(self, *args, data_dir: str = DEFAULT_DATA_DIR, 
                  split: str = "train", seed: int = 0, 
@@ -36,49 +36,58 @@ class SpurgeDataset(FewShotDataset):
             generative_aug=generative_aug, **kwargs)
 
         absent = list(glob.glob(os.path.join(data_dir, "absent/*.png")))
-        apparent = list(glob.glob(os.path.join(data_dir, "apparent/*.png")))
+        present = list(glob.glob(os.path.join(data_dir, "present/*.png")))
 
-        rng = np.random.default_rng(seed)
+        rng = np.random.default_rng(seed))
+        
+        def filter_files(files, cluster):
+            return [f for f in files if f.endswith(f"_{cluster}.png")]
 
-        absent_ids = rng.permutation(len(absent))
-        apparent_ids = rng.permutation(len(apparent))
+        absent_train = filter_files(absent, 1)
+        present_train = filter_files(present, 1)
 
-        absent_ids_train, absent_ids_val = np.array_split(absent_ids, 2)
-        apparent_ids_train, apparent_ids_val = np.array_split(apparent_ids, 2)
+        absent_val = filter_files(absent, 2)
+        present_val = filter_files(present, 2)
 
-        absent_ids = {"train": absent_ids_train, "val": absent_ids_val}[split]
-        apparent_ids = {"train": apparent_ids_train, "val": apparent_ids_val}[split]
+        rng.shuffle(absent_train)
+        rng.shuffle(present_train)
+        rng.shuffle(absent_val)
+        rng.shuffle(present_val)
 
         if examples_per_class is not None:
-            absent_ids = absent_ids[:examples_per_class]
-            apparent_ids = apparent_ids[:examples_per_class]
+            absent_train = absent_train[:examples_per_class]
+            present_train = present_train[:examples_per_class]
 
-        self.absent = [absent[i] for i in absent_ids]
-        self.apparent = [apparent[i] for i in apparent_ids]
+            absent_val = absent_val[:examples_per_class]
+            present_val = present_val[:examples_per_class]
 
-        self.all_images = self.absent + self.apparent
-        self.all_labels = [0] * len(self.absent) + [1] * len(self.apparent)
+        self.absent = absent_train if split == "train" else absent_val
+        self.present = present_train if split == "train" else present_val
 
-        if use_randaugment: train_transform = transforms.Compose([
-            transforms.Resize(image_size),
-            transforms.RandAugment(),
-            transforms.ToTensor(),
-            transforms.ConvertImageDtype(torch.float),
-            transforms.Lambda(lambda x: x.expand(3, *image_size)),
-            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
-                                  std=[0.5, 0.5, 0.5])
-        ])
+        self.all_images = self.absent + self.present
+        self.all_labels = [0] * len(self.absent) + [1] * len(self.present)
 
-        else: train_transform = transforms.Compose([
-            transforms.Resize(image_size),
-            transforms.RandomHorizontalFlip(p=0.5),
-            transforms.RandomVerticalFlip(p=0.5),
-            transforms.RandomRotation(degrees=45),
-            transforms.ToTensor(),
-            transforms.ConvertImageDtype(torch.float),
-            transforms.Normalize(mean=[0.5, 0.5, 0.5], 
-                                  std=[0.5, 0.5, 0.5])
-        ])
+        if use_randaugment: 
+            train_transform = transforms.Compose([
+                transforms.Resize(image_size),
+                transforms.RandAugment(),
+                transforms.ToTensor(),
+                transforms.ConvertImageDtype(torch.float),
+                transforms.Lambda(lambda x: x.expand(3, *image_size)),
+                transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                      std=[0.5, 0.5, 0.5])
+            ])
+        else: 
+            train_transform = transforms.Compose([
+                transforms.Resize(image_size),
+                transforms.RandomHorizontalFlip(p=0.5),
+                transforms.RandomVerticalFlip(p=0.5),
+                transforms.RandomRotation(degrees=45),
+                transforms.ToTensor(),
+                transforms.ConvertImageDtype(torch.float),
+                transforms.Normalize(mean=[0.5, 0.5, 0.5], 
+                                      std=[0.5, 0.5, 0.5])
+            ])
 
         val_transform = transforms.Compose([
             transforms.Resize(image_size),
@@ -91,17 +100,13 @@ class SpurgeDataset(FewShotDataset):
         self.transform = {"train": train_transform, "val": val_transform}[split]
 
     def __len__(self):
-
         return len(self.all_images)
 
-    def get_image_by_idx(self, idx: int) -> torch.Tensor:
-        
+    def get_image_by_idx(self, idx: int) -> torch.Tensor:        
         return Image.open(self.all_images[idx])
 
-    def get_label_by_idx(self, idx: int) -> torch.Tensor:
-        
+    def get_label_by_idx(self, idx: int) -> torch.Tensor:        
         return self.all_labels[idx]
     
     def get_metadata_by_idx(self, idx: int) -> Any:
-
         return dict(name=self.class_names[self.all_labels[idx]])
