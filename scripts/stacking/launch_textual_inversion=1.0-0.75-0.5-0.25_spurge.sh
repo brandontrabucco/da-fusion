@@ -17,7 +17,7 @@ RANK=$SLURM_ARRAY_TASK_ID WORLD_SIZE=$SLURM_ARRAY_TASK_COUNT \
 python train_classifier.py --logdir spurge-baselines_v2_256/textual-inversion-1.0-0.75-0.5-0.25 \
 --synthetic-dir "synthetic_images/textual_inversion/{dataset}-{seed}-{examples_per_class}" \
 --dataset spurge --prompt "a photo of a {name}" \
---aug multi-token-inversion multi-token-inversion multi-token-inversion multi-token-inversion \
+--aug textual-inversion textual-inversion textual-inversion textual-inversion \
 --guidance-scale 7.5 7.5 7.5 7.5 \
 --strength 1.0 0.75 0.5 0.25 \
 --mask 0 0 0 0 \
