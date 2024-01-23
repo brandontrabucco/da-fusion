@@ -1,4 +1,4 @@
-# Effective Data Augmentation With Diffusion Models [ICLR 2024]
+# Effective Data Augmentation With Diffusion Models
 
 [![Watch Effective Data Augmentation With Diffusion Models On YouTube](images/play-da-fusion.png)](https://www.youtube.com/watch?v=IKDWOOWzwns)
 
