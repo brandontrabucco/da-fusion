@@ -2,11 +2,11 @@
 
 [![Watch Effective Data Augmentation With Diffusion Models On YouTube](images/play-da-fusion.png)](https://www.youtube.com/watch?v=IKDWOOWzwns)
 
-<p align="center">Watch our talk for a quick introduction!</p>
+Watch our talk for a quick introduction!
 
 Data augmentation is one of the most prevalent tools in deep learning, underpinning many recent advances. The standard approach to data augmentation combines simple transformations like rotations and flips to generate new images from existing ones. However, current augmentations cannot alter the high-level semantic attributes, such as animal species present in a scene, to enhance the diversity of data. We improve diversity in data augmentation with image-to-image transformations parameterized by pre-trained text-to-image diffusion models. Our method edits images using an off-the-shelf diffusion model, and generalizes to novel visual concepts from a few labelled examples.
 
-[Preprint](https://arxiv.org/abs/2302.07944)
+[Preprint](https://arxiv.org/abs/2302.07944)    |    [ICLR 2024 Manuscript](https://openreview.net/forum?id=ZWzUA9zeAg)    |    [Site](btrabuc.co/da-fusion)
 
 ## Installation
 
