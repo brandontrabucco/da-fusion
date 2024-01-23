@@ -1,8 +1,10 @@
-# Effective Data Augmentation With Diffusion Models
+# Effective Data Augmentation With Diffusion Models [ICLR 2024]
 
-![DA-Fusion](images/main-diagram.png)
+[![Watch Effective Data Augmentation With Diffusion Models On YouTube](images/play-da-fusion.png)](https://www.youtube.com/watch?v=IKDWOOWzwns)
 
-Existing data augmentations like rotations and re-colorizations provide diversity but preserve semantics. We explore how prompt-based generative models complement existing data augmentations by controlling image semantics via prompts. Our generative data augmentations build on Stable Diffusion and improve visual few-shot learning.
+<p align="center">Watch our talk for a quick introduction! Recorded at the Synthetic Data Generation with Generative AI Workshop at NeurIPS 2023.</p>
+
+Data augmentation is one of the most prevalent tools in deep learning, underpinning many recent advances. The standard approach to data augmentation combines simple transformations like rotations and flips to generate new images from existing ones. However, current augmentations cannot alter the high-level semantic attributes, such as animal species present in a scene, to enhance the diversity of data. We improve diversity in data augmentation with image-to-image transformations parameterized by pre-trained text-to-image diffusion models. Our method edits images using an off-the-shelf diffusion model, and generalizes to novel visual concepts from a few labelled examples.
 
 [Preprint](https://arxiv.org/abs/2302.07944)
 
